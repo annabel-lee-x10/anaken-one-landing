@@ -8,7 +8,8 @@ export default async function handler(req, res) {
 
   const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
   if (!ANTHROPIC_API_KEY) {
-    return res.status(500).json({ error: "Server configuration error." });
+    console.error("[news] ANTHROPIC_API_KEY env var is not set");
+    return res.status(500).json({ error: "Server configuration error: missing API key." });
   }
 
   const today = new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
@@ -22,7 +23,7 @@ Return ONLY a JSON array with exactly 10 items. Each item must have:
 Return ONLY the raw JSON array. No markdown, no backticks, no explanation.`;
 
   try {
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
+    const anthropicRes = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -30,42 +31,51 @@ Return ONLY the raw JSON array. No markdown, no backticks, no explanation.`;
         "x-api-key": ANTHROPIC_API_KEY,
       },
       body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
+        model: "claude-sonnet-4-5",
         max_tokens: 2000,
         tools: [{ type: "web_search_20250305", name: "web_search" }],
         messages: [{ role: "user", content: prompt }],
       }),
     });
 
-    if (!response.ok) {
-      const err = await response.text();
-      console.error("Anthropic error:", err);
-      return res.status(502).json({ error: "Failed to fetch news." });
+    if (!anthropicRes.ok) {
+      const errBody = await anthropicRes.text();
+      console.error(`[news] Anthropic API error ${anthropicRes.status}:`, errBody);
+      return res.status(502).json({ error: `Upstream error ${anthropicRes.status}` });
     }
 
-    const data = await response.json();
+    const data = await anthropicRes.json();
     const textBlock = data.content?.find((b) => b.type === "text");
-    if (!textBlock) return res.status(502).json({ error: "No text block in response." });
+    if (!textBlock) {
+      console.error("[news] No text block in Anthropic response:", JSON.stringify(data.content));
+      return res.status(502).json({ error: "No text in response." });
+    }
 
-    const raw = textBlock.text.replace(/```json|```/g, "").trim();
-    const articles = JSON.parse(raw);
+    // Strip any accidental markdown fences, parse JSON
+    let articles;
+    try {
+      const raw = textBlock.text.replace(/```json|```/g, "").trim();
+      articles = JSON.parse(raw);
+    } catch (parseErr) {
+      console.error("[news] JSON parse error:", parseErr, "raw:", textBlock.text.slice(0, 200));
+      return res.status(502).json({ error: "Could not parse news response." });
+    }
+
     if (!Array.isArray(articles) || articles.length === 0) {
       return res.status(502).json({ error: "Unexpected response shape." });
     }
 
-    // Validate and sanitize each article before sending to client
     const safe = articles.slice(0, 10).map((a) => ({
       title:   String(a.title   || "").replace(/<[^>]*>/g, "").slice(0, 120),
       summary: String(a.summary || "").replace(/<[^>]*>/g, "").slice(0, 300),
       source:  String(a.source  || "").replace(/<[^>]*>/g, "").slice(0, 80),
       date:    String(a.date    || "").replace(/<[^>]*>/g, "").slice(0, 20),
-      // Only allow https:// URLs — block javascript:, data:, etc.
-      url: /^https:\/\/.+/.test(String(a.url || "")) ? String(a.url).slice(0, 500) : "#",
+      url:     /^https:\/\/.+/.test(String(a.url || "")) ? String(a.url).slice(0, 500) : "#",
     }));
 
     return res.status(200).json({ articles: safe });
   } catch (err) {
-    console.error("News fetch error:", err);
-    return res.status(500).json({ error: "Unexpected error." });
+    console.error("[news] Unexpected error:", err);
+    return res.status(500).json({ error: "Unexpected server error." });
   }
 }
