@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 
 // ─── Schedule: 01:00, 07:00, 13:00, 19:00 UTC ────────────────────────────────
-const SCHEDULE_HOURS_UTC = [1, 7, 13, 19];
+const SCHEDULE_HOURS_UTC = [0, 8, 16]; // every 8h: 00:00, 08:00, 16:00 UTC
 const STORAGE_KEY       = "anaken-news-cache";
 const THEME_KEY         = "anaken-theme";
 
@@ -94,10 +94,12 @@ const THEMES = {
 
 // ─── Fallback news ─────────────────────────────────────────────────────────────
 const FALLBACK_NEWS = [
-  { title: "AI 'Societies' Are Taking Shape", summary: "Researchers are building AI agent simulations with up to 8 billion digital twins — studying collective behavior, consciousness, and social dynamics between bots.", source: "Nature", url: "https://www.nature.com/articles/d41586-026-00070-5", date: "Mar 5, 2026" },
-  { title: "AI & Labor Markets: New Research", summary: "Anthropic researchers find AI displacement risk is real but slower than feared — hiring of younger workers in exposed fields has quietly slowed since 2022.", source: "Anthropic Research", url: "https://www.anthropic.com/research/labor-market-impacts", date: "Mar 5, 2026" },
-  { title: "London's Biggest Anti-AI Protest", summary: "Hundreds marched through London's King's Cross AI hub — past OpenAI, Meta & DeepMind HQs — calling for regulation, whistleblower protections, and a slowdown.", source: "MIT Tech Review", url: "https://www.technologyreview.com/2026/03/02/1133814/i-checked-out-londons-biggest-ever-anti-ai-protest/", date: "Mar 2, 2026" },
+  { title: "AI 'Societies' Are Taking Shape", summary: "Researchers building AI agent simulations with up to 8 billion digital twins — studying collective behavior and social dynamics between bots.", source: "Nature", url: "https://www.nature.com/articles/d41586-026-00070-5", date: "Mar 5, 2026" },
+  { title: "AI & Labor Markets: New Research", summary: "Anthropic researchers find AI displacement risk is real but slower than feared — hiring of younger workers in exposed fields has quietly slowed.", source: "Anthropic Research", url: "https://www.anthropic.com/research/labor-market-impacts", date: "Mar 5, 2026" },
+  { title: "London's Biggest Anti-AI Protest", summary: "Hundreds marched through London's King's Cross AI hub past OpenAI, Meta & DeepMind HQs calling for regulation and a slowdown.", source: "MIT Tech Review", url: "https://www.technologyreview.com/2026/03/02/1133814/i-checked-out-londons-biggest-ever-anti-ai-protest/", date: "Mar 2, 2026" },
   { title: "State AI Laws Are Moving Fast", summary: "Vermont signed a synthetic media election bill into law. AI chatbot safety bills for minors are advancing across five states.", source: "Transparency Coalition", url: "https://www.transparencycoalition.ai/news/ai-legislative-update-march6-2026", date: "Mar 6, 2026" },
+  { title: "Samsung Targets 800M Gemini Devices", summary: "Samsung aims to double AI-equipped mobile devices to 800 million units by end of 2026, bringing Gemini features to mid-tier and budget phones.", source: "Crescendo AI", url: "https://www.crescendo.ai/news/latest-ai-news-and-updates", date: "Mar 1, 2026" },
+  { title: "Apple Reimagines Siri with AI", summary: "Apple announced a fully redesigned, context-aware AI-powered Siri set to debut in 2026 with on-screen awareness capabilities.", source: "Crescendo AI", url: "https://www.crescendo.ai/news/latest-ai-news-and-updates", date: "Feb 28, 2026" },
 ];
 
 const PROJECTS = [
@@ -176,6 +178,7 @@ export default function App() {
   const [news, setNews] = useState(FALLBACK_NEWS);
   const [newsLoading, setNewsLoading] = useState(false);
   const [nextSlot, setNextSlot] = useState(null);
+  const [lastFetched, setLastFetched] = useState(null);
   const [form, setForm] = useState({ name: "", email: "", category: "", message: "" });
   const [formFocused, setFormFocused] = useState({});
   const [formErrors, setFormErrors] = useState({});
@@ -192,7 +195,7 @@ export default function App() {
 
   const runScheduledFetch = useCallback(async () => {
     setNewsLoading(true);
-    try { const articles = await fetchLiveNews(); setNews(articles); await writeCache({ articles, timestamp: Date.now() }); }
+    try { const articles = await fetchLiveNews(); const ts = Date.now(); setNews(articles); setLastFetched(ts); await writeCache({ articles, timestamp: ts }); }
     catch (e) { console.error("Scheduled news fetch failed:", e); }
     finally { setNewsLoading(false); }
   }, []);
@@ -202,7 +205,7 @@ export default function App() {
       const now = Date.now(), slot = lastScheduledSlot(now);
       setNextSlot(nextScheduledSlot(now));
       const cached = await readCache();
-      if (cached?.articles) { setNews(cached.articles); if (cached.timestamp < slot) runScheduledFetch(); }
+      if (cached?.articles) { setNews(cached.articles); setLastFetched(cached.timestamp); if (cached.timestamp < slot) runScheduledFetch(); }
       else runScheduledFetch();
     };
     init();
@@ -332,8 +335,9 @@ export default function App() {
             <div style={{ marginBottom: "28px" }}>
               <div style={{ fontSize: "11px", color: t.accentLabel, letterSpacing: "2px", marginBottom: "8px" }}>SIGNAL.FEED / AI_NEWS</div>
               <h2 style={{ fontSize: "28px", margin: 0, color: t.textHead, fontWeight: "bold" }}>Current Intelligence</h2>
-              <div style={{ display: "flex", gap: "20px", marginTop: "8px" }}>
-                {nextSlot && !newsLoading && <span style={{ fontSize: "10px", color: t.accentNext, letterSpacing: "1px" }}>NEXT UPDATE: {formatCountdown(nextSlot)}</span>}
+              <div style={{ display: "flex", gap: "20px", marginTop: "8px", flexWrap: "wrap" }}>
+                {lastFetched && !newsLoading && <span style={{ fontSize: "10px", color: t.accentLabel, letterSpacing: "1px" }}>UPDATED: {new Date(lastFetched).toUTCString().replace("GMT", "UTC")}</span>}
+                {nextSlot && !newsLoading && <span style={{ fontSize: "10px", color: t.accentNext, letterSpacing: "1px" }}>NEXT: {formatCountdown(nextSlot)}</span>}
                 {newsLoading && <span style={{ fontSize: "10px", color: t.accentLabel, letterSpacing: "1px" }}>● UPDATING...</span>}
               </div>
             </div>
@@ -443,7 +447,7 @@ export default function App() {
 
       <footer style={{ position: "relative", zIndex: 1, borderTop: `1px solid ${t.border}`, padding: "16px 32px", display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "10px", color: t.textFaint, letterSpacing: "1px", transition: "border-color 0.3s" }}>
         <span>ANAKEN / u18181188</span>
-        <span>NEWS · 01:00 07:00 13:00 19:00 UTC</span>
+        <span>NEWS · 00:00 08:00 16:00 UTC</span>
       </footer>
 
       <style>{`

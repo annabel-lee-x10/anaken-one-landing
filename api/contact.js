@@ -94,7 +94,7 @@ export default async function handler(req, res) {
       from:     `"Anaken Contact" <${GMAIL_USER}>`,
       to:       CONTACT_EMAIL,
       replyTo:  cleanEmail,
-      subject:  `[${cleanCategory}] from ${cleanName}`,
+      subject:  `[anaken.one] [${cleanCategory}] from ${cleanName}`,
       text: [
         `Name:     ${cleanName}`,
         `Email:    ${cleanEmail}`,
