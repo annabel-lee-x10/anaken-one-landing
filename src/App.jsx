@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 const SCHEDULE_HOURS_UTC = [0, 8, 16];
 const STORAGE_KEY = "anaken-news-cache";
@@ -80,10 +80,16 @@ const FALLBACK_NEWS = [
 ];
 
 const PROJECTS = [
-  { name:"AI Fact-Check Engine", tagline:"Verify AI-generated claims in real time.", description:"Paste any text and get a source-backed fact check powered by live AI reasoning.", url:"https://aifactchecker.anaken.one/", icon:"⚡", tag:"tool" },
-  { name:"promptVault", tagline:"Your personal prompt engineering HQ.", description:"Build, store, and organize your best prompts. Optimized for iterative AI workflows.", url:"https://prompt-builder-vault.anaken.one/", icon:"🗄️", tag:"tool" },
-  { name:"Anaken.one", tagline:"This site — live AI news + projects hub.", description:"A dark techy mini site with a scheduled AI news feed, powered by Claude + web search. Updates at 00:00, 08:00, 16:00 UTC.", url:"#", icon:"🛰️", tag:"site" },
+  { name:"AI Fact-Check Engine", tagline:"Verify AI-generated claims in real time.", description:"Paste any text and get a source-backed fact check powered by live AI reasoning.", url:"https://aifactchecker.anaken.one/", icon:null, imgIcon:FACTCHECK_ICON, tag:"tool", index:"01" },
+  { name:"promptVault", tagline:"Your personal prompt engineering HQ.", description:"Build, store, and organize your best prompts. Optimized for iterative AI workflows.", url:"https://prompt-builder-vault.anaken.one/", icon:null, imgIcon:PROMPT_VAULT_ICON, tag:"tool", index:"02" },
+  { name:"Anaken.one", tagline:"This site — live AI news + projects hub.", description:"A dark techy mini site with a scheduled AI news feed, powered by Claude + web search. Updates at 00:00, 08:00, 16:00 UTC.", url:"#", icon:null, imgIcon:ANAKEN_ICON, tag:"site", index:"03" },
 ];
+
+
+// ─── Project icons ────────────────────────────────────────────────────────────
+const PROMPT_VAULT_ICON = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiPgogIDxkZWZzPgogICAgPHJhZGlhbEdyYWRpZW50IGlkPSJiZyIgY3g9IjQwJSIgY3k9IjQwJSIgcj0iNjAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2M2ZTllNCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM5ZWNmYzgiLz4KICAgIDwvcmFkaWFsR3JhZGllbnQ+CiAgPC9kZWZzPgoKICA8IS0tIEJhY2tncm91bmQgKyByaW5nIC0tPgogIDxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjQ3IiBmaWxsPSJ1cmwoI2JnKSIvPgogIDxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjQ3IiBmaWxsPSJub25lIiBzdHJva2U9IiMyNTNmNTgiIHN0cm9rZS13aWR0aD0iNiIvPgoKICA8IS0tIE9wZW4tdG9wIGJveCDigJQgY2VudGVyZWQgeCAyN+KAkzczLCB5IDI34oCTNzYgLS0+CiAgPHBhdGggZD0iTTI5LDUwIEwyOSw3NCBRMjksNzggMzMsNzggTDY3LDc4IFE3MSw3OCA3MSw3NCBMNzEsNTAiCiAgICAgICAgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMjUzZjU4IiBzdHJva2Utd2lkdGg9IjQuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CiAgPHBhdGggZD0iTTI5LDQ1IEwyOSwzMyBRMjksMjggMzMsMjggTDQxLDI4IgogICAgICAgIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzI1M2Y1OCIgc3Ryb2tlLXdpZHRoPSI0LjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgogIDxwYXRoIGQ9Ik01OSwyOCBMNjcsMjggUTcxLDI4IDcxLDMzIEw3MSw0NSIKICAgICAgICBmaWxsPSJub25lIiBzdHJva2U9IiMyNTNmNTgiIHN0cm9rZS13aWR0aD0iNC41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KCiAgPCEtLSBHZWFyIGNlbnRlcmVkIGF0ICg1MCw0NykgLS0+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNTAsNDcpIj4KICAgIDxwYXRoIGQ9Ik0gNi4wOCwtMS4yMSBMIDguNDksLTAuNTAgTCA4LjQ5LDAuNTAgTCA2LjA4LDEuMjEgTCA1LjE2LDMuNDQgTCA2LjM1LDUuNjUgTCA1LjY1LDYuMzUgTCAzLjQ0LDUuMTYgTCAxLjIxLDYuMDggTCAwLjUwLDguNDkgTCAtMC41MCw4LjQ5IEwgLTEuMjEsNi4wOCBMIC0zLjQ0LDUuMTYgTCAtNS42NSw2LjM1IEwgLTYuMzUsNS42NSBMIC01LjE2LDMuNDQgTCAtNi4wOCwxLjIxIEwgLTguNDksMC41MCBMIC04LjQ5LC0wLjUwIEwgLTYuMDgsLTEuMjEgTCAtNS4xNiwtMy40NCBMIC02LjM1LC01LjY1IEwgLTUuNjUsLTYuMzUgTCAtMy40NCwtNS4xNiBMIC0xLjIxLC02LjA4IEwgLTAuNTAsLTguNDkgTCAwLjUwLC04LjQ5IEwgMS4yMSwtNi4wOCBMIDMuNDQsLTUuMTYgTCA1LjY1LC02LjM1IEwgNi4zNSwtNS42NSBMIDUuMTYsLTMuNDQgWiIKICAgICAgICAgIGZpbGw9IiMyNTNmNTgiLz4KICAgIDxjaXJjbGUgY3g9IjAiIGN5PSIwIiByPSIzLjIiIGZpbGw9IiNiOGRmZDgiLz4KICA8L2c+CgogIDwhLS0gS2V5aG9sZSBjZW50ZXJlZCBhdCAoNTAsNjUpIC0tPgogIDxjaXJjbGUgY3g9IjUwIiBjeT0iNjIiIHI9IjQuOCIgZmlsbD0iIzJkNGYzZSIvPgogIDxwb2x5Z29uIHBvaW50cz0iNDYuNSw2NiA1My41LDY2IDUyLDc0IDQ4LDc0IiBmaWxsPSIjMmQ0ZjNlIi8+CgogIDwhLS0gUGVuY2lsIGNlbnRlcmVkIGluIHRvcCBnYXAgKGJldHdlZW4geD00MeKAkzU5KSwgYm9sZCBmb3Igc21hbGwgc2l6ZXMgLS0+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNTAsMjgpIHJvdGF0ZSgtNDApIj4KICAgIDxyZWN0IHg9Ii0zIiB5PSItOC41IiB3aWR0aD0iNiIgaGVpZ2h0PSIxMi41IiByeD0iMSIgZmlsbD0iIzI1M2Y1OCIvPgogICAgPHBvbHlnb24gcG9pbnRzPSItMyw0IDMsNCAwLDEwIiBmaWxsPSIjZDRhNTc0Ii8+CiAgICA8cG9seWdvbiBwb2ludHM9Ii0xLjUsNy41IDEuNSw3LjUgMCwxMCIgZmlsbD0iI2U4YzQ5YSIvPgogICAgPHJlY3QgeD0iLTMiIHk9Ii0xMC41IiB3aWR0aD0iNiIgaGVpZ2h0PSIyLjUiIHJ4PSIxIiBmaWxsPSIjOGFhOGI1Ii8+CiAgPC9nPgo8L3N2Zz4K";
+const FACTCHECK_ICON = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='47' fill='%23111e1a' stroke='%2300c878' stroke-width='5'/><path d='M30 50 L44 64 L70 36' fill='none' stroke='%2300c878' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/><circle cx='50' cy='50' r='47' fill='none' stroke='%2300c878' stroke-width='5' stroke-dasharray='8 6' opacity='0.3'/></svg>`;
+const ANAKEN_ICON = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='47' fill='%23080c0f' stroke='%2300c878' stroke-width='5'/><circle cx='50' cy='50' r='8' fill='none' stroke='%2300c878' stroke-width='4'/><line x1='50' y1='20' x2='50' y2='38' stroke='%2300c878' stroke-width='3' stroke-linecap='round'/><line x1='50' y1='62' x2='50' y2='80' stroke='%2300c878' stroke-width='3' stroke-linecap='round'/><line x1='20' y1='50' x2='38' y2='50' stroke='%2300c878' stroke-width='3' stroke-linecap='round'/><line x1='62' y1='50' x2='80' y2='50' stroke='%2300c878' stroke-width='3' stroke-linecap='round'/><circle cx='50' cy='50' r='28' fill='none' stroke='%2300c878' stroke-width='1.5' stroke-dasharray='5 4' opacity='0.4'/></svg>`;
 
 const CATEGORIES = ["Feedback","Bug","Request","Others"];
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -146,6 +152,10 @@ export default function App() {
   const [activeSection,setActiveSection] = useState("intro");
   const [hoveredNews,setHoveredNews] = useState(null);
   const [hoveredProject,setHoveredProject] = useState(null);
+  const [carouselIdx,setCarouselIdx] = useState(0);
+  const [carouselDir,setCarouselDir] = useState(null);
+  const [carouselAnim,setCarouselAnim] = useState(false);
+  const carouselTouchX = useRef(null);
   const [time,setTime] = useState(new Date());
   const [news,setNews] = useState(FALLBACK_NEWS);
   const [newsLoading,setNewsLoading] = useState(false);
@@ -344,33 +354,72 @@ export default function App() {
           </section>
         )}
 
-        {/* ── PROJECTS ── */}
-        {activeSection==="projects" && (
-          <section style={{ animation:"fadeIn 0.4s ease" }}>
-            <div style={{ marginBottom:"24px" }}>
-              <div style={{ fontSize:"11px",color:t.accentLabel,letterSpacing:"2px",marginBottom:"8px" }}>OUTPUT.REGISTRY / BUILDS</div>
-              <h2 style={{ fontSize:isMobile?"22px":"28px",margin:0,color:t.textHead,fontWeight:"bold" }}>Projects</h2>
-            </div>
-            <div style={{ display:"grid",gridTemplateColumns:isMobile?"1fr":"repeat(auto-fit,minmax(280px,1fr))",gap:"2px" }}>
-              {PROJECTS.map((p,i)=>(
-                <a key={i} href={p.url} target={p.url==="#"?"_self":"_blank"} rel="noopener noreferrer"
-                  onMouseEnter={()=>setHoveredProject(i)} onMouseLeave={()=>setHoveredProject(null)}
-                  style={{ display:"block",background:hoveredProject===i?t.bgCardHover:t.bgCard,border:`1px solid ${hoveredProject===i?t.borderHover:t.border}`,padding:isMobile?"20px":"28px",textDecoration:"none",transition:"all 0.25s",position:"relative",overflow:"hidden" }}
-                >
-                  <div style={{ position:"absolute",top:0,right:0,width:"40px",height:"40px",borderBottom:`1px solid ${hoveredProject===i?t.accentDim:t.border}`,borderLeft:`1px solid ${hoveredProject===i?t.accentDim:t.border}`,transition:"all 0.25s" }} />
-                  <div style={{ fontSize:"28px",marginBottom:"12px" }}>{p.icon}</div>
-                  <div style={{ fontSize:"10px",color:t.accentDim,letterSpacing:"2px",marginBottom:"6px" }}>{p.tag.toUpperCase()}</div>
-                  <h3 style={{ fontSize:isMobile?"17px":"20px",margin:"0 0 6px",color:hoveredProject===i?t.accent:t.textHead,transition:"color 0.2s",fontWeight:"bold" }}>{p.name}</h3>
-                  <p style={{ margin:"0 0 6px",fontSize:"13px",color:t.text,fontWeight:"bold" }}>{p.tagline}</p>
-                  <p style={{ margin:"0 0 16px",fontSize:"12px",color:t.textDim,lineHeight:"1.6" }}>{p.description}</p>
-                  <div style={{ fontSize:"11px",letterSpacing:"1.5px",color:hoveredProject===i?t.accent:t.accentDim,transition:"color 0.2s" }}>
-                    {p.url==="#"?"YOU ARE HERE →":"OPEN PROJECT →"}
+        {/* ── PROJECTS CAROUSEL ── */}
+        {activeSection==="projects" && (() => {
+          const total = PROJECTS.length;
+          const goCarousel = (next, direction) => {
+            if (carouselAnim || next === carouselIdx) return;
+            setCarouselDir(direction);
+            setCarouselAnim(true);
+            setTimeout(() => { setCarouselIdx(next); setCarouselAnim(false); setCarouselDir(null); }, 300);
+          };
+          const prevCard = () => goCarousel((carouselIdx - 1 + total) % total, "right");
+          const nextCard = () => goCarousel((carouselIdx + 1) % total, "left");
+          const p = PROJECTS[carouselIdx];
+          const slideStyle = {
+            transform: carouselAnim ? `translateX(${carouselDir === "left" ? "-56px" : "56px"})` : "translateX(0)",
+            opacity: carouselAnim ? 0 : 1,
+            transition: "transform 0.3s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease",
+          };
+          return (
+            <section style={{ animation:"fadeIn 0.4s ease" }}>
+              <div style={{ marginBottom:"24px" }}>
+                <div style={{ fontSize:"11px",color:t.accentLabel,letterSpacing:"2px",marginBottom:"8px" }}>OUTPUT.REGISTRY / BUILDS</div>
+                <div style={{ display:"flex",justifyContent:"space-between",alignItems:"flex-end" }}>
+                  <h2 style={{ fontSize:isMobile?"22px":"28px",margin:0,color:t.textHead,fontWeight:"bold" }}>Projects</h2>
+                  <span style={{ fontSize:"11px",color:t.accentDim,letterSpacing:"3px" }}>{String(carouselIdx+1).padStart(2,"0")} / {String(total).padStart(2,"0")}</span>
+                </div>
+              </div>
+
+              {/* Card */}
+              <div
+                onTouchStart={(e)=>{ carouselTouchX.current=e.touches[0].clientX; }}
+                onTouchEnd={(e)=>{ if(carouselTouchX.current===null)return; const dx=e.changedTouches[0].clientX-carouselTouchX.current; if(dx<-40)nextCard(); else if(dx>40)prevCard(); carouselTouchX.current=null; }}
+                style={{ border:`1px solid ${t.borderHover}`,background:t.bgCard,padding:isMobile?"24px":"32px",position:"relative",overflow:"hidden",minHeight:"280px",cursor:"grab",userSelect:"none",transition:"background 0.3s,border-color 0.3s" }}
+              >
+                <div style={{ position:"absolute",top:0,right:0,width:"48px",height:"48px",borderBottom:`1px solid ${t.accentDim}`,borderLeft:`1px solid ${t.accentDim}` }} />
+                <div style={{ position:"absolute",bottom:0,left:0,width:"28px",height:"28px",borderTop:`1px solid ${t.border}`,borderRight:`1px solid ${t.border}` }} />
+
+                <div style={slideStyle}>
+                  <div style={{ display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:"20px" }}>
+                    <img src={p.imgIcon} alt={p.name} style={{ width:"52px",height:"52px",objectFit:"contain",filter:`drop-shadow(0 0 6px ${t.accentFaint})` }} />
+                    <span style={{ fontSize:"10px",color:t.accentDim,letterSpacing:"2px",border:`1px solid ${t.border}`,padding:"3px 10px" }}>{p.tag.toUpperCase()}</span>
                   </div>
-                </a>
-              ))}
-            </div>
-          </section>
-        )}
+                  <div style={{ fontSize:"10px",color:t.accentLabel,letterSpacing:"3px",marginBottom:"10px" }}>PROJECT_{p.index}</div>
+                  <h3 style={{ fontSize:isMobile?"18px":"22px",margin:"0 0 8px",color:t.accent,fontWeight:"bold",lineHeight:1.2 }}>{p.name}</h3>
+                  <p style={{ margin:"0 0 8px",fontSize:"13px",color:t.text,fontWeight:"bold" }}>{p.tagline}</p>
+                  <p style={{ margin:"0 0 24px",fontSize:"12px",color:t.textDim,lineHeight:"1.7" }}>{p.description}</p>
+                  <a href={p.url} target={p.url==="#"?"_self":"_blank"} rel="noopener noreferrer"
+                    style={{ display:"inline-block",fontSize:"11px",letterSpacing:"2px",color:t.accent,border:`1px solid ${t.accentMute}`,padding:"9px 20px",textDecoration:"none",background:t.accentFaint }}>
+                    {p.url==="#"?"YOU ARE HERE →":"OPEN PROJECT →"}
+                  </a>
+                </div>
+              </div>
+
+              {/* Controls */}
+              <div style={{ display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:"14px" }}>
+                <button onClick={prevCard} style={{ background:"transparent",border:`1px solid ${t.border}`,color:t.accentDim,width:"44px",height:"44px",cursor:"pointer",fontSize:"18px",display:"flex",alignItems:"center",justifyContent:"center",transition:"all 0.2s" }}>←</button>
+                <div style={{ display:"flex",gap:"8px",alignItems:"center" }}>
+                  {PROJECTS.map((_,i)=>(
+                    <button key={i} onClick={()=>goCarousel(i,i>carouselIdx?"left":"right")} style={{ width:i===carouselIdx?"28px":"6px",height:"6px",background:i===carouselIdx?t.accent:t.border,border:"none",cursor:"pointer",padding:0,transition:"all 0.3s cubic-bezier(0.4,0,0.2,1)" }} />
+                  ))}
+                </div>
+                <button onClick={nextCard} style={{ background:"transparent",border:`1px solid ${t.border}`,color:t.accentDim,width:"44px",height:"44px",cursor:"pointer",fontSize:"18px",display:"flex",alignItems:"center",justifyContent:"center",transition:"all 0.2s" }}>→</button>
+              </div>
+              <div style={{ textAlign:"center",marginTop:"12px",fontSize:"10px",color:t.textFaint,letterSpacing:"1px" }}>SWIPE · ARROW KEYS · DOTS</div>
+            </section>
+          );
+        })()}
 
         {/* ── CONTACT ── */}
         {activeSection==="contact" && (
