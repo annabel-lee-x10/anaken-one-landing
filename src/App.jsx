@@ -1,151 +1,73 @@
 import { useState, useEffect, useCallback } from "react";
 
-// ─── Schedule: 01:00, 07:00, 13:00, 19:00 UTC ───────────────────────────────
+// ─── Schedule: 01:00, 07:00, 13:00, 19:00 UTC ────────────────────────────────
 const SCHEDULE_HOURS_UTC = [1, 7, 13, 19];
 const STORAGE_KEY = "anaken-news-cache";
 
-/** Returns the most recent scheduled slot timestamp (ms, UTC) before now */
 function lastScheduledSlot(now = Date.now()) {
   const d = new Date(now);
-  const todaySlots = SCHEDULE_HOURS_UTC.map((h) => {
-    const s = new Date(d);
-    s.setUTCHours(h, 0, 0, 0);
-    return s.getTime();
-  });
+  const todaySlots = SCHEDULE_HOURS_UTC.map((h) => { const s = new Date(d); s.setUTCHours(h, 0, 0, 0); return s.getTime(); });
   const past = todaySlots.filter((t) => t <= now).sort((a, b) => b - a);
   if (past.length > 0) return past[0];
-  // All today's slots are in the future — use yesterday's last slot
-  const yesterday = new Date(d);
-  yesterday.setUTCDate(yesterday.getUTCDate() - 1);
-  const lastHour = SCHEDULE_HOURS_UTC[SCHEDULE_HOURS_UTC.length - 1];
-  yesterday.setUTCHours(lastHour, 0, 0, 0);
+  const yesterday = new Date(d); yesterday.setUTCDate(yesterday.getUTCDate() - 1);
+  yesterday.setUTCHours(SCHEDULE_HOURS_UTC[SCHEDULE_HOURS_UTC.length - 1], 0, 0, 0);
   return yesterday.getTime();
 }
 
-/** Returns the next scheduled slot timestamp (ms, UTC) after now */
 function nextScheduledSlot(now = Date.now()) {
   const d = new Date(now);
-  const todaySlots = SCHEDULE_HOURS_UTC.map((h) => {
-    const s = new Date(d);
-    s.setUTCHours(h, 0, 0, 0);
-    return s.getTime();
-  });
+  const todaySlots = SCHEDULE_HOURS_UTC.map((h) => { const s = new Date(d); s.setUTCHours(h, 0, 0, 0); return s.getTime(); });
   const future = todaySlots.filter((t) => t > now).sort((a, b) => a - b);
   if (future.length > 0) return future[0];
-  // All today's slots are past — wrap to tomorrow's first slot
-  const tomorrow = new Date(d);
-  tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
+  const tomorrow = new Date(d); tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
   tomorrow.setUTCHours(SCHEDULE_HOURS_UTC[0], 0, 0, 0);
   return tomorrow.getTime();
 }
 
-// ─── Fallback news (shown until first scheduled fetch runs) ──────────────────
+// ─── Fallback news ────────────────────────────────────────────────────────────
 const FALLBACK_NEWS = [
-  {
-    title: "AI 'Societies' Are Taking Shape",
-    summary: "Researchers are building AI agent simulations with up to 8 billion digital twins — studying collective behavior, consciousness, and social dynamics between bots.",
-    source: "Nature",
-    url: "https://www.nature.com/articles/d41586-026-00070-5",
-    date: "Mar 5, 2026",
-  },
-  {
-    title: "AI & Labor Markets: New Research",
-    summary: "Anthropic researchers find AI displacement risk is real but slower than feared — hiring of younger workers in exposed fields has quietly slowed since 2022.",
-    source: "Anthropic Research",
-    url: "https://www.anthropic.com/research/labor-market-impacts",
-    date: "Mar 5, 2026",
-  },
-  {
-    title: "London's Biggest Anti-AI Protest",
-    summary: "Hundreds marched through London's King's Cross AI hub — past OpenAI, Meta & DeepMind HQs — calling for regulation, whistleblower protections, and a slowdown.",
-    source: "MIT Tech Review",
-    url: "https://www.technologyreview.com/2026/03/02/1133814/i-checked-out-londons-biggest-ever-anti-ai-protest/",
-    date: "Mar 2, 2026",
-  },
-  {
-    title: "State AI Laws Are Moving Fast",
-    summary: "Vermont signed a synthetic media election bill into law. AI chatbot safety bills for minors are advancing across five states.",
-    source: "Transparency Coalition",
-    url: "https://www.transparencycoalition.ai/news/ai-legislative-update-march6-2026",
-    date: "Mar 6, 2026",
-  },
+  { title: "AI 'Societies' Are Taking Shape", summary: "Researchers are building AI agent simulations with up to 8 billion digital twins — studying collective behavior, consciousness, and social dynamics between bots.", source: "Nature", url: "https://www.nature.com/articles/d41586-026-00070-5", date: "Mar 5, 2026" },
+  { title: "AI & Labor Markets: New Research", summary: "Anthropic researchers find AI displacement risk is real but slower than feared — hiring of younger workers in exposed fields has quietly slowed since 2022.", source: "Anthropic Research", url: "https://www.anthropic.com/research/labor-market-impacts", date: "Mar 5, 2026" },
+  { title: "London's Biggest Anti-AI Protest", summary: "Hundreds marched through London's King's Cross AI hub — past OpenAI, Meta & DeepMind HQs — calling for regulation, whistleblower protections, and a slowdown.", source: "MIT Tech Review", url: "https://www.technologyreview.com/2026/03/02/1133814/i-checked-out-londons-biggest-ever-anti-ai-protest/", date: "Mar 2, 2026" },
+  { title: "State AI Laws Are Moving Fast", summary: "Vermont signed a synthetic media election bill into law. AI chatbot safety bills for minors are advancing across five states.", source: "Transparency Coalition", url: "https://www.transparencycoalition.ai/news/ai-legislative-update-march6-2026", date: "Mar 6, 2026" },
 ];
 
+// ─── Projects ─────────────────────────────────────────────────────────────────
 const PROJECTS = [
-  {
-    name: "AI Fact-Check Engine",
-    tagline: "Verify AI-generated claims in real time.",
-    description: "Paste any text and get a source-backed fact check powered by live AI reasoning.",
-    url: "https://aifactchecker.anaken.one/",
-    icon: "⚡",
-    tag: "tool",
-  },
-  {
-    name: "promptVault",
-    tagline: "Your personal prompt engineering HQ.",
-    description: "Build, store, and organize your best prompts. Optimized for iterative AI workflows.",
-    url: "https://prompt-builder-vault.anaken.one/",
-    icon: "🗄️",
-    tag: "tool",
-  },
-  {
-    name: "Anaken.one",
-    tagline: "This site — live AI news + projects hub.",
-    description: "A dark techy mini site with a scheduled AI news feed, powered by Claude + web search. Updates at 01:00, 07:00, 13:00, 19:00 UTC.",
-    url: "#",
-    icon: "🛰️",
-    tag: "site",
-  },
+  { name: "AI Fact-Check Engine", tagline: "Verify AI-generated claims in real time.", description: "Paste any text and get a source-backed fact check powered by live AI reasoning.", url: "https://aifactchecker.anaken.one/", icon: "⚡", tag: "tool" },
+  { name: "promptVault", tagline: "Your personal prompt engineering HQ.", description: "Build, store, and organize your best prompts. Optimized for iterative AI workflows.", url: "https://prompt-builder-vault.anaken.one/", icon: "🗄️", tag: "tool" },
+  { name: "Anaken.one", tagline: "This site — live AI news + projects hub.", description: "A dark techy mini site with a scheduled AI news feed, powered by Claude + web search. Updates at 01:00, 07:00, 13:00, 19:00 UTC.", url: "#", icon: "🛰️", tag: "site" },
 ];
 
-// ─── API ─────────────────────────────────────────────────────────────────────
-async function fetchLiveNews() {
-  const today = new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
-  const prompt = `Today is ${today}. Search the web for the 4 most interesting AI news stories from the past 7 days.
-Return ONLY a JSON array with exactly 4 items. Each item must have:
-- title: short punchy headline (max 8 words)
-- summary: 1-2 sentence plain English summary (max 30 words)
-- source: publication name only
-- url: actual article URL
-- date: formatted like "Mar 8, 2026"
-Return ONLY the raw JSON array. No markdown, no backticks, no explanation.`;
+const CATEGORIES = ["Feedback", "Bug", "Request", "Others"];
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  const apiKey = import.meta.env.VITE_ANTHROPIC_API_KEY;
-  const headers = { "Content-Type": "application/json", "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" };
-  if (apiKey) headers["x-api-key"] = apiKey;
-
-  const response = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers,
-    body: JSON.stringify({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 1000,
-      tools: [{ type: "web_search_20250305", name: "web_search" }],
-      messages: [{ role: "user", content: prompt }],
-    }),
-  });
-
-  const data = await response.json();
-  const textBlock = data.content?.find((b) => b.type === "text");
-  if (!textBlock) throw new Error("No text block");
-  const raw = textBlock.text.replace(/```json|```/g, "").trim();
-  const parsed = JSON.parse(raw);
-  if (!Array.isArray(parsed) || parsed.length === 0) throw new Error("Bad shape");
-  return parsed.slice(0, 4);
+// ─── Sanitize: strip HTML tags + angle brackets ───────────────────────────────
+function sanitize(str) {
+  return String(str).replace(/<[^>]*>/g, "").replace(/[<>]/g, "").trim();
 }
 
-// ─── Cache helpers (works for both window.storage and localStorage) ───────────
+// ─── API: fetch news via server-side proxy (key never exposed to browser) ────
+async function fetchLiveNews() {
+  const response = await fetch("/api/news", { method: "POST" });
+  if (!response.ok) throw new Error(`News API error: ${response.status}`);
+  const data = await response.json();
+  if (!Array.isArray(data.articles) || data.articles.length === 0) throw new Error("Bad shape");
+  return data.articles;
+}
+
+// ─── Validate a URL is safe to use as href ────────────────────────────────────
+function isSafeUrl(url) {
+  return typeof url === "string" && /^https:\/\/.+/.test(url);
+}
+
+// ─── Cache helpers ────────────────────────────────────────────────────────────
 async function readCache() {
   try {
-    if (window.storage) {
-      const r = await window.storage.get(STORAGE_KEY);
-      return r ? JSON.parse(r.value) : null;
-    }
-    const r = localStorage.getItem(STORAGE_KEY);
-    return r ? JSON.parse(r) : null;
+    if (window.storage) { const r = await window.storage.get(STORAGE_KEY); return r ? JSON.parse(r.value) : null; }
+    const r = localStorage.getItem(STORAGE_KEY); return r ? JSON.parse(r) : null;
   } catch { return null; }
 }
-
 async function writeCache(payload) {
   try {
     const s = JSON.stringify(payload);
@@ -157,20 +79,11 @@ async function writeCache(payload) {
 // ─── Sub-components ───────────────────────────────────────────────────────────
 const GlitchText = ({ text }) => {
   const [g, setG] = useState(false);
-  useEffect(() => {
-    const id = setInterval(() => { setG(true); setTimeout(() => setG(false), 150); }, 4000);
-    return () => clearInterval(id);
-  }, []);
-  return (
-    <span style={{ color: g ? "#00ff88" : "inherit", textShadow: g ? "2px 0 #ff0055, -2px 0 #0088ff" : "none", transition: "color 0.1s" }}>
-      {text}
-    </span>
-  );
+  useEffect(() => { const id = setInterval(() => { setG(true); setTimeout(() => setG(false), 150); }, 4000); return () => clearInterval(id); }, []);
+  return <span style={{ color: g ? "#00ff88" : "inherit", textShadow: g ? "2px 0 #ff0055, -2px 0 #0088ff" : "none", transition: "color 0.1s" }}>{text}</span>;
 };
 
-const ScanLine = () => (
-  <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 9999, background: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px)" }} />
-);
+const ScanLine = () => <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 9999, background: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px)" }} />;
 
 const Spinner = () => (
   <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "16px", padding: "60px 0" }}>
@@ -178,6 +91,15 @@ const Spinner = () => (
     <span style={{ fontSize: "11px", color: "rgba(0,200,120,0.5)", letterSpacing: "2px" }}>FETCHING SIGNAL...</span>
   </div>
 );
+
+// ─── Input style helper ───────────────────────────────────────────────────────
+const inputStyle = (focused) => ({
+  width: "100%", background: focused ? "rgba(0,200,120,0.05)" : "rgba(0,200,120,0.02)",
+  border: `1px solid ${focused ? "rgba(0,200,120,0.5)" : "rgba(0,200,120,0.15)"}`,
+  color: "#c8d8e8", padding: "10px 14px", fontSize: "13px",
+  fontFamily: "'Courier New', monospace", outline: "none",
+  transition: "all 0.2s", boxSizing: "border-box",
+});
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 export default function App() {
@@ -189,82 +111,88 @@ export default function App() {
   const [newsLoading, setNewsLoading] = useState(false);
   const [nextSlot, setNextSlot] = useState(null);
 
+  // Contact form state
+  const [form, setForm] = useState({ name: "", email: "", category: "", message: "" });
+  const [formFocused, setFormFocused] = useState({});
+  const [formErrors, setFormErrors] = useState({});
+  const [formStatus, setFormStatus] = useState(null); // null | "sending" | "ok" | "error"
+
   // ── Clock ──
-  useEffect(() => {
-    const t = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(t);
-  }, []);
-
+  useEffect(() => { const t = setInterval(() => setTime(new Date()), 1000); return () => clearInterval(t); }, []);
   const formatTime = (d) => d.toLocaleTimeString("en-US", { hour12: false, hour: "2-digit", minute: "2-digit", second: "2-digit" });
-
   const formatCountdown = (ts) => {
     if (!ts) return null;
-    const diff = ts - Date.now();
-    if (diff <= 0) return "now";
-    const h = Math.floor(diff / 3600000);
-    const m = Math.floor((diff % 3600000) / 60000);
-    const s = Math.floor((diff % 60000) / 1000);
+    const diff = ts - Date.now(); if (diff <= 0) return "now";
+    const h = Math.floor(diff / 3600000), m = Math.floor((diff % 3600000) / 60000), s = Math.floor((diff % 60000) / 1000);
     return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
   };
 
-  // ── Scheduled fetch logic ──
+  // ── News scheduler ──
   const runScheduledFetch = useCallback(async () => {
     setNewsLoading(true);
-    try {
-      const articles = await fetchLiveNews();
-      const timestamp = Date.now();
-      setNews(articles);
-      await writeCache({ articles, timestamp });
-    } catch (e) {
-      console.error("Scheduled news fetch failed:", e);
-    } finally {
-      setNewsLoading(false);
-    }
+    try { const articles = await fetchLiveNews(); setNews(articles); await writeCache({ articles, timestamp: Date.now() }); }
+    catch (e) { console.error("Scheduled news fetch failed:", e); }
+    finally { setNewsLoading(false); }
   }, []);
 
-  // ── On mount: load cache, check if current slot needs fetching ──
   useEffect(() => {
     const init = async () => {
-      const now = Date.now();
-      const slot = lastScheduledSlot(now);
-      const next = nextScheduledSlot(now);
-      setNextSlot(next);
-
+      const now = Date.now(), slot = lastScheduledSlot(now);
+      setNextSlot(nextScheduledSlot(now));
       const cached = await readCache();
-      if (cached?.articles) {
-        setNews(cached.articles);
-        // Only re-fetch if cache predates the most recent slot
-        if (cached.timestamp < slot) {
-          runScheduledFetch();
-        }
-      } else {
-        // No cache at all — fetch immediately so user isn't stuck on fallback
-        runScheduledFetch();
-      }
+      if (cached?.articles) { setNews(cached.articles); if (cached.timestamp < slot) runScheduledFetch(); }
+      else runScheduledFetch();
     };
     init();
   }, [runScheduledFetch]);
 
-  // ── Scheduler: set a timeout to fire at the next slot, then repeat ──
   useEffect(() => {
-    let timeoutId;
-
-    const scheduleNext = () => {
+    let tid;
+    const arm = () => {
       const delay = nextScheduledSlot(Date.now()) - Date.now();
-      timeoutId = setTimeout(async () => {
-        const next = nextScheduledSlot(Date.now());
-        setNextSlot(next);
-        await runScheduledFetch();
-        scheduleNext(); // re-arm for the following slot
-      }, delay);
+      tid = setTimeout(async () => { setNextSlot(nextScheduledSlot(Date.now())); await runScheduledFetch(); arm(); }, delay);
       setNextSlot(nextScheduledSlot(Date.now()));
     };
-
-    scheduleNext();
-    return () => clearTimeout(timeoutId);
+    arm();
+    return () => clearTimeout(tid);
   }, [runScheduledFetch]);
 
-  const sections = ["intro", "news", "projects"];
+  // ── Contact form handlers ──
+  const validateForm = () => {
+    const errs = {};
+    if (!form.name.trim()) errs.name = "Name is required.";
+    if (!EMAIL_RE.test(form.email.trim())) errs.email = "Enter a valid email address.";
+    if (!form.category) errs.category = "Please select a category.";
+    if (form.message.trim().length < 5) errs.message = "Message is too short.";
+    return errs;
+  };
+
+  const handleSubmit = async () => {
+    const errs = validateForm();
+    if (Object.keys(errs).length > 0) { setFormErrors(errs); return; }
+    setFormErrors({});
+    setFormStatus("sending");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: sanitize(form.name),
+          email: sanitize(form.email),
+          category: form.category,
+          message: sanitize(form.message),
+        }),
+      });
+      const data = await res.json();
+      if (res.ok && data.ok) { setFormStatus("ok"); setForm({ name: "", email: "", category: "", message: "" }); }
+      else setFormStatus("error");
+    } catch { setFormStatus("error"); }
+  };
+
+  const sections = ["intro", "news", "projects", "contact"];
+
+  const labelStyle = { fontSize: "10px", color: "rgba(0,200,120,0.5)", letterSpacing: "2px", display: "block", marginBottom: "6px" };
+  const errStyle = { fontSize: "11px", color: "#ff6b6b", marginTop: "4px" };
 
   return (
     <div style={{ minHeight: "100vh", background: "#080c0f", color: "#c8d8e8", fontFamily: "'Courier New', 'Lucida Console', monospace", position: "relative", overflow: "hidden" }}>
@@ -290,7 +218,7 @@ export default function App() {
 
       <main style={{ position: "relative", zIndex: 1, maxWidth: "820px", margin: "0 auto", padding: "80px 24px 60px" }}>
 
-        {/* INTRO */}
+        {/* ── INTRO ── */}
         {activeSection === "intro" && (
           <section style={{ animation: "fadeIn 0.4s ease" }}>
             <div style={{ borderLeft: "2px solid #00c878", paddingLeft: "24px", marginBottom: "40px" }}>
@@ -311,7 +239,7 @@ export default function App() {
               ))}
             </div>
             <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-              {[{ label: "→ VIEW PROJECTS", section: "projects", primary: true }, { label: "→ AI NEWS FEED", section: "news", primary: false }].map(({ label, section, primary }) => (
+              {[{ label: "→ VIEW PROJECTS", section: "projects", primary: true }, { label: "→ AI NEWS FEED", section: "news", primary: false }, { label: "→ CONTACT", section: "contact", primary: false }].map(({ label, section, primary }) => (
                 <button key={section} onClick={() => setActiveSection(section)} style={{ background: primary ? "rgba(0,200,120,0.12)" : "transparent", border: primary ? "1px solid rgba(0,200,120,0.4)" : "1px solid rgba(200,216,232,0.15)", color: primary ? "#00c878" : "rgba(200,216,232,0.5)", padding: "10px 24px", cursor: "pointer", fontSize: "12px", letterSpacing: "1.5px", transition: "all 0.2s" }}>
                   {label}
                 </button>
@@ -320,30 +248,21 @@ export default function App() {
           </section>
         )}
 
-        {/* NEWS */}
+        {/* ── NEWS ── */}
         {activeSection === "news" && (
           <section style={{ animation: "fadeIn 0.4s ease" }}>
             <div style={{ marginBottom: "28px" }}>
               <div style={{ fontSize: "11px", color: "rgba(0,200,120,0.5)", letterSpacing: "2px", marginBottom: "8px" }}>SIGNAL.FEED / AI_NEWS</div>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "12px" }}>
-                <h2 style={{ fontSize: "28px", margin: 0, color: "#e8f4f0", fontWeight: "bold" }}>Current Intelligence</h2>
-              </div>
+              <h2 style={{ fontSize: "28px", margin: 0, color: "#e8f4f0", fontWeight: "bold" }}>Current Intelligence</h2>
               <div style={{ display: "flex", gap: "20px", marginTop: "8px" }}>
-                {nextSlot && !newsLoading && (
-                  <span style={{ fontSize: "10px", color: "rgba(0,200,120,0.35)", letterSpacing: "1px" }}>
-                    NEXT UPDATE: {formatCountdown(nextSlot)}
-                  </span>
-                )}
-                {newsLoading && (
-                  <span style={{ fontSize: "10px", color: "rgba(0,200,120,0.5)", letterSpacing: "1px" }}>● UPDATING...</span>
-                )}
+                {nextSlot && !newsLoading && <span style={{ fontSize: "10px", color: "rgba(0,200,120,0.35)", letterSpacing: "1px" }}>NEXT UPDATE: {formatCountdown(nextSlot)}</span>}
+                {newsLoading && <span style={{ fontSize: "10px", color: "rgba(0,200,120,0.5)", letterSpacing: "1px" }}>● UPDATING...</span>}
               </div>
             </div>
-
             {newsLoading ? <Spinner /> : (
               <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
                 {news.map((item, i) => (
-                  <a key={i} href={item.url} target="_blank" rel="noopener noreferrer"
+                  <a key={i} href={isSafeUrl(item.url) ? item.url : "#"} target="_blank" rel="noopener noreferrer"
                     onMouseEnter={() => setHoveredNews(i)} onMouseLeave={() => setHoveredNews(null)}
                     style={{ display: "block", background: hoveredNews === i ? "rgba(0,200,120,0.06)" : "rgba(0,200,120,0.02)", border: `1px solid ${hoveredNews === i ? "rgba(0,200,120,0.35)" : "rgba(0,200,120,0.1)"}`, padding: "20px 24px", textDecoration: "none", transition: "all 0.2s" }}
                   >
@@ -360,7 +279,7 @@ export default function App() {
           </section>
         )}
 
-        {/* PROJECTS */}
+        {/* ── PROJECTS ── */}
         {activeSection === "projects" && (
           <section style={{ animation: "fadeIn 0.4s ease" }}>
             <div style={{ marginBottom: "32px" }}>
@@ -387,6 +306,106 @@ export default function App() {
             </div>
           </section>
         )}
+
+        {/* ── CONTACT ── */}
+        {activeSection === "contact" && (
+          <section style={{ animation: "fadeIn 0.4s ease" }}>
+            <div style={{ marginBottom: "32px" }}>
+              <div style={{ fontSize: "11px", color: "rgba(0,200,120,0.5)", letterSpacing: "2px", marginBottom: "8px" }}>COMMS.OPEN / CONTACT</div>
+              <h2 style={{ fontSize: "28px", margin: 0, color: "#e8f4f0", fontWeight: "bold" }}>Get in Touch</h2>
+            </div>
+
+            {formStatus === "ok" ? (
+              <div style={{ border: "1px solid rgba(0,200,120,0.3)", background: "rgba(0,200,120,0.06)", padding: "40px", textAlign: "center" }}>
+                <div style={{ fontSize: "28px", marginBottom: "12px" }}>✓</div>
+                <div style={{ fontSize: "14px", color: "#00c878", letterSpacing: "1px" }}>MESSAGE TRANSMITTED</div>
+                <div style={{ fontSize: "12px", color: "rgba(200,216,232,0.4)", marginTop: "8px" }}>I'll get back to you soon.</div>
+                <button onClick={() => setFormStatus(null)} style={{ marginTop: "24px", background: "transparent", border: "1px solid rgba(0,200,120,0.3)", color: "#00c878", padding: "8px 20px", cursor: "pointer", fontSize: "11px", letterSpacing: "1.5px" }}>
+                  SEND ANOTHER
+                </button>
+              </div>
+            ) : (
+              <div style={{ display: "flex", flexDirection: "column", gap: "20px", maxWidth: "560px" }}>
+
+                {/* Name */}
+                <div>
+                  <label style={labelStyle}>NAME</label>
+                  <input
+                    type="text" value={form.name} maxLength={100}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    onFocus={() => setFormFocused({ ...formFocused, name: true })}
+                    onBlur={() => setFormFocused({ ...formFocused, name: false })}
+                    placeholder="Your name"
+                    style={inputStyle(formFocused.name)}
+                  />
+                  {formErrors.name && <div style={errStyle}>{formErrors.name}</div>}
+                </div>
+
+                {/* Email */}
+                <div>
+                  <label style={labelStyle}>EMAIL</label>
+                  <input
+                    type="email" value={form.email} maxLength={254}
+                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    onFocus={() => setFormFocused({ ...formFocused, email: true })}
+                    onBlur={() => setFormFocused({ ...formFocused, email: false })}
+                    placeholder="you@example.com"
+                    style={inputStyle(formFocused.email)}
+                  />
+                  {formErrors.email && <div style={errStyle}>{formErrors.email}</div>}
+                </div>
+
+                {/* Category */}
+                <div>
+                  <label style={labelStyle}>CATEGORY</label>
+                  <select
+                    value={form.category}
+                    onChange={(e) => setForm({ ...form, category: e.target.value })}
+                    onFocus={() => setFormFocused({ ...formFocused, category: true })}
+                    onBlur={() => setFormFocused({ ...formFocused, category: false })}
+                    style={{ ...inputStyle(formFocused.category), appearance: "none", cursor: "pointer", color: form.category ? "#c8d8e8" : "rgba(200,216,232,0.35)" }}
+                  >
+                    <option value="" disabled>Select a category</option>
+                    {CATEGORIES.map((c) => <option key={c} value={c} style={{ background: "#080c0f", color: "#c8d8e8" }}>{c}</option>)}
+                  </select>
+                  {formErrors.category && <div style={errStyle}>{formErrors.category}</div>}
+                </div>
+
+                {/* Message */}
+                <div>
+                  <label style={labelStyle}>MESSAGE</label>
+                  <textarea
+                    value={form.message} maxLength={1000} rows={6}
+                    onChange={(e) => setForm({ ...form, message: e.target.value })}
+                    onFocus={() => setFormFocused({ ...formFocused, message: true })}
+                    onBlur={() => setFormFocused({ ...formFocused, message: false })}
+                    placeholder="What's on your mind? (1000 chars max)"
+                    style={{ ...inputStyle(formFocused.message), resize: "vertical", minHeight: "120px" }}
+                  />
+                  <div style={{ fontSize: "10px", color: form.message.length > 900 ? "#ff9966" : "rgba(200,216,232,0.25)", textAlign: "right", marginTop: "4px", letterSpacing: "1px" }}>
+                    {form.message.length} / 1000
+                  </div>
+                  {formErrors.message && <div style={errStyle}>{formErrors.message}</div>}
+                </div>
+
+                {/* Submit */}
+                {formStatus === "error" && (
+                  <div style={{ fontSize: "12px", color: "#ff6b6b", border: "1px solid rgba(255,107,107,0.2)", background: "rgba(255,107,107,0.05)", padding: "10px 14px" }}>
+                    ⚠ Failed to send. Please try again.
+                  </div>
+                )}
+                <button
+                  onClick={handleSubmit}
+                  disabled={formStatus === "sending"}
+                  style={{ background: formStatus === "sending" ? "rgba(0,200,120,0.06)" : "rgba(0,200,120,0.12)", border: "1px solid rgba(0,200,120,0.4)", color: formStatus === "sending" ? "rgba(0,200,120,0.4)" : "#00c878", padding: "12px 28px", cursor: formStatus === "sending" ? "default" : "pointer", fontSize: "12px", letterSpacing: "2px", transition: "all 0.2s", alignSelf: "flex-start" }}
+                >
+                  {formStatus === "sending" ? "TRANSMITTING..." : "SEND MESSAGE →"}
+                </button>
+              </div>
+            )}
+          </section>
+        )}
+
       </main>
 
       <footer style={{ position: "relative", zIndex: 1, borderTop: "1px solid rgba(0,200,120,0.1)", padding: "16px 32px", display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "10px", color: "rgba(200,216,232,0.25)", letterSpacing: "1px" }}>
@@ -399,6 +418,8 @@ export default function App() {
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         * { box-sizing: border-box; }
         body { margin: 0; }
+        input::placeholder, textarea::placeholder { color: rgba(200,216,232,0.25); }
+        option { background: #080c0f; }
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: #080c0f; }
         ::-webkit-scrollbar-thumb { background: rgba(0,200,120,0.3); }
