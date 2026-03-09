@@ -34,7 +34,7 @@ Here's the part most people skip: saving what works.
 
 Every time you get a result that's genuinely good, something specific produced it. Maybe it was the way you framed the task. Maybe it was a particular instruction you included. Maybe it was the order in which you gave context. Whatever it was, it's reproducible — but only if you capture it.
 
-A prompt library doesn't have to be elaborate. It can be a folder of text files, a Notion database, a spreadsheet with a "use case" column and a "prompt" column. Or you can use a dedicated tool built exactly for this — [PromptVault](https://promptvault.anaken.one/) is designed to help you store, organize, and retrieve your best prompts without the friction of rolling your own system. The format is less important than the habit, but having a home that's purpose-built makes the habit easier to keep.
+A prompt library doesn't have to be elaborate. It can be a folder of text files, a Notion database, a spreadsheet with a "use case" column and a "prompt" column. Or you can use a dedicated tool built exactly for this — <a href="https://promptvault.anaken.one/">PromptVault</a> is designed to help you store, organize, and retrieve your best prompts without the friction of rolling your own system. The format is less important than the habit, but having a home that's purpose-built makes the habit easier to keep.
 
 When something works, save it. Label it clearly. Include a note on when to use it and what variations you've tried.
 
@@ -52,7 +52,7 @@ The analogy to writing is useful here. Everyone can write. People who write deli
 
 ## Building the System
 
-Start small and build in order. First, pick three to five tasks you do regularly and design explicit prompts for them. Test variations. Save the version that performs best — in a dedicated tool like [PromptVault](https://promptvault.anaken.one/) if you want friction removed from the start. Second, create a single place to store prompts and commit to it. Third, establish a light review habit: once a week or once a month, look at what you've added, refine anything that's drifted, and notice what's missing.
+Start small and build in order. First, pick three to five tasks you do regularly and design explicit prompts for them. Test variations. Save the version that performs best — in a dedicated tool like <a href="https://promptvault.anaken.one/">PromptVault</a> if you want friction removed from the start. Second, create a single place to store prompts and commit to it. Third, establish a light review habit: once a week or once a month, look at what you've added, refine anything that's drifted, and notice what's missing.
 
 Don't try to build the complete system upfront. A library of five well-crafted prompts you actually use is worth more than a hundred you assembled in a weekend and never touched again.
 
