@@ -528,23 +528,20 @@ export default function App() {
       {/* ── MOBILE BOTTOM TAB BAR ── */}
       {isMobile && (
         <nav style={{ position:"fixed",bottom:0,left:0,right:0,zIndex:100,borderTop:`1px solid ${t.borderNav}`,background:t.bgBottomNav,backdropFilter:"blur(12px)",display:"flex",alignItems:"stretch",height:"62px",paddingBottom:"env(safe-area-inset-bottom)" }}>
-          {sections.map((s)=>{
-            const active=activeSection===s;
+          {sections.map((s) => {
+            const active = activeSection === s;
+            if (s === "articles") return (
+              <a key={s} href="/articles" style={{ flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:"3px",color:t.textDim,textDecoration:"none",padding:"0",transition:"color 0.2s",position:"relative" }}>
+                <span style={{ fontSize:"18px",lineHeight:1 }}>{TAB_ICONS[s]}</span>
+                <span style={{ fontSize:"9px",letterSpacing:"1px",textTransform:"uppercase" }}>{TAB_LABELS[s]}</span>
+              </a>
+            );
             return (
-              {s === "articles" ? (
-                <a key={s} href="/articles" style={{ flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:"3px",color:t.textDim,textDecoration:"none",padding:"0",transition:"color 0.2s",position:"relative" }}>
-                  <span style={{ fontSize:"18px",lineHeight:1 }}>{TAB_ICONS[s]}</span>
-                  <span style={{ fontSize:"9px",letterSpacing:"1px",textTransform:"uppercase" }}>{TAB_LABELS[s]}</span>
-                </a>
-              ) : (
-                <button key={s} onClick={()=>{ setActiveSection(s); pushHash(s); }} style={{ flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:"3px",background:"transparent",border:"none",color:active?t.accent:t.textDim,cursor:"pointer",padding:"0",transition:"color 0.2s",position:"relative" }}>
-                  {active&&<div style={{ position:"absolute",top:0,left:"20%",right:"20%",height:"2px",background:t.accent }} />}
-                  <span style={{ fontSize:"18px",lineHeight:1 }}>
-                    {s==="news"&&newsLoading?"◌":TAB_ICONS[s]}
-                  </span>
-                  <span style={{ fontSize:"9px",letterSpacing:"1px",textTransform:"uppercase" }}>{TAB_LABELS[s]}</span>
-                </button>
-              )}
+              <button key={s} onClick={()=>{ setActiveSection(s); pushHash(s); }} style={{ flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:"3px",background:"transparent",border:"none",color:active?t.accent:t.textDim,cursor:"pointer",padding:"0",transition:"color 0.2s",position:"relative" }}>
+                {active && <div style={{ position:"absolute",top:0,left:"20%",right:"20%",height:"2px",background:t.accent }} />}
+                <span style={{ fontSize:"18px",lineHeight:1 }}>{s==="news"&&newsLoading?"◌":TAB_ICONS[s]}</span>
+                <span style={{ fontSize:"9px",letterSpacing:"1px",textTransform:"uppercase" }}>{TAB_LABELS[s]}</span>
+              </button>
             );
           })}
         </nav>
