@@ -360,9 +360,11 @@ export default function ClientApp({ articles = [] }) {
 
   // Padding for main content — extra bottom on mobile for tab bar
   const mainPadding = isMobile ? "72px 16px 90px" : "80px 24px 60px";
+  // Prevent layout flash before window width is measured
+  const mounted = w > 0;
 
   return (
-    <div style={{ minHeight:"100vh",background:t.bg,color:t.text,fontFamily:"'Courier New','Lucida Console',monospace",position:"relative",overflow:"hidden",transition:"background 0.3s,color 0.3s" }}>
+    <div style={{ minHeight:"100vh",background:t.bg,color:t.text,fontFamily:"'Courier New','Lucida Console',monospace",position:"relative",overflow:"hidden",transition:"background 0.3s,color 0.3s",visibility:mounted?"visible":"hidden" }}>
       {isDark && <ScanLine />}
 
       {/* Background grid */}
@@ -378,10 +380,8 @@ export default function ClientApp({ articles = [] }) {
             <span style={{ color:t.accentDim,fontSize:"11px" }}>/ u18181188</span>
           </div>
           <div style={{ display:"flex",gap:"4px",alignItems:"center" }}>
-            {sections.map((s) => s === "articles" ? (
-              <a key={s} href="/articles" style={{ background:"transparent",border:"1px solid transparent",color:t.textDim,padding:"4px 14px",fontSize:"11px",letterSpacing:"1.5px",textTransform:"uppercase",textDecoration:"none",display:"inline-block",transition:"all 0.2s" }}>articles</a>
-            ) : (
-              <button key={s} onClick={()=>{ setActiveSection(s); pushHash(s); }} style={{ background:activeSection===s?t.accentFaint:"transparent",border:activeSection===s?`1px solid ${t.accentMute}`:"1px solid transparent",color:activeSection===s?t.accent:t.textDim,padding:"4px 14px",cursor:"pointer",fontSize:"11px",letterSpacing:"1.5px",textTransform:"uppercase",transition:"all 0.2s" }}>
+            {sections.map((s) => (
+              <button key={s} onClick={()=>{ setActiveSection(s); setOpenArticle(null); pushHash(s); }} style={{ background:activeSection===s?t.accentFaint:"transparent",border:activeSection===s?`1px solid ${t.accentMute}`:"1px solid transparent",color:activeSection===s?t.accent:t.textDim,padding:"4px 14px",cursor:"pointer",fontSize:"11px",letterSpacing:"1.5px",textTransform:"uppercase",transition:"all 0.2s" }}>
                 {s==="news"&&newsLoading?"news ◌":s}
               </button>
             ))}
@@ -658,14 +658,8 @@ export default function ClientApp({ articles = [] }) {
         <nav style={{ position:"fixed",bottom:0,left:0,right:0,zIndex:100,borderTop:`1px solid ${t.borderNav}`,background:t.bgBottomNav,backdropFilter:"blur(12px)",display:"flex",alignItems:"stretch",height:"62px",paddingBottom:"env(safe-area-inset-bottom)" }}>
           {sections.map((s) => {
             const active = activeSection === s;
-            if (s === "articles") return (
-              <a key={s} href="/articles" style={{ flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:"3px",color:t.textDim,textDecoration:"none",padding:"0",transition:"color 0.2s",position:"relative" }}>
-                <span style={{ fontSize:"18px",lineHeight:1 }}>{TAB_ICONS[s]}</span>
-                <span style={{ fontSize:"9px",letterSpacing:"1px",textTransform:"uppercase" }}>{TAB_LABELS[s]}</span>
-              </a>
-            );
             return (
-              <button key={s} onClick={()=>{ setActiveSection(s); pushHash(s); }} style={{ flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:"3px",background:"transparent",border:"none",color:active?t.accent:t.textDim,cursor:"pointer",padding:"0",transition:"color 0.2s",position:"relative" }}>
+              <button key={s} onClick={()=>{ setActiveSection(s); setOpenArticle(null); pushHash(s); }} style={{ flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:"3px",background:"transparent",border:"none",color:active?t.accent:t.textDim,cursor:"pointer",padding:"0",transition:"color 0.2s",position:"relative" }}>
                 {active && <div style={{ position:"absolute",top:0,left:"20%",right:"20%",height:"2px",background:t.accent }} />}
                 <span style={{ fontSize:"18px",lineHeight:1 }}>{s==="news"&&newsLoading?"◌":TAB_ICONS[s]}</span>
                 <span style={{ fontSize:"9px",letterSpacing:"1px",textTransform:"uppercase" }}>{TAB_LABELS[s]}</span>
