@@ -142,8 +142,8 @@ const Spinner = ({ t }) => (
 );
 
 // ─── Bottom nav tab icons ──────────────────────────────────────────────────────
-const TAB_ICONS = { intro:"⌂", news:"◉", projects:"⊞", articles:"✦", contact:"✉" };
-const TAB_LABELS = { intro:"Home", news:"News", projects:"Projects", articles:"Articles", contact:"Contact" };
+const TAB_ICONS  = { intro:"⌂", news:"◉", articles:"✦", projects:"⊞", contact:"✉" };
+const TAB_LABELS = { intro:"Home", news:"News", articles:"Articles", projects:"Projects", contact:"Contact" };
 
 
 // ─── Projects Carousel Component ─────────────────────────────────────────────
@@ -316,7 +316,7 @@ export default function App() {
     } catch { setFormStatus("error"); }
   };
 
-  const sections = ["intro","news","projects","articles","contact"];
+  const sections = ["intro","news","articles","projects","contact"];
 
   const inputStyle = (focused) => ({
     width:"100%", background:focused?t.bgInputFocus:t.bgInput,
