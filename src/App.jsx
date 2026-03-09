@@ -259,10 +259,36 @@ export default function App() {
   const isDark = themeName==="dark";
   const toggleTheme = () => { const n=isDark?"light":"dark"; setThemeName(n); try{localStorage.setItem(THEME_KEY,n);}catch{} };
 
-  const [activeSection,setActiveSection] = useState("intro");
+  // ── Hash routing helpers ──────────────────────────────────────────────
+  const parseHash = () => {
+    const h = window.location.hash.replace("#","");
+    const parts = h.split("/");
+    const section = parts[0] || "intro";
+    const slug = parts[1] || null;
+    return { section, slug };
+  };
+  const pushHash = (section, slug=null) => {
+    window.location.hash = slug ? `${section}/${slug}` : section;
+  };
+
+  const initFromHash = () => {
+    const { section, slug } = parseHash();
+    const validSections = ["intro","news","articles","projects","contact"];
+    const sec = validSections.includes(section) ? section : "intro";
+    if (sec === "articles" && slug) {
+      const found = ARTICLES.find(a => a.slug === slug);
+      return { sec, article: found || null };
+    }
+    return { sec, article: null };
+  };
+
+  const { sec: initSec, article: initArticle } = initFromHash();
+  const [activeSection,setActiveSection] = useState(initSec);
   const [hoveredNews,setHoveredNews] = useState(null);
   const [hoveredProject,setHoveredProject] = useState(null);
-  const [openArticle,setOpenArticle] = useState(null);
+  const [openArticle,setOpenArticle] = useState(initArticle);
+  const [shareModal,setShareModal] = useState(false);
+  const [shareCopied,setShareCopied] = useState(false);
   const [carouselIdx,setCarouselIdx] = useState(0);
   const [carouselDir,setCarouselDir] = useState(null);
   const [carouselAnim,setCarouselAnim] = useState(false);
@@ -367,7 +393,7 @@ export default function App() {
           </div>
           <div style={{ display:"flex",gap:"4px",alignItems:"center" }}>
             {sections.map((s) => (
-              <button key={s} onClick={()=>setActiveSection(s)} style={{ background:activeSection===s?t.accentFaint:"transparent",border:activeSection===s?`1px solid ${t.accentMute}`:"1px solid transparent",color:activeSection===s?t.accent:t.textDim,padding:"4px 14px",cursor:"pointer",fontSize:"11px",letterSpacing:"1.5px",textTransform:"uppercase",transition:"all 0.2s" }}>
+              <button key={s} onClick={()=>{ setActiveSection(s); setOpenArticle(null); pushHash(s); }} style={{ background:activeSection===s?t.accentFaint:"transparent",border:activeSection===s?`1px solid ${t.accentMute}`:"1px solid transparent",color:activeSection===s?t.accent:t.textDim,padding:"4px 14px",cursor:"pointer",fontSize:"11px",letterSpacing:"1.5px",textTransform:"uppercase",transition:"all 0.2s" }}>
                 {s==="news"&&newsLoading?"news ◌":s}
               </button>
             ))}
@@ -465,7 +491,65 @@ export default function App() {
             {openArticle ? (
               // ── ARTICLE DETAIL ──
               <div>
-                <button onClick={()=>setOpenArticle(null)} style={{ background:"transparent",border:"none",color:t.accentDim,cursor:"pointer",fontSize:"11px",letterSpacing:"1.5px",padding:"0",marginBottom:"28px",display:"flex",alignItems:"center",gap:"6px" }}>← ALL ARTICLES</button>
+                {/* Share Modal */}
+                {shareModal && (
+                  <div style={{ position:"fixed",inset:0,zIndex:200,background:"rgba(0,0,0,0.7)",display:"flex",alignItems:"center",justifyContent:"center",padding:"16px" }}
+                    onClick={(e)=>{ if(e.target===e.currentTarget){setShareModal(false);setShareCopied(false);} }}>
+                    <div style={{ background:isDark?"#0e1a14":"#f4f1eb",border:`1px solid ${t.borderHover}`,padding:"28px",width:"100%",maxWidth:"400px",position:"relative" }}>
+                      {/* Close */}
+                      <button onClick={()=>{ setShareModal(false); setShareCopied(false); }} style={{ position:"absolute",top:"16px",right:"16px",background:t.bgCard,border:`1px solid ${t.border}`,color:t.textDim,cursor:"pointer",width:"28px",height:"28px",fontSize:"14px",display:"flex",alignItems:"center",justifyContent:"center" }}>×</button>
+                      {/* Header */}
+                      <div style={{ fontSize:"10px",color:t.accentLabel,letterSpacing:"2px",marginBottom:"6px" }}>SHARE ARTICLE</div>
+                      <h3 style={{ fontSize:"17px",fontWeight:"bold",color:t.textHead,margin:"0 0 4px",lineHeight:1.3 }}>{openArticle.title}</h3>
+                      <p style={{ fontSize:"11px",color:t.textDim,margin:"0 0 24px" }}>Help others discover it</p>
+                      {/* Link field */}
+                      <div style={{ fontSize:"10px",color:t.accentLabel,letterSpacing:"2px",marginBottom:"8px" }}>LINK</div>
+                      <div style={{ display:"flex",gap:"8px",marginBottom:"24px" }}>
+                        <div style={{ flex:1,background:t.bgInput,border:`1px solid ${t.borderInput}`,padding:"10px 12px",fontSize:"12px",color:t.textDim,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",fontFamily:"'Courier New',monospace" }}>
+                          {window.location.href}
+                        </div>
+                        <button onClick={()=>{ navigator.clipboard.writeText(window.location.href); setShareCopied(true); setTimeout(()=>setShareCopied(false),2000); }}
+                          style={{ background:t.accent,border:"none",color:"#080c0f",padding:"0 16px",cursor:"pointer",fontSize:"11px",fontWeight:"bold",letterSpacing:"1px",flexShrink:0,fontFamily:"'Courier New',monospace" }}>
+                          {shareCopied ? "✓ COPIED" : "COPY"}
+                        </button>
+                      </div>
+                      {/* Share via */}
+                      <div style={{ fontSize:"10px",color:t.accentLabel,letterSpacing:"2px",marginBottom:"10px" }}>SHARE VIA</div>
+                      <div style={{ display:"flex",flexDirection:"column",gap:"2px" }}>
+                        {[
+                          { icon:"𝕏", label:"Share on X", sub:"Post to your followers", href:`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(openArticle.title)}` },
+                          { icon:"in", label:"Share on LinkedIn", sub:"Post to your network", href:`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}` },
+                          { icon:"✉", label:"Share via Email", sub:"Send to a colleague", href:`mailto:?subject=${encodeURIComponent(openArticle.title)}&body=${encodeURIComponent(window.location.href)}` },
+                        ].map((opt,i)=>(
+                          <a key={i} href={opt.href} target={opt.href.startsWith("mailto")?"_self":"_blank"} rel="noopener noreferrer"
+                            style={{ display:"flex",alignItems:"center",gap:"14px",background:t.bgCard,border:`1px solid ${t.border}`,padding:"13px 16px",textDecoration:"none",transition:"all 0.15s" }}>
+                            <span style={{ width:"32px",height:"32px",background:t.bgCardHover,border:`1px solid ${t.border}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"13px",color:t.accent,flexShrink:0 }}>{opt.icon}</span>
+                            <span style={{ flex:1 }}>
+                              <span style={{ display:"block",fontSize:"13px",fontWeight:"bold",color:t.textHead }}>{opt.label}</span>
+                              <span style={{ display:"block",fontSize:"11px",color:t.textDim }}>{opt.sub}</span>
+                            </span>
+                            <span style={{ color:t.accentDim,fontSize:"14px" }}>›</span>
+                          </a>
+                        ))}
+                        {"share" in navigator && (
+                          <button onClick={()=>{ navigator.share({ title:openArticle.title, url:window.location.href }).catch(()=>{}); }}
+                            style={{ display:"flex",alignItems:"center",gap:"14px",background:t.bgCard,border:`1px solid ${t.border}`,padding:"13px 16px",cursor:"pointer",width:"100%",textAlign:"left",transition:"all 0.15s" }}>
+                            <span style={{ width:"32px",height:"32px",background:t.bgCardHover,border:`1px solid ${t.border}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"13px",color:t.accent,flexShrink:0 }}>↑</span>
+                            <span style={{ flex:1 }}>
+                              <span style={{ display:"block",fontSize:"13px",fontWeight:"bold",color:t.textHead }}>More options</span>
+                              <span style={{ display:"block",fontSize:"11px",color:t.textDim }}>Use your device’s share sheet</span>
+                            </span>
+                            <span style={{ color:t.accentDim,fontSize:"14px" }}>›</span>
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+                <div style={{ display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"28px" }}>
+                  <button onClick={()=>{ setOpenArticle(null); setShareModal(false); setShareCopied(false); pushHash("articles"); }} style={{ background:"transparent",border:"none",color:t.accentDim,cursor:"pointer",fontSize:"11px",letterSpacing:"1.5px",padding:"0",display:"flex",alignItems:"center",gap:"6px" }}>← ALL ARTICLES</button>
+                  <button onClick={()=>setShareModal(true)} style={{ background:t.accentFaint,border:`1px solid ${t.accentMute}`,color:t.accent,cursor:"pointer",fontSize:"10px",letterSpacing:"1.5px",padding:"5px 12px",display:"flex",alignItems:"center",gap:"6px" }}>↑ SHARE</button>
+                </div>
                 <div style={{ borderLeft:`2px solid ${t.accent}`,paddingLeft:"20px",marginBottom:"32px" }}>
                   <div style={{ fontSize:"10px",color:t.accentLabel,letterSpacing:"1px",marginBottom:"10px" }}>
                     {new Date(openArticle.date).toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"})}
@@ -482,7 +566,7 @@ export default function App() {
                   })}
                 </div>
                 <div style={{ marginTop:"48px",paddingTop:"20px",borderTop:`1px solid ${t.border}` }}>
-                  <button onClick={()=>setOpenArticle(null)} style={{ background:"transparent",border:"none",color:t.accentDim,cursor:"pointer",fontSize:"11px",letterSpacing:"1.5px",padding:"0" }}>← ALL ARTICLES</button>
+                  <button onClick={()=>{ setOpenArticle(null); setShareModal(false); setShareCopied(false); pushHash("articles"); }} style={{ background:"transparent",border:"none",color:t.accentDim,cursor:"pointer",fontSize:"11px",letterSpacing:"1.5px",padding:"0" }}>← ALL ARTICLES</button>
                 </div>
               </div>
             ) : (
@@ -494,7 +578,7 @@ export default function App() {
                 </div>
                 <div style={{ display:"flex",flexDirection:"column",gap:"2px" }}>
                   {ARTICLES.map((article,i)=>(
-                    <button key={i} onClick={()=>setOpenArticle(article)}
+                    <button key={i} onClick={()=>{ setOpenArticle(article); pushHash("articles", article.slug); }}
                       style={{ display:"block",width:"100%",textAlign:"left",background:t.bgCard,border:`1px solid ${t.border}`,padding:isMobile?"20px":"24px 28px",cursor:"pointer",transition:"all 0.2s",position:"relative",overflow:"hidden" }}>
                       <div style={{ position:"absolute",top:0,right:0,width:"32px",height:"32px",borderBottom:`1px solid ${t.accentDim}`,borderLeft:`1px solid ${t.accentDim}` }} />
                       <div style={{ fontSize:"10px",color:t.accentLabel,letterSpacing:"1px",marginBottom:"8px" }}>
@@ -599,7 +683,7 @@ export default function App() {
           {sections.map((s)=>{
             const active=activeSection===s;
             return (
-              <button key={s} onClick={()=>setActiveSection(s)} style={{ flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:"3px",background:"transparent",border:"none",color:active?t.accent:t.textDim,cursor:"pointer",padding:"0",transition:"color 0.2s",position:"relative" }}>
+              <button key={s} onClick={()=>{ setActiveSection(s); setOpenArticle(null); pushHash(s); }} style={{ flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:"3px",background:"transparent",border:"none",color:active?t.accent:t.textDim,cursor:"pointer",padding:"0",transition:"color 0.2s",position:"relative" }}>
                 {active&&<div style={{ position:"absolute",top:0,left:"20%",right:"20%",height:"2px",background:t.accent }} />}
                 <span style={{ fontSize:"18px",lineHeight:1 }}>
                   {s==="news"&&newsLoading?"◌":TAB_ICONS[s]}
