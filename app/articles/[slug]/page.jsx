@@ -2,6 +2,7 @@ import { getAllArticles, getArticleBySlug } from "@/lib/articles";
 import ArticleShell from "../ArticleShell";
 import CopyButton from "./CopyButton";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import Link from "next/link";
 
 export async function generateStaticParams() {
@@ -71,6 +72,7 @@ export default function ArticlePage({ params }) {
 
       {/* body */}
       <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
         components={{
           h2: ({children}) => <h2 style={{ fontSize:"18px",fontWeight:"bold",color:"var(--t-textHead)",margin:"2em 0 0.7em",borderLeft:"2px solid var(--t-accent)",paddingLeft:"14px" }}>{children}</h2>,
           h3: ({children}) => <h3 style={{ fontSize:"14px",fontWeight:"bold",color:"var(--t-accent)",margin:"1.6em 0 0.5em",letterSpacing:"0.5px" }}>{children}</h3>,
