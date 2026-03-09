@@ -361,7 +361,7 @@ export default function ClientApp({ articles = [] }) {
   // Padding for main content — extra bottom on mobile for tab bar
   const mainPadding = isMobile ? "72px 16px 90px" : "80px 24px 60px";
   // Prevent layout flash before window width is measured
-  const mounted = w > 0;
+  const mounted = width > 0;
 
   return (
     <div style={{ minHeight:"100vh",background:t.bg,color:t.text,fontFamily:"'Courier New','Lucida Console',monospace",position:"relative",overflow:"hidden",transition:"background 0.3s,color 0.3s",visibility:mounted?"visible":"hidden" }}>
