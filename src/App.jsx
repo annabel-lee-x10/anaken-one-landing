@@ -87,8 +87,7 @@ const SNAKE_ICON = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iND
 const PROJECTS = [
   { name:"AI Fact-Check Engine", tagline:"Verify AI-generated claims in real time.", description:"Paste any text and get a source-backed fact check powered by live AI reasoning.", url:"https://aifactchecker.anaken.one/", icon:null, imgIcon:FACTCHECK_ICON, tag:"tool", index:"01" },
   { name:"promptVault", tagline:"Your personal prompt engineering HQ.", description:"Build, store, and organize your best prompts. Optimized for iterative AI workflows.", url:"https://prompt-builder-vault.anaken.one/", icon:null, imgIcon:PROMPT_VAULT_ICON, tag:"tool", index:"02" },
-  { name:"Anaken.one", tagline:"This site — live AI news + projects hub.", description:"A dark techy mini site with a scheduled AI news feed, powered by Claude + web search. Updates at 00:00, 08:00, 16:00 UTC.", url:"#", icon:null, imgIcon:ANAKEN_ICON, tag:"site", index:"03" },
-  { name:"Simple Snake", tagline:"Classic snake game, built with you.", description:"A clean browser-based snake game. Use arrow keys or swipe to play — how high can you score?", url:"https://simple-snake.anaken.one/", icon:null, imgIcon:SNAKE_ICON, tag:"game", index:"04" },
+  { name:"Simple Snake", tagline:"Classic snake game, built with you.", description:"A clean browser-based snake game. Use arrow keys or swipe to play — how high can you score?", url:"https://simple-snake.anaken.one/", icon:null, imgIcon:SNAKE_ICON, tag:"game", index:"03" },
 ];
 
 
