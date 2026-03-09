@@ -144,6 +144,7 @@ const Spinner = ({ t }) => (
 const TAB_ICONS = { intro:"⌂", news:"◉", projects:"⊞", contact:"✉" };
 const TAB_LABELS = { intro:"Home", news:"News", projects:"Projects", contact:"Contact" };
 
+
 // ─── Projects Carousel Component ─────────────────────────────────────────────
 function ProjectsCarousel({ t, isMobile, carouselIdx, setCarouselIdx, carouselDir, setCarouselDir, carouselAnim, setCarouselAnim, carouselTouchX }) {
   const total = PROJECTS.length;
@@ -228,9 +229,23 @@ export default function App() {
   const isDark = themeName==="dark";
   const toggleTheme = () => { const n=isDark?"light":"dark"; setThemeName(n); try{localStorage.setItem(THEME_KEY,n);}catch{} };
 
-  const [activeSection,setActiveSection] = useState("intro");
+  // ── Hash routing helpers ──────────────────────────────────────────────
+  const parseHash = () => {
+    const h = window.location.hash.replace("#","");
+    return h || "intro";
+  };
+  const pushHash = (section) => {
+    window.location.hash = section;
+  };
+
+  const [activeSection,setActiveSection] = useState(() => {
+    if (typeof window === "undefined") return "intro";
+    const h = window.location.hash.replace("#","");
+    const valid = ["intro","news","projects","contact"];
+    return valid.includes(h) ? h : "intro";
+  });
   const [hoveredNews,setHoveredNews] = useState(null);
-  const [hoveredProject,setHoveredProject] = useState(null);
+
   const [carouselIdx,setCarouselIdx] = useState(0);
   const [carouselDir,setCarouselDir] = useState(null);
   const [carouselAnim,setCarouselAnim] = useState(false);
@@ -335,7 +350,7 @@ export default function App() {
           </div>
           <div style={{ display:"flex",gap:"4px",alignItems:"center" }}>
             {sections.map((s) => (
-              <button key={s} onClick={()=>setActiveSection(s)} style={{ background:activeSection===s?t.accentFaint:"transparent",border:activeSection===s?`1px solid ${t.accentMute}`:"1px solid transparent",color:activeSection===s?t.accent:t.textDim,padding:"4px 14px",cursor:"pointer",fontSize:"11px",letterSpacing:"1.5px",textTransform:"uppercase",transition:"all 0.2s" }}>
+              <button key={s} onClick={()=>{ setActiveSection(s); pushHash(s); }} style={{ background:activeSection===s?t.accentFaint:"transparent",border:activeSection===s?`1px solid ${t.accentMute}`:"1px solid transparent",color:activeSection===s?t.accent:t.textDim,padding:"4px 14px",cursor:"pointer",fontSize:"11px",letterSpacing:"1.5px",textTransform:"uppercase",transition:"all 0.2s" }}>
                 {s==="news"&&newsLoading?"news ◌":s}
               </button>
             ))}
@@ -390,15 +405,6 @@ export default function App() {
               ))}
             </div>
 
-            {/* CTA buttons — stack on mobile */}
-            <div style={{ display:"flex",flexDirection:isMobile?"column":"row",gap:"10px" }}>
-              {[{label:"→ VIEW PROJECTS",section:"projects",primary:true},{label:"→ AI NEWS FEED",section:"news",primary:false},{label:"→ CONTACT",section:"contact",primary:false}].map(({label,section,primary})=>(
-                <button key={section} onClick={()=>setActiveSection(section)} style={{ background:primary?t.accentFaint:"transparent",border:`1px solid ${primary?t.accentMute:t.border}`,color:primary?t.accent:t.textDim,padding:isMobile?"14px 20px":"10px 24px",cursor:"pointer",fontSize:"12px",letterSpacing:"1.5px",transition:"all 0.2s",width:isMobile?"100%":"auto",textAlign:isMobile?"center":"left" }}>
-                  {label}
-                </button>
-              ))}
-              <a href="/articles" style={{ background:"transparent",border:`1px solid ${t.border}`,color:t.textDim,padding:isMobile?"14px 20px":"10px 24px",fontSize:"12px",letterSpacing:"1.5px",textDecoration:"none",display:"block",width:isMobile?"100%":"auto",textAlign:isMobile?"center":"left",transition:"all 0.2s",boxSizing:"border-box" }}>→ ARTICLES</a>
-            </div>
           </section>
         )}
 
@@ -434,7 +440,6 @@ export default function App() {
             )}
           </section>
         )}
-
 
         {activeSection==="projects" && <ProjectsCarousel t={t} isMobile={isMobile} carouselIdx={carouselIdx} setCarouselIdx={setCarouselIdx} carouselDir={carouselDir} setCarouselDir={setCarouselDir} carouselAnim={carouselAnim} setCarouselAnim={setCarouselAnim} carouselTouchX={carouselTouchX} />}
         {/* ── CONTACT ── */}
@@ -524,7 +529,7 @@ export default function App() {
           {sections.map((s)=>{
             const active=activeSection===s;
             return (
-              <button key={s} onClick={()=>setActiveSection(s)} style={{ flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:"3px",background:"transparent",border:"none",color:active?t.accent:t.textDim,cursor:"pointer",padding:"0",transition:"color 0.2s",position:"relative" }}>
+              <button key={s} onClick={()=>{ setActiveSection(s); pushHash(s); }} style={{ flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:"3px",background:"transparent",border:"none",color:active?t.accent:t.textDim,cursor:"pointer",padding:"0",transition:"color 0.2s",position:"relative" }}>
                 {active&&<div style={{ position:"absolute",top:0,left:"20%",right:"20%",height:"2px",background:t.accent }} />}
                 <span style={{ fontSize:"18px",lineHeight:1 }}>
                   {s==="news"&&newsLoading?"◌":TAB_ICONS[s]}
