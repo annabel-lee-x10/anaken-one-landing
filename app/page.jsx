@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect, useCallback, useRef } from "react";
 
 const SCHEDULE_HOURS_UTC = [0, 8, 16];
@@ -337,6 +339,7 @@ export default function App() {
                 {s==="news"&&newsLoading?"news ◌":s}
               </button>
             ))}
+            <a href="/articles" style={{ background:"transparent",border:"1px solid transparent",color:t.textDim,padding:"4px 14px",cursor:"pointer",fontSize:"11px",letterSpacing:"1.5px",textTransform:"uppercase",transition:"all 0.2s",textDecoration:"none",display:"inline-block" }}>articles</a>
             <button onClick={toggleTheme} title={t.toggleTip} style={{ marginLeft:"8px",background:t.accentFaint,border:`1px solid ${t.border}`,color:t.accent,width:"30px",height:"30px",cursor:"pointer",fontSize:"14px",display:"flex",alignItems:"center",justifyContent:"center",transition:"all 0.2s",flexShrink:0 }}>
               {t.toggleIcon}
             </button>
@@ -394,6 +397,7 @@ export default function App() {
                   {label}
                 </button>
               ))}
+              <a href="/articles" style={{ background:"transparent",border:`1px solid ${t.border}`,color:t.textDim,padding:isMobile?"14px 20px":"10px 24px",fontSize:"12px",letterSpacing:"1.5px",textDecoration:"none",display:"block",width:isMobile?"100%":"auto",textAlign:isMobile?"center":"left",transition:"all 0.2s",boxSizing:"border-box" }}>→ ARTICLES</a>
             </div>
           </section>
         )}

@@ -1,15 +1,11 @@
-// api/news.js — server-side news fetch proxy
-// ANTHROPIC_API_KEY lives only in Vercel env vars, never in the client bundle
+// app/api/news/route.js — Next.js Route Handler
+// ANTHROPIC_API_KEY lives only in server env vars, never in the client bundle
 
-export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
-  }
-
+export async function POST() {
   const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
   if (!ANTHROPIC_API_KEY) {
     console.error("[news] ANTHROPIC_API_KEY env var is not set");
-    return res.status(500).json({ error: "Server configuration error: missing API key." });
+    return Response.json({ error: "Server configuration error: missing API key." }, { status: 500 });
   }
 
   const today = new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
@@ -41,28 +37,27 @@ Return ONLY the raw JSON array. No markdown, no backticks, no explanation.`;
     if (!anthropicRes.ok) {
       const errBody = await anthropicRes.text();
       console.error(`[news] Anthropic API error ${anthropicRes.status}:`, errBody);
-      return res.status(502).json({ error: `Upstream error ${anthropicRes.status}` });
+      return Response.json({ error: `Upstream error ${anthropicRes.status}` }, { status: 502 });
     }
 
     const data = await anthropicRes.json();
     const textBlock = data.content?.find((b) => b.type === "text");
     if (!textBlock) {
       console.error("[news] No text block in Anthropic response:", JSON.stringify(data.content));
-      return res.status(502).json({ error: "No text in response." });
+      return Response.json({ error: "No text in response." }, { status: 502 });
     }
 
-    // Strip any accidental markdown fences, parse JSON
     let articles;
     try {
       const raw = textBlock.text.replace(/```json|```/g, "").trim();
       articles = JSON.parse(raw);
     } catch (parseErr) {
       console.error("[news] JSON parse error:", parseErr, "raw:", textBlock.text.slice(0, 200));
-      return res.status(502).json({ error: "Could not parse news response." });
+      return Response.json({ error: "Could not parse news response." }, { status: 502 });
     }
 
     if (!Array.isArray(articles) || articles.length === 0) {
-      return res.status(502).json({ error: "Unexpected response shape." });
+      return Response.json({ error: "Unexpected response shape." }, { status: 502 });
     }
 
     const safe = articles.slice(0, 6).map((a) => ({
@@ -73,9 +68,9 @@ Return ONLY the raw JSON array. No markdown, no backticks, no explanation.`;
       url:     /^https:\/\/.+/.test(String(a.url || "")) ? String(a.url).slice(0, 500) : "#",
     }));
 
-    return res.status(200).json({ articles: safe });
+    return Response.json({ articles: safe });
   } catch (err) {
     console.error("[news] Unexpected error:", err);
-    return res.status(500).json({ error: "Unexpected server error." });
+    return Response.json({ error: "Unexpected server error." }, { status: 500 });
   }
 }
