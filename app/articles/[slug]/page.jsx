@@ -1,6 +1,7 @@
 import { getAllArticles, getArticleBySlug } from "@/lib/articles";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
+import CopyButton from "./CopyButton";
 
 export async function generateStaticParams() {
   return getAllArticles().map(a => ({ slug: a.slug }));
@@ -98,13 +99,4 @@ export default function ArticlePage({ params }) {
   );
 }
 
-// Client component for copy button
-function CopyButton({ url }) {
-  return (
-    <button
-      onClick={() => { navigator.clipboard.writeText(url); }}
-      style={{ background:"rgba(0,200,120,0.08)",border:"1px solid rgba(0,200,120,0.2)",color:"rgba(0,200,120,0.7)",padding:"5px 12px",fontSize:"10px",letterSpacing:"1px",cursor:"pointer",fontFamily:"'Courier New',monospace" }}>
-      ⎘ COPY
-    </button>
-  );
-}
+
