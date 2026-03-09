@@ -421,14 +421,6 @@ export default function App() {
               ))}
             </div>
 
-            {/* CTA buttons — stack on mobile */}
-            <div style={{ display:"flex",flexDirection:isMobile?"column":"row",gap:"10px" }}>
-              {[{label:"→ VIEW PROJECTS",section:"projects",primary:true},{label:"→ AI NEWS FEED",section:"news",primary:false},{label:"→ CONTACT",section:"contact",primary:false}].map(({label,section,primary})=>(
-                <button key={section} onClick={()=>setActiveSection(section)} style={{ background:primary?t.accentFaint:"transparent",border:`1px solid ${primary?t.accentMute:t.border}`,color:primary?t.accent:t.textDim,padding:isMobile?"14px 20px":"10px 24px",cursor:"pointer",fontSize:"12px",letterSpacing:"1.5px",transition:"all 0.2s",width:isMobile?"100%":"auto",textAlign:isMobile?"center":"left" }}>
-                  {label}
-                </button>
-              ))}
-            </div>
           </section>
         )}
 
