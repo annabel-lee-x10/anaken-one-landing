@@ -139,8 +139,41 @@ const Spinner = ({ t }) => (
 );
 
 // ─── Bottom nav tab icons ──────────────────────────────────────────────────────
-const TAB_ICONS = { intro:"⌂", news:"◉", projects:"⊞", contact:"✉" };
-const TAB_LABELS = { intro:"Home", news:"News", projects:"Projects", contact:"Contact" };
+const TAB_ICONS = { intro:"⌂", news:"◉", articles:"✦", projects:"⊞", contact:"✉" };
+const TAB_LABELS = { intro:"Home", news:"News", articles:"Articles", projects:"Projects", contact:"Contact" };
+
+const ARTICLES = [
+  {
+    slug: "use-of-ai-then-and-now",
+    title: "The Use of AI, Then and Now — How to Stay Relevant",
+    date: "2026-03-09",
+    description: "AI didn't arrive overnight. But the pressure to adapt feels like it did. Here's an honest look at how AI evolved, what changed for everyday people, and how to stay sharp in a world where the tools keep moving.",
+    content: [
+      { type:"p", text:"There's a version of this article that starts with "AI is changing everything." You've read that version. You've read it fifty times. This isn't that. This is about something more practical — where AI actually came from, what quietly shifted in the last few years, and what you can do today to not feel like you're always one step behind." },
+      { type:"h2", text:"AI Before It Was Everywhere" },
+      { type:"p", text:"For most of computing history, AI was a research problem. It lived in university labs, DARPA grant proposals, and overhyped magazine covers that never quite delivered. The early breakthroughs were narrow. IBM's Deep Blue beat Garry Kasparov at chess in 1997 — a huge moment, mostly ignored by the average person because Deep Blue couldn't do anything else. It couldn't answer an email. It couldn't recognize your face. It could only play chess, and it played it better than any human alive." },
+      { type:"p", text:"That narrowness defined AI for decades. Spam filters got smarter. Netflix learned what you liked to watch. Google Maps figured out traffic. These were all AI at work — but they were invisible, silently optimizing specific problems in the background. Nobody called it AI. Nobody felt the pressure to "keep up."" },
+      { type:"h2", text:"The Shift That Changed Everything" },
+      { type:"p", text:"The real rupture happened in two stages. The first was 2012, when a neural network called AlexNet demolished the competition in an image recognition contest by a margin that stunned researchers. Deep learning — a technique that had existed for decades — suddenly worked at scale. Within years, it was powering facial recognition, medical imaging, translation, and voice assistants." },
+      { type:"p", text:"The second was 2022, when ChatGPT crossed into mainstream culture. This wasn't just a better product launch. It was the first time a general-purpose AI felt genuinely useful to non-technical people — not for one task, but for many. Writing, summarizing, coding, explaining, brainstorming. Suddenly the AI wasn't in the background. It was right there in the text box, waiting for you to tell it what to do. The gap between "AI research" and "AI in your daily workflow" collapsed almost overnight." },
+      { type:"h2", text:"What That Means for You" },
+      { type:"p", text:"Here's the uncomfortable truth: the people who feel most threatened by AI are usually the ones who built their value entirely on access to information or execution of predictable tasks. If your job was to research something and report back — AI can do a version of that. If your job was to write the same kinds of documents over and over — AI can do a version of that too. But "a version of that" is the key phrase. AI is fast, broad, and tireless. It is also — for now — shallow in judgment, unreliable in nuance, and blind to context it hasn't been given. The people who thrive are the ones who understand that dynamic and work with it rather than against it." },
+      { type:"h2", text:"How to Stay Relevant — Practically" },
+      { type:"h3", text:"1. Learn to direct it, not just use it" },
+      { type:"p", text:"There's a real skill gap between people who open ChatGPT and type a vague question, and people who know how to give it context, constraints, examples, and a clear output format. That skill compounds quickly. The better you get at directing AI, the more of your own capability you multiply. You don't need a course. You need deliberate practice." },
+      { type:"h3", text:"2. Your judgment is the product" },
+      { type:"p", text:"AI can draft. It can outline. It can generate options. But it can't tell you which option is right for this specific situation, with these specific people, in this specific moment. That's still yours. The most durable skill in any field right now is developed judgment — the accumulated, context-aware sense of what matters, what to trust, and when to push back." },
+      { type:"h3", text:"3. Build things with it, not just queries" },
+      { type:"p", text:"There's a difference between using AI to answer a one-off question and building a workflow, a system, or a project with AI embedded in it. The second is where real leverage comes from. Even small projects — a personal site, a writing habit, an automated research pipeline — compound in ways that scattered AI chats don't." },
+      { type:"h3", text:"4. Stay close to what's changing" },
+      { type:"p", text:"You don't need to follow every model release or benchmark. But you should have a rough sense of what the current tools can and can't do — and update that mental model every few months. The best habit is simple: when you're stuck on something, ask yourself if AI could help." },
+      { type:"h3", text:"5. Double down on what makes you you" },
+      { type:"p", text:"Your domain expertise, your network, your specific way of seeing problems — these are not things AI has. Use the tool to clear away the routine work. Then spend more time in the parts that actually need you." },
+      { type:"h2", text:"The Honest Picture" },
+      { type:"p", text:"AI is not going to stop developing. The next few years will almost certainly bring capabilities that make today's tools look primitive. That's both exciting and exhausting. But the people who stayed relevant through every major technology shift — printing press, industrialization, the internet — weren't the ones who predicted the future most accurately. They were the ones who stayed curious, kept adapting, and didn't confuse the tool for the point. The point is still the work. The work still needs a human at the center of it. AI is just the most interesting tool we've built yet." },
+    ]
+  },
+];
 
 // ─── Projects Carousel Component ─────────────────────────────────────────────
 function ProjectsCarousel({ t, isMobile, carouselIdx, setCarouselIdx, carouselDir, setCarouselDir, carouselAnim, setCarouselAnim, carouselTouchX }) {
@@ -229,6 +262,7 @@ export default function App() {
   const [activeSection,setActiveSection] = useState("intro");
   const [hoveredNews,setHoveredNews] = useState(null);
   const [hoveredProject,setHoveredProject] = useState(null);
+  const [openArticle,setOpenArticle] = useState(null);
   const [carouselIdx,setCarouselIdx] = useState(0);
   const [carouselDir,setCarouselDir] = useState(null);
   const [carouselAnim,setCarouselAnim] = useState(false);
@@ -298,7 +332,7 @@ export default function App() {
     } catch { setFormStatus("error"); }
   };
 
-  const sections = ["intro","news","projects","contact"];
+  const sections = ["intro","news","articles","projects","contact"];
 
   const inputStyle = (focused) => ({
     width:"100%", background:focused?t.bgInputFocus:t.bgInput,
@@ -431,6 +465,59 @@ export default function App() {
           </section>
         )}
 
+
+
+        {/* ── ARTICLES ── */}
+        {activeSection==="articles" && (
+          <section style={{ animation:"fadeIn 0.4s ease" }}>
+            {openArticle ? (
+              // ── ARTICLE DETAIL ──
+              <div>
+                <button onClick={()=>setOpenArticle(null)} style={{ background:"transparent",border:"none",color:t.accentDim,cursor:"pointer",fontSize:"11px",letterSpacing:"1.5px",padding:"0",marginBottom:"28px",display:"flex",alignItems:"center",gap:"6px" }}>← ALL ARTICLES</button>
+                <div style={{ borderLeft:`2px solid ${t.accent}`,paddingLeft:"20px",marginBottom:"32px" }}>
+                  <div style={{ fontSize:"10px",color:t.accentLabel,letterSpacing:"1px",marginBottom:"10px" }}>
+                    {new Date(openArticle.date).toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"})}
+                  </div>
+                  <h2 style={{ fontSize:isMobile?"20px":"26px",fontWeight:"bold",color:t.textHead,margin:"0 0 12px",lineHeight:1.3 }}>{openArticle.title}</h2>
+                  <p style={{ fontSize:"14px",color:t.textDim,margin:0,lineHeight:"1.7" }}>{openArticle.description}</p>
+                </div>
+                <hr style={{ border:"none",borderTop:`1px solid ${t.border}`,marginBottom:"32px" }} />
+                <div style={{ fontSize:isMobile?"14px":"15px",lineHeight:"1.85",color:t.textBody }}>
+                  {openArticle.content.map((block,i)=>{
+                    if(block.type==="h2") return <h3 key={i} style={{ fontSize:isMobile?"16px":"18px",fontWeight:"bold",color:t.textHead,margin:"2em 0 0.7em",borderLeft:`2px solid ${t.accent}`,paddingLeft:"14px" }}>{block.text}</h3>;
+                    if(block.type==="h3") return <h4 key={i} style={{ fontSize:"14px",fontWeight:"bold",color:t.accent,margin:"1.6em 0 0.5em",letterSpacing:"0.5px" }}>{block.text}</h4>;
+                    return <p key={i} style={{ margin:"0 0 1.3em",color:t.textBody }}>{block.text}</p>;
+                  })}
+                </div>
+                <div style={{ marginTop:"48px",paddingTop:"20px",borderTop:`1px solid ${t.border}` }}>
+                  <button onClick={()=>setOpenArticle(null)} style={{ background:"transparent",border:"none",color:t.accentDim,cursor:"pointer",fontSize:"11px",letterSpacing:"1.5px",padding:"0" }}>← ALL ARTICLES</button>
+                </div>
+              </div>
+            ) : (
+              // ── ARTICLE LISTING ──
+              <div>
+                <div style={{ marginBottom:"24px" }}>
+                  <div style={{ fontSize:"11px",color:t.accentLabel,letterSpacing:"2px",marginBottom:"8px" }}>SIGNAL.LOG / WRITING</div>
+                  <h2 style={{ fontSize:isMobile?"22px":"28px",margin:0,color:t.textHead,fontWeight:"bold" }}>Articles</h2>
+                </div>
+                <div style={{ display:"flex",flexDirection:"column",gap:"2px" }}>
+                  {ARTICLES.map((article,i)=>(
+                    <button key={i} onClick={()=>setOpenArticle(article)}
+                      style={{ display:"block",width:"100%",textAlign:"left",background:t.bgCard,border:`1px solid ${t.border}`,padding:isMobile?"20px":"24px 28px",cursor:"pointer",transition:"all 0.2s",position:"relative",overflow:"hidden" }}>
+                      <div style={{ position:"absolute",top:0,right:0,width:"32px",height:"32px",borderBottom:`1px solid ${t.accentDim}`,borderLeft:`1px solid ${t.accentDim}` }} />
+                      <div style={{ fontSize:"10px",color:t.accentLabel,letterSpacing:"1px",marginBottom:"8px" }}>
+                        {new Date(article.date).toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"})}
+                      </div>
+                      <h3 style={{ fontSize:isMobile?"15px":"17px",fontWeight:"bold",color:t.textHead,margin:"0 0 8px",lineHeight:"1.4" }}>{article.title}</h3>
+                      <p style={{ fontSize:"12px",color:t.textDim,margin:"0 0 12px",lineHeight:"1.7" }}>{article.description}</p>
+                      <span style={{ fontSize:"11px",letterSpacing:"1.5px",color:t.accentDim }}>READ →</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </section>
+        )}
 
         {activeSection==="projects" && <ProjectsCarousel t={t} isMobile={isMobile} carouselIdx={carouselIdx} setCarouselIdx={setCarouselIdx} carouselDir={carouselDir} setCarouselDir={setCarouselDir} carouselAnim={carouselAnim} setCarouselAnim={setCarouselAnim} carouselTouchX={carouselTouchX} />}
         {/* ── CONTACT ── */}
