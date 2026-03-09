@@ -11,7 +11,26 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }) {
   try {
     const { frontmatter } = getArticleBySlug(params.slug);
-    return { title: `${frontmatter.title} — Anaken`, description: frontmatter.description };
+    const url = `https://anaken.one/articles/${params.slug}`;
+    return {
+      title: frontmatter.title,
+      description: frontmatter.description,
+      alternates: { canonical: url },
+      robots: { index: true, follow: true },
+      openGraph: {
+        type: "article",
+        url,
+        title: frontmatter.title,
+        description: frontmatter.description,
+        publishedTime: frontmatter.date,
+        siteName: "Anaken",
+      },
+      twitter: {
+        card: "summary",
+        title: frontmatter.title,
+        description: frontmatter.description,
+      },
+    };
   } catch { return { title: "Article — Anaken" }; }
 }
 

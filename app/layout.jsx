@@ -1,6 +1,21 @@
 export const metadata = {
-  title: "Anaken",
-  description: "Ageless hobbyist. Workflows, tools, and AI.",
+  title: { default: "Anaken", template: "%s — Anaken" },
+  description: "Ageless hobbyist. I love learning workflows and processes — then taking them apart to make them faster, leaner, and smarter.",
+  metadataBase: new URL("https://anaken.one"),
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
+  openGraph: {
+    type: "website",
+    url: "https://anaken.one",
+    title: "Anaken",
+    description: "Ageless hobbyist. Workflows, tools, and AI.",
+    siteName: "Anaken",
+  },
+  twitter: {
+    card: "summary",
+    title: "Anaken",
+    description: "Ageless hobbyist. Workflows, tools, and AI.",
+  },
+  alternates: { canonical: "https://anaken.one" },
 };
 
 export default function RootLayout({ children }) {
