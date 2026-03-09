@@ -27,8 +27,9 @@ function nextScheduledSlot(now = Date.now()) {
 
 // ─── Responsive hook ──────────────────────────────────────────────────────────
 function useWindowWidth() {
-  const [w, setW] = useState(() => typeof window !== "undefined" ? window.innerWidth : 1024);
+  const [w, setW] = useState(0);
   useEffect(() => {
+    setW(window.innerWidth);
     const onResize = () => setW(window.innerWidth);
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
@@ -141,8 +142,8 @@ const Spinner = ({ t }) => (
 );
 
 // ─── Bottom nav tab icons ──────────────────────────────────────────────────────
-const TAB_ICONS = { intro:"⌂", news:"◉", projects:"⊞", contact:"✉" };
-const TAB_LABELS = { intro:"Home", news:"News", projects:"Projects", contact:"Contact" };
+const TAB_ICONS = { intro:"⌂", news:"◉", projects:"⊞", articles:"✦", contact:"✉" };
+const TAB_LABELS = { intro:"Home", news:"News", projects:"Projects", articles:"Articles", contact:"Contact" };
 
 
 // ─── Projects Carousel Component ─────────────────────────────────────────────
@@ -315,7 +316,7 @@ export default function App() {
     } catch { setFormStatus("error"); }
   };
 
-  const sections = ["intro","news","projects","contact"];
+  const sections = ["intro","news","projects","articles","contact"];
 
   const inputStyle = (focused) => ({
     width:"100%", background:focused?t.bgInputFocus:t.bgInput,
@@ -349,12 +350,13 @@ export default function App() {
             <span style={{ color:t.accentDim,fontSize:"11px" }}>/ u18181188</span>
           </div>
           <div style={{ display:"flex",gap:"4px",alignItems:"center" }}>
-            {sections.map((s) => (
+            {sections.map((s) => s === "articles" ? (
+              <a key={s} href="/articles" style={{ background:"transparent",border:"1px solid transparent",color:t.textDim,padding:"4px 14px",fontSize:"11px",letterSpacing:"1.5px",textTransform:"uppercase",textDecoration:"none",display:"inline-block",transition:"all 0.2s" }}>articles</a>
+            ) : (
               <button key={s} onClick={()=>{ setActiveSection(s); pushHash(s); }} style={{ background:activeSection===s?t.accentFaint:"transparent",border:activeSection===s?`1px solid ${t.accentMute}`:"1px solid transparent",color:activeSection===s?t.accent:t.textDim,padding:"4px 14px",cursor:"pointer",fontSize:"11px",letterSpacing:"1.5px",textTransform:"uppercase",transition:"all 0.2s" }}>
                 {s==="news"&&newsLoading?"news ◌":s}
               </button>
             ))}
-            <a href="/articles" style={{ background:"transparent",border:"1px solid transparent",color:t.textDim,padding:"4px 14px",cursor:"pointer",fontSize:"11px",letterSpacing:"1.5px",textTransform:"uppercase",transition:"all 0.2s",textDecoration:"none",display:"inline-block" }}>articles</a>
             <button onClick={toggleTheme} title={t.toggleTip} style={{ marginLeft:"8px",background:t.accentFaint,border:`1px solid ${t.border}`,color:t.accent,width:"30px",height:"30px",cursor:"pointer",fontSize:"14px",display:"flex",alignItems:"center",justifyContent:"center",transition:"all 0.2s",flexShrink:0 }}>
               {t.toggleIcon}
             </button>
@@ -529,13 +531,20 @@ export default function App() {
           {sections.map((s)=>{
             const active=activeSection===s;
             return (
-              <button key={s} onClick={()=>{ setActiveSection(s); pushHash(s); }} style={{ flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:"3px",background:"transparent",border:"none",color:active?t.accent:t.textDim,cursor:"pointer",padding:"0",transition:"color 0.2s",position:"relative" }}>
-                {active&&<div style={{ position:"absolute",top:0,left:"20%",right:"20%",height:"2px",background:t.accent }} />}
-                <span style={{ fontSize:"18px",lineHeight:1 }}>
-                  {s==="news"&&newsLoading?"◌":TAB_ICONS[s]}
-                </span>
-                <span style={{ fontSize:"9px",letterSpacing:"1px",textTransform:"uppercase" }}>{TAB_LABELS[s]}</span>
-              </button>
+              {s === "articles" ? (
+                <a key={s} href="/articles" style={{ flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:"3px",color:t.textDim,textDecoration:"none",padding:"0",transition:"color 0.2s",position:"relative" }}>
+                  <span style={{ fontSize:"18px",lineHeight:1 }}>{TAB_ICONS[s]}</span>
+                  <span style={{ fontSize:"9px",letterSpacing:"1px",textTransform:"uppercase" }}>{TAB_LABELS[s]}</span>
+                </a>
+              ) : (
+                <button key={s} onClick={()=>{ setActiveSection(s); pushHash(s); }} style={{ flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:"3px",background:"transparent",border:"none",color:active?t.accent:t.textDim,cursor:"pointer",padding:"0",transition:"color 0.2s",position:"relative" }}>
+                  {active&&<div style={{ position:"absolute",top:0,left:"20%",right:"20%",height:"2px",background:t.accent }} />}
+                  <span style={{ fontSize:"18px",lineHeight:1 }}>
+                    {s==="news"&&newsLoading?"◌":TAB_ICONS[s]}
+                  </span>
+                  <span style={{ fontSize:"9px",letterSpacing:"1px",textTransform:"uppercase" }}>{TAB_LABELS[s]}</span>
+                </button>
+              )}
             );
           })}
         </nav>
