@@ -2,7 +2,8 @@ import { getAllArticles, getArticleBySlug } from "@/lib/articles";
 import ArticleShell from "../ArticleShell";
 import CopyButton from "./CopyButton";
 import Link from "next/link";
-import { marked } from "marked";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 export async function generateStaticParams() {
   return getAllArticles().map(a => ({ slug: a.slug }));
@@ -43,7 +44,6 @@ export default function ArticlePage({ params }) {
   }
 
   const shareUrl = `https://anaken.one/articles/${params.slug}`;
-  const htmlContent = marked.parse(content);
 
   return (
     <ArticleShell activeSlug={params.slug}>
@@ -83,10 +83,26 @@ export default function ArticlePage({ params }) {
         .article-body hr { border: none; border-top: 1px solid var(--t-border); margin: 2em 0; }
         .article-body h1 { font-size: 22px; font-weight: bold; color: var(--t-textHead); margin: 2em 0 0.7em; }
       `}</style>
-      <div
-        className="article-body"
-        dangerouslySetInnerHTML={{ __html: htmlContent }}
-      />
+      <div className="article-body">
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          components={{
+            h1: ({children}) => <h1>{children}</h1>,
+            h2: ({children}) => <h2>{children}</h2>,
+            h3: ({children}) => <h3>{children}</h3>,
+            p:  ({children}) => <p>{children}</p>,
+            a:  ({href, children}) => <a href={href} target="_blank" rel="noopener noreferrer">{children}</a>,
+            blockquote: ({children}) => <blockquote>{children}</blockquote>,
+            code: ({children}) => <code>{children}</code>,
+            ul: ({children}) => <ul>{children}</ul>,
+            ol: ({children}) => <ol>{children}</ol>,
+            li: ({children}) => <li>{children}</li>,
+            hr: () => <hr />,
+          }}
+        >
+          {content}
+        </ReactMarkdown>
+      </div>
 
       <div style={{ marginTop:"60px",paddingTop:"24px",borderTop:"1px solid var(--t-border)" }}>
         <Link href="/articles" style={{ color:"var(--t-accentDim)",fontSize:"11px",letterSpacing:"1.5px",textDecoration:"none" }}>← ALL ARTICLES</Link>
