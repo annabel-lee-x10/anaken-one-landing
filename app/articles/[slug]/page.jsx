@@ -1,8 +1,38 @@
 import { getAllArticles, getArticleBySlug } from "@/lib/articles";
 import ArticleShell from "../ArticleShell";
 import CopyButton from "./CopyButton";
-import { marked } from "marked";
 import Link from "next/link";
+
+function parseMarkdown(md) {
+  return md
+    .split(/\n\n+/)
+    .map(block => {
+      const trimmed = block.trim();
+      if (!trimmed) return "";
+      // headings
+      if (trimmed.startsWith("## ")) {
+        return `<h2>${inlineMarkdown(trimmed.slice(3))}</h2>`;
+      }
+      if (trimmed.startsWith("### ")) {
+        return `<h3>${inlineMarkdown(trimmed.slice(4))}</h3>`;
+      }
+      // blockquote
+      if (trimmed.startsWith("> ")) {
+        return `<blockquote>${inlineMarkdown(trimmed.slice(2))}</blockquote>`;
+      }
+      // paragraph
+      return `<p>${inlineMarkdown(trimmed.replace(/\n/g, " "))}</p>`;
+    })
+    .join("\n");
+}
+
+function inlineMarkdown(text) {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+    .replace(/\*(.+?)\*/g, "<em>$1</em>")
+    .replace(/`(.+?)`/g, "<code>$1</code>")
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+}
 
 export async function generateStaticParams() {
   return getAllArticles().map(a => ({ slug: a.slug }));
@@ -43,7 +73,7 @@ export default function ArticlePage({ params }) {
   }
 
   const shareUrl = `https://anaken.one/articles/${params.slug}`;
-  const htmlContent = marked(content);
+  const htmlContent = parseMarkdown(content);
 
   return (
     <ArticleShell activeSlug={params.slug}>
