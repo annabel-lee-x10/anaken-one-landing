@@ -17,28 +17,21 @@ export default function Page() {
   const articles = articleMeta.map(meta => {
     try {
       const { frontmatter, content } = getArticleBySlug(meta.slug);
-      const contentBlocks = content.split("\n").reduce((acc, line) => {
-        if (line.startsWith("### ")) return [...acc, { type:"h3", text:line.slice(4).trim() }];
-        if (line.startsWith("## "))  return [...acc, { type:"h2", text:line.slice(3).trim() }];
-        const trimmed = line.trim();
-        if (trimmed && !trimmed.startsWith("#")) return [...acc, { type:"p", text:trimmed }];
-        return acc;
-      }, []);
       return {
         slug: meta.slug,
         title: frontmatter.title || meta.title,
         date: frontmatter.date || meta.date,
         description: frontmatter.description || meta.description,
-        contentBlocks,
+        rawContent: content,
       };
     } catch {
-      return { ...meta, contentBlocks:[] };
+      return { ...meta, rawContent: "" };
     }
   });
 
   return (
     <>
-      {/* SSR content for crawlers — hidden visually, readable by search engines */}
+      {/* SSR content for crawlers */}
       <div aria-hidden="true" style={{ position:"absolute", width:"1px", height:"1px", overflow:"hidden", opacity:0, pointerEvents:"none" }}>
         <h1>Anaken / u18181188</h1>
         <p>Ageless hobbyist. I love learning workflows and processes — then taking them apart to make them faster, leaner, and smarter.</p>

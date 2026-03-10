@@ -2,6 +2,81 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 
+// ─── Article body renderer ────────────────────────────────────────────────────
+// Takes a raw markdown string, returns React elements.
+// Handles: ## h2, ### h3, **bold**, *italic*, `code`, [text](url), paragraphs.
+function ArticleBody({ content, t, isMobile }) {
+  if (!content) return null;
+
+  // --- inline parser: returns array of strings + React elements ---
+  function inline(text, baseKey) {
+    const out = [];
+    const re = /\*\*(.+?)\*\*|\*(.+?)\*|`(.+?)`|\[([^\]]+)\]\(([^)]+)\)/g;
+    let last = 0, n = 0, m;
+    while ((m = re.exec(text)) !== null) {
+      if (m.index > last) out.push(text.slice(last, m.index));
+      const k = `${baseKey}-${n++}`;
+      if      (m[1] != null) out.push(<strong key={k} style={{ color: t.textHead, fontWeight: "bold" }}>{m[1]}</strong>);
+      else if (m[2] != null) out.push(<em key={k}>{m[2]}</em>);
+      else if (m[3] != null) out.push(<code key={k} style={{ background: t.accentFaint, border: `1px solid ${t.border}`, padding: "1px 5px", fontSize: "0.88em", fontFamily: "inherit" }}>{m[3]}</code>);
+      else if (m[4] != null) out.push(<a key={k} href={m[5]} target="_blank" rel="noopener noreferrer" style={{ color: t.accent, textDecoration: "underline" }}>{m[4]}</a>);
+      last = re.lastIndex;
+    }
+    if (last < text.length) out.push(text.slice(last));
+    return out;
+  }
+
+  // --- block parser ---
+  const blocks = [];
+  let paraLines = [];
+
+  function flushPara() {
+    if (!paraLines.length) return;
+    blocks.push({ type: "p", text: paraLines.join(" ").trim() });
+    paraLines = [];
+  }
+
+  for (const raw of content.split("\n")) {
+    const line = raw.trimEnd();
+    if      (line.startsWith("### ")) { flushPara(); blocks.push({ type: "h3", text: line.slice(4).trim() }); }
+    else if (line.startsWith("## "))  { flushPara(); blocks.push({ type: "h2", text: line.slice(3).trim() }); }
+    else if (line.startsWith("> "))   { flushPara(); blocks.push({ type: "bq", text: line.slice(2).trim() }); }
+    else if (line === "")             { flushPara(); }
+    else                              { paraLines.push(line.trim()); }
+  }
+  flushPara();
+
+  return (
+    <div style={{ fontSize: isMobile ? "14px" : "15px", lineHeight: "1.85" }}>
+      {blocks.map((block, i) => {
+        const kids = inline(block.text, i);
+        switch (block.type) {
+          case "h2": return (
+            <h3 key={i} style={{ fontSize: isMobile ? "16px" : "18px", fontWeight: "bold", color: t.textHead, margin: "2em 0 0.7em", borderLeft: `2px solid ${t.accent}`, paddingLeft: "14px" }}>
+              {kids}
+            </h3>
+          );
+          case "h3": return (
+            <h4 key={i} style={{ fontSize: "14px", fontWeight: "bold", color: t.accent, margin: "1.6em 0 0.5em", letterSpacing: "0.5px" }}>
+              {kids}
+            </h4>
+          );
+          case "bq": return (
+            <blockquote key={i} style={{ borderLeft: `2px solid ${t.accentDim}`, paddingLeft: "16px", margin: "1.5em 0", color: t.textDim, fontStyle: "italic" }}>
+              {kids}
+            </blockquote>
+          );
+          default: return (
+            <p key={i} style={{ margin: "0 0 1.3em", color: t.textBody, lineHeight: "1.85" }}>
+              {kids}
+            </p>
+          );
+        }
+      })}
+    </div>
+  );
+}
+
 const SCHEDULE_HOURS_UTC = [0, 8, 16];
 const STORAGE_KEY = "anaken-news-cache";
 const THEME_KEY   = "anaken-theme";
@@ -533,13 +608,7 @@ export default function ClientApp({ articles = [] }) {
                   <p style={{ fontSize:"14px",color:t.textDim,margin:0,lineHeight:"1.7" }}>{openArticle.description}</p>
                 </div>
                 <hr style={{ border:"none",borderTop:`1px solid ${t.border}`,marginBottom:"32px" }} />
-                <div style={{ fontSize:isMobile?"14px":"15px",lineHeight:"1.85" }}>
-                  {(openArticle.contentBlocks||[]).map((block,i)=>{
-                    if(block.type==="h2") return <h3 key={i} style={{ fontSize:isMobile?"16px":"18px",fontWeight:"bold",color:t.textHead,margin:"2em 0 0.7em",borderLeft:`2px solid ${t.accent}`,paddingLeft:"14px" }}>{block.text}</h3>;
-                    if(block.type==="h3") return <h4 key={i} style={{ fontSize:"14px",fontWeight:"bold",color:t.accent,margin:"1.6em 0 0.5em",letterSpacing:"0.5px" }}>{block.text}</h4>;
-                    return <p key={i} style={{ margin:"0 0 1.3em",color:t.textBody,lineHeight:"1.85" }}>{block.text}</p>;
-                  })}
-                </div>
+                <ArticleBody content={openArticle.rawContent} t={t} isMobile={isMobile} />
                 <div style={{ marginTop:"48px",paddingTop:"20px",borderTop:`1px solid ${t.border}` }}>
                   <button onClick={()=>{ setOpenArticle(null); setShareModal(false); setShareCopied(false); pushHash("articles"); }} style={{ background:"transparent",border:"none",color:t.accentDim,cursor:"pointer",fontSize:"11px",letterSpacing:"1.5px",padding:"0" }}>← ALL ARTICLES</button>
                 </div>
