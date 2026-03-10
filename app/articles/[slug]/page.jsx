@@ -43,7 +43,7 @@ export default function ArticlePage({ params }) {
   }
 
   const shareUrl = `https://anaken.one/articles/${params.slug}`;
-  const htmlContent = marked(content);
+  const htmlContent = marked.parse(content);
 
   return (
     <ArticleShell activeSlug={params.slug}>
