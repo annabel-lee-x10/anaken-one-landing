@@ -1,46 +1,74 @@
-// Free RSS feeds — no API key, no cost per visitor
-// Uses rss2json.com free tier (1000 req/day) as RSS-to-JSON proxy
+// Fetches RSS XML directly — no third-party proxy, no API key, no cost
 
-const RSS_FEEDS = [
-  "https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Ffeeds.feedburner.com%2FTheAIBlog",
-  "https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fventurebeat.com%2Fcategory%2Fai%2Ffeed%2F",
+const FEEDS = [
+  { url: "https://techcrunch.com/category/artificial-intelligence/feed/", source: "TechCrunch" },
+  { url: "https://venturebeat.com/feed/", source: "VentureBeat" },
+  { url: "https://www.wired.com/feed/tag/artificial-intelligence/latest/rss", source: "Wired" },
+  { url: "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml", source: "NYT Technology" },
 ];
 
-// Fallback feed if all else fails
-const FALLBACK = [
-  { title:"OpenAI Releases GPT-4o Updates", summary:"OpenAI continues iterating on its multimodal flagship model with improved reasoning and faster response times.", source:"VentureBeat", url:"https://venturebeat.com/ai/", date:"Mar 2026" },
-  { title:"Google DeepMind Advances Robotics AI", summary:"DeepMind's latest research demonstrates robots learning complex tasks from a handful of human demonstrations.", source:"VentureBeat", url:"https://venturebeat.com/ai/", date:"Mar 2026" },
-  { title:"EU AI Act Enforcement Begins", summary:"The EU's landmark AI Act starts applying to high-risk systems, with companies racing to meet new compliance requirements.", source:"VentureBeat", url:"https://venturebeat.com/ai/", date:"Mar 2026" },
-  { title:"Anthropic Raises New Funding Round", summary:"Anthropic secures additional investment to accelerate development of its Claude AI models and safety research.", source:"VentureBeat", url:"https://venturebeat.com/ai/", date:"Mar 2026" },
-  { title:"Open Source Models Close Gap With GPT-4", summary:"New benchmarks show open-weight models from Meta and Mistral performing competitively with proprietary alternatives.", source:"VentureBeat", url:"https://venturebeat.com/ai/", date:"Mar 2026" },
-  { title:"AI Coding Tools Hit 1 Billion Users", summary:"GitHub Copilot, Cursor, and competitors collectively cross the one billion active user milestone in early 2026.", source:"VentureBeat", url:"https://venturebeat.com/ai/", date:"Mar 2026" },
-];
+// Minimal XML RSS parser — extracts <item> blocks and pulls fields out
+function parseRSS(xml, sourceName) {
+  const items = [];
+  const itemRe = /<item[\s>]([\s\S]*?)<\/item>/gi;
+  let match;
+  while ((match = itemRe.exec(xml)) !== null) {
+    const block = match[1];
+    const get = (tag) => {
+      // Try CDATA first, then plain text
+      const cdata = new RegExp(`<${tag}[^>]*><!\\[CDATA\\[([\\s\\S]*?)\\]\\]><\\/${tag}>`, "i").exec(block);
+      if (cdata) return cdata[1].trim();
+      const plain = new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`, "i").exec(block);
+      return plain ? plain[1].replace(/<[^>]*>/g, "").trim() : "";
+    };
 
-function parseDate(str) {
-  try { const d = new Date(str); if (!isNaN(d)) return d.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"}); } catch {}
-  return "";
+    const title   = get("title");
+    const link    = get("link") || (/<link>(.*?)<\/link>/i.exec(block)||[])[1] || "";
+    const rawDesc = get("description") || get("summary");
+    // Strip HTML tags and truncate for summary
+    const summary = rawDesc.replace(/<[^>]*>/g,"").replace(/&amp;/g,"&").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&#\d+;/g,"").trim().slice(0, 200);
+    const pubDate = get("pubDate") || get("published") || get("dc:date");
+    const source  = get("dc:creator") ? `${sourceName}` : sourceName;
+
+    let date = "";
+    try { const d = new Date(pubDate); if (!isNaN(d)) date = d.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"}); } catch {}
+
+    const cleanLink = /^https?:\/\/.+/.test(link) ? link.slice(0,500) : "";
+
+    if (title && cleanLink) items.push({ title: title.slice(0,100), summary, source, date, url: cleanLink });
+    if (items.length >= 6) break;
+  }
+  return items;
 }
 
 export async function GET() {
-  for (const feedUrl of RSS_FEEDS) {
+  const allArticles = [];
+
+  for (const feed of FEEDS) {
+    if (allArticles.length >= 6) break;
     try {
-      const res = await fetch(feedUrl, { next: { revalidate: 28800 } }); // cache 8h server-side
+      const res = await fetch(feed.url, {
+        headers: { "User-Agent": "Mozilla/5.0 (compatible; RSS reader)" },
+        next: { revalidate: 28800 }, // Next.js server-side cache: 8 hours
+      });
       if (!res.ok) continue;
-      const data = await res.json();
-      if (data.status !== "ok" || !Array.isArray(data.items) || !data.items.length) continue;
-
-      const articles = data.items.slice(0, 6).map(item => ({
-        title:   String(item.title   || "").replace(/<[^>]*>/g,"").slice(0, 100),
-        summary: String(item.description || item.content || "").replace(/<[^>]*>/g,"").slice(0, 200).trim(),
-        source:  String(data.feed?.title || item.author || "").replace(/<[^>]*>/g,"").slice(0, 60),
-        date:    parseDate(item.pubDate),
-        url:     /^https?:\/\/.+/.test(String(item.link||"")) ? String(item.link).slice(0,500) : "#",
-      })).filter(a => a.title && a.url !== "#");
-
-      if (articles.length >= 3) return Response.json({ articles }, { headers: { "Cache-Control": "public, max-age=28800" } });
+      const xml = await res.text();
+      const items = parseRSS(xml, feed.source);
+      allArticles.push(...items.slice(0, 6 - allArticles.length));
     } catch { continue; }
   }
 
-  // All feeds failed — return hardcoded fallback
-  return Response.json({ articles: FALLBACK }, { headers: { "Cache-Control": "public, max-age=3600" } });
+  if (allArticles.length >= 3) {
+    return Response.json(
+      { articles: allArticles.slice(0, 6) },
+      { headers: { "Cache-Control": "public, max-age=28800" } }
+    );
+  }
+
+  // Hard fallback — only reached if all feeds are down
+  return Response.json({
+    articles: [
+      { title:"AI News Temporarily Unavailable", summary:"Unable to fetch the latest headlines. Check back soon or visit TechCrunch AI for the latest.", source:"System", date:"", url:"https://techcrunch.com/category/artificial-intelligence/" },
+    ]
+  });
 }
