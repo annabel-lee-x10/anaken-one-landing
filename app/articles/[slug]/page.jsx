@@ -155,7 +155,6 @@ export default function ArticlePage({ params }) {
         {renderMarkdown(content)}
       </div>
 
-
       <div style={{ marginTop:"60px", paddingTop:"24px", borderTop:"1px solid var(--t-border)" }}>
         <Link href="/articles" style={{ color:"var(--t-accentDim)", fontSize:"11px", letterSpacing:"1.5px", textDecoration:"none" }}>← ALL ARTICLES</Link>
       </div>
