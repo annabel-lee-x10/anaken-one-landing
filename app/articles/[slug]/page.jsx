@@ -1,8 +1,7 @@
 import { getAllArticles, getArticleBySlug } from "@/lib/articles";
 import ArticleShell from "../ArticleShell";
 import CopyButton from "./CopyButton";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import { marked } from "marked";
 import Link from "next/link";
 
 export async function generateStaticParams() {
@@ -44,6 +43,7 @@ export default function ArticlePage({ params }) {
   }
 
   const shareUrl = `https://anaken.one/articles/${params.slug}`;
+  const htmlContent = marked(content);
 
   return (
     <ArticleShell activeSlug={params.slug}>
@@ -71,19 +71,18 @@ export default function ArticlePage({ params }) {
       <hr style={{ border:"none",borderTop:"1px solid var(--t-border)",marginBottom:"36px" }} />
 
       {/* body */}
-      <ReactMarkdown
-        remarkPlugins={[remarkGfm]}
-        components={{
-          h2: ({children}) => <h2 style={{ fontSize:"18px",fontWeight:"bold",color:"var(--t-textHead)",margin:"2em 0 0.7em",borderLeft:"2px solid var(--t-accent)",paddingLeft:"14px" }}>{children}</h2>,
-          h3: ({children}) => <h3 style={{ fontSize:"14px",fontWeight:"bold",color:"var(--t-accent)",margin:"1.6em 0 0.5em",letterSpacing:"0.5px" }}>{children}</h3>,
-          p:  ({children}) => <p  style={{ margin:"0 0 1.3em",color:"var(--t-textBody)",lineHeight:"1.85",fontSize:"15px" }}>{children}</p>,
-          a:  ({href,children}) => <a href={href} target="_blank" rel="noopener noreferrer" style={{ color:"var(--t-accent)",textDecoration:"underline" }}>{children}</a>,
-          blockquote: ({children}) => <blockquote style={{ borderLeft:"2px solid var(--t-accentDim)",paddingLeft:"16px",margin:"1.5em 0",color:"var(--t-textDim)",fontStyle:"italic" }}>{children}</blockquote>,
-          code: ({children}) => <code style={{ background:"var(--t-accentFaint)",border:"1px solid var(--t-border)",padding:"2px 6px",fontSize:"13px",color:"var(--t-accent)" }}>{children}</code>,
-        }}
-      >
-        {content}
-      </ReactMarkdown>
+      <style>{`
+        .article-body p { margin: 0 0 1.3em; color: var(--t-textBody); line-height: 1.85; font-size: 15px; }
+        .article-body h2 { font-size: 18px; font-weight: bold; color: var(--t-textHead); margin: 2em 0 0.7em; border-left: 2px solid var(--t-accent); padding-left: 14px; }
+        .article-body h3 { font-size: 14px; font-weight: bold; color: var(--t-accent); margin: 1.6em 0 0.5em; letter-spacing: 0.5px; }
+        .article-body a { color: var(--t-accent); text-decoration: underline; }
+        .article-body blockquote { border-left: 2px solid var(--t-accentDim); padding-left: 16px; margin: 1.5em 0; color: var(--t-textDim); font-style: italic; }
+        .article-body code { background: var(--t-accentFaint); border: 1px solid var(--t-border); padding: 2px 6px; font-size: 13px; color: var(--t-accent); }
+      `}</style>
+      <div
+        className="article-body"
+        dangerouslySetInnerHTML={{ __html: htmlContent }}
+      />
 
       <div style={{ marginTop:"60px",paddingTop:"24px",borderTop:"1px solid var(--t-border)" }}>
         <Link href="/articles" style={{ color:"var(--t-accentDim)",fontSize:"11px",letterSpacing:"1.5px",textDecoration:"none" }}>← ALL ARTICLES</Link>
