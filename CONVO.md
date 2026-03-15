@@ -101,3 +101,14 @@
 - `app/lab/page.tsx` — status badge colors → CSS variables for dark mode
 
 **Mockup pages kept for reference:** `/mockup/look-1`, `/mockup/look-2`, `/mockup/look-3`, `/mockup/look-3-dark`
+
+## 2026-03-15 — Footer Nav Cleanup
+
+**Goal:** Fix clunky footer nav — per-link rainbow colors with repeated hues across two uneven columns looked inconsistent.
+
+**Process:**
+- Mocked up 3 options on separate dev servers (ports 3001-3003): Monochrome Clean, Single Row, Labeled Groups
+- User chose **Option C: Labeled Groups** — two columns with "Explore" / "Connect" headers
+
+**Changes:**
+- `components/Footer.tsx` — replaced per-link color array with two semantic groups (EXPLORE, CONNECT), added uppercase column headers with `var(--text-head)`, links use `var(--text-muted)` with hover to `var(--text-body)` via CSS class
