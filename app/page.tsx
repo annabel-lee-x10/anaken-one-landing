@@ -4,7 +4,7 @@ import SectionTracker from "@/components/SectionTracker";
 
 export const metadata = {
   title: "Anaken — Workflows, Tools & AI",
-  description: "Ageless hobbyist. I love learning workflows and processes — then taking them apart to make them faster, leaner, and smarter.",
+  description: "ideate. innovate. iterate. — Exploring workflows, AI tooling, and systems optimization.",
   alternates: { canonical: "https://anaken.one" },
 };
 
@@ -43,8 +43,8 @@ export default async function HomePage() {
             <h1 style={{ marginBottom: "24px", lineHeight: 1.08 }}>
               Workflows, Tools<br />& AI.
             </h1>
-            <p style={{ fontSize: "19px", color: "var(--text-muted)", lineHeight: 1.65, maxWidth: "480px", margin: "0 auto 36px" }}>
-              Ageless hobbyist. I love learning workflows and processes — then taking them apart to make them faster, leaner, and smarter.
+            <p style={{ fontSize: "clamp(20px, 4vw, 26px)", color: "var(--text-body)", lineHeight: 1.4, letterSpacing: "0.12em", margin: "0 auto 36px" }}>
+              ideate. innovate. iterate.
             </p>
             <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
               <Link href="/articles" className="btn btn-primary">Read Articles</Link>
