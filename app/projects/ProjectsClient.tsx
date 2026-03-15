@@ -1,14 +1,9 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
 import { trackEvent } from "@/lib/analytics";
-
-type Project = { id: string; type: string; name: string; tagline: string; description: string; url: string; };
-
-const TYPE_COLORS: Record<string, string> = {
-  Tool:  "#3366FF",
-  Game:  "#FF3355",
-  Guide: "#FFCC00",
-};
+import { TYPE_COLORS } from "@/lib/projects";
+import type { Project } from "@/lib/projects";
 
 export default function ProjectsClient({ projects }: { projects: Project[] }) {
   const [active, setActive] = useState(0);
@@ -63,14 +58,24 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
             {i === active && (
               <div style={{ marginTop: "16px" }}>
                 <p style={{ fontSize: "14px", color: "var(--text-body)", lineHeight: 1.7, marginBottom: "20px" }}>{p.description}</p>
-                <a
-                  href={p.url} target="_blank" rel="noopener noreferrer"
-                  className="btn btn-primary btn-sm"
-                  style={{ textDecoration: "none" }}
-                  onClick={e => { e.stopPropagation(); trackEvent("project_visit", { project_name: p.name, project_url: p.url }); }}
-                >
-                  Visit Project &rarr;
-                </a>
+                <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                  <Link
+                    href={`/projects/${p.slug}`}
+                    className="btn btn-secondary btn-sm"
+                    style={{ textDecoration: "none" }}
+                    onClick={e => e.stopPropagation()}
+                  >
+                    View Details
+                  </Link>
+                  <a
+                    href={p.url} target="_blank" rel="noopener noreferrer"
+                    className="btn btn-primary btn-sm"
+                    style={{ textDecoration: "none" }}
+                    onClick={e => { e.stopPropagation(); trackEvent("project_visit", { project_name: p.name, project_url: p.url }); }}
+                  >
+                    Visit Project &rarr;
+                  </a>
+                </div>
               </div>
             )}
           </div>
