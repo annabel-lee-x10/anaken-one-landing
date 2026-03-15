@@ -10,8 +10,6 @@ export const metadata = {
   alternates: { canonical: "https://anaken.one" },
 };
 
-const DOT_COLORS = ["#3366FF", "#00CC66", "#FFCC00", "#FF3355"];
-
 async function getNews() {
   try {
     const base = process.env.NEXT_PUBLIC_SITE_URL || process.env.VERCEL_URL
@@ -36,19 +34,16 @@ export default async function HomePage() {
       <SectionTracker name="hero">
         <section className="section" style={{ textAlign: "center", paddingTop: "7.5rem", paddingBottom: "6rem" }}>
           <div className="container-narrow fade-up">
-            <p className="label-upper" style={{ marginBottom: "20px" }}>Anaken · u18181188</p>
+            <p className="label-upper" style={{ marginBottom: "20px" }}>Anaken · a10101100</p>
             <h1 className="gradient-text" style={{ marginBottom: "24px", lineHeight: 1.08 }}>
               Workflows, Tools<br />& AI.
             </h1>
-            <p style={{ fontSize: "clamp(20px, 4vw, 26px)", color: "var(--text-body)", lineHeight: 1.4, letterSpacing: "0.12em", margin: "0 auto 24px" }}>
+            <p style={{ fontSize: "clamp(20px, 4vw, 26px)", color: "var(--text-body)", lineHeight: 1.4, letterSpacing: "0.12em", margin: "0 auto 16px" }}>
               ideate. innovate. iterate.
             </p>
-            {/* Decorative dots */}
-            <div style={{ display: "flex", gap: "8px", justifyContent: "center", marginBottom: "36px" }}>
-              {DOT_COLORS.map((c, i) => (
-                <div key={i} style={{ width: "8px", height: "8px", borderRadius: "50%", background: c }} />
-              ))}
-            </div>
+            <p style={{ fontSize: "15px", color: "var(--text-muted)", lineHeight: 1.65, maxWidth: "420px", margin: "0 auto 36px" }}>
+              I build tools, write about AI workflows, and ship experiments. a10101100 is where it all started.
+            </p>
             <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
               <Link href="/articles" className="btn" style={{ background: "var(--accent)", color: "#ffffff" }}>Read Articles</Link>
               <Link href="/projects" className="btn btn-secondary">See Projects</Link>
@@ -91,14 +86,9 @@ export default async function HomePage() {
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "40px", flexWrap: "wrap", gap: "16px" }}>
               <div>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
-                  <p className="label-upper" style={{ margin: 0, color: "var(--accent-amber)" }}>Projects</p>
-                  <div style={{ display: "flex", gap: "4px" }}>
-                    {["#3366FF", "#00CC66", "#FFCC00"].map((c, i) => (
-                      <div key={i} style={{ width: "20px", height: "6px", borderRadius: "3px", background: c }} />
-                    ))}
-                  </div>
+                  <p className="label-upper" style={{ margin: 0, color: "var(--accent)" }}>Projects</p>
                 </div>
-                <h2 style={{ color: "var(--accent-amber)" }}>Things I&apos;ve built</h2>
+                <h2 style={{ color: "var(--accent)" }}>Things I&apos;ve built</h2>
               </div>
               <Link href="/projects" className="btn btn-secondary btn-sm">View all</Link>
             </div>
@@ -116,14 +106,14 @@ export default async function HomePage() {
             <div className="container">
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "40px", flexWrap: "wrap", gap: "16px" }}>
                 <div>
-                  <p className="label-upper" style={{ marginBottom: "10px", color: "var(--accent-green)" }}>News</p>
-                  <h2 style={{ color: "var(--accent-green)" }}>Latest in AI</h2>
+                  <p className="label-upper" style={{ marginBottom: "10px", color: "var(--accent)" }}>News</p>
+                  <h2 style={{ color: "var(--accent)" }}>Latest in AI</h2>
                 </div>
                 <Link href="/news" className="btn btn-secondary btn-sm">All news</Link>
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
                 {news.map((n: { title: string; source: string; date: string; url: string; summary: string }, i: number) => {
-                  const dotColor = ["#00CC66", "#FFCC00", "#FF3355"][i % 3];
+                  const dotColor = ["var(--accent)", "var(--accent-coral)"][i % 2];
                   return (
                     <a key={i} href={n.url} target="_blank" rel="noopener noreferrer" className="card-hover" style={{
                       display: "flex", justifyContent: "space-between", alignItems: "flex-start",
@@ -192,6 +182,44 @@ export default async function HomePage() {
         </section>
       </SectionTracker>
 
+      <div className="gradient-divider" />
+
+      {/* ── Lab Preview ─────────────────────────────────── */}
+      <SectionTracker name="lab-preview">
+        <section className="section section-alt">
+          <div className="container">
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "40px", flexWrap: "wrap", gap: "16px" }}>
+              <div>
+                <p className="label-upper" style={{ marginBottom: "10px", color: "var(--accent)" }}>Lab</p>
+                <h2 style={{ color: "var(--accent)" }}>From the Lab</h2>
+              </div>
+              <Link href="/lab" className="btn btn-secondary btn-sm">View Lab</Link>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+              {[
+                { name: "Prompt Diff", status: "WIP", description: "Compare two prompt versions side-by-side with structured output diffing.", statusColor: "var(--status-wip-fg)", statusBg: "var(--status-wip-bg)" },
+                { name: "Token Counter", status: "Idea", description: "Paste any text, get token counts for major models with cost estimates.", statusColor: "var(--status-idea-fg)", statusBg: "var(--status-idea-bg)" },
+              ].map(exp => (
+                <div key={exp.name} className="card" style={{ padding: "24px 28px", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "20px" }}>
+                  <div style={{ flex: 1 }}>
+                    <p style={{ fontSize: "17px", fontWeight: 600, color: "var(--text-head)", letterSpacing: "-0.02em", marginBottom: "6px" }}>{exp.name}</p>
+                    <p style={{ fontSize: "14px", color: "var(--text-muted)", lineHeight: 1.6 }}>{exp.description}</p>
+                  </div>
+                  <span style={{
+                    flexShrink: 0, fontSize: "12px", fontWeight: 600,
+                    color: exp.statusColor, background: exp.statusBg,
+                    padding: "4px 10px", borderRadius: "20px",
+                    letterSpacing: "0.04em",
+                  }}>
+                    {exp.status}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </SectionTracker>
+
       {/* ── CTA ──────────────────────────────────────────── */}
       <SectionTracker name="cta">
         <section className="section" style={{ textAlign: "center" }}>
@@ -204,11 +232,6 @@ export default async function HomePage() {
               background: "linear-gradient(135deg, var(--accent), var(--accent-coral))",
               color: "#ffffff",
             }}>Get in touch</Link>
-            <div style={{ display: "flex", gap: "8px", justifyContent: "center", marginTop: "24px" }}>
-              {DOT_COLORS.map((c, i) => (
-                <div key={i} style={{ width: "6px", height: "6px", borderRadius: "50%", background: c }} />
-              ))}
-            </div>
           </div>
         </section>
       </SectionTracker>

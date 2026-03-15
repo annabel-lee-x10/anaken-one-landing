@@ -37,7 +37,7 @@ export default function Footer() {
       `}</style>
 
       {/* Gradient top border */}
-      <div style={{ height: "2px", background: "linear-gradient(90deg, #3366FF, #00CC66, #FFCC00, #FF3355)" }} />
+      <div style={{ height: "2px", background: "linear-gradient(90deg, #3366FF, #6644CC, #FF3355)" }} />
 
       <div className="container" style={{ padding: "52px 1.5rem 44px", display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "32px" }}>
         <div>
@@ -46,6 +46,9 @@ export default function Footer() {
           </Link>
           <p style={{ fontSize: "14px", color: "var(--text-muted)", maxWidth: "240px", lineHeight: 1.65 }}>
             ideate. innovate. iterate.
+          </p>
+          <p style={{ fontSize: "13px", color: "var(--text-muted)", marginTop: "8px", opacity: 0.7 }}>
+            Tools, workflows, and AI experiments.
           </p>
         </div>
         <nav style={{ display: "flex", gap: "40px", flexWrap: "wrap" }}>
@@ -70,7 +73,7 @@ export default function Footer() {
       <div style={{ borderTop: "1px solid var(--border-mid)" }}>
         <div className="container" style={{ padding: "18px 1.5rem", display: "flex", justifyContent: "space-between", alignItems: "center", gap: "8px" }}>
           <p style={{ fontSize: "13px", color: "var(--text-muted)" }}>&copy; {new Date().getFullYear()} Anaken</p>
-          <p style={{ fontSize: "13px", color: "var(--text-muted)", cursor: "default" }} title="you can call me a10101100 if you wished">u18181188</p>
+          <p style={{ fontSize: "13px", color: "var(--text-muted)", cursor: "default" }} title="a10101100 — where it started">a10101100</p>
         </div>
       </div>
     </footer>

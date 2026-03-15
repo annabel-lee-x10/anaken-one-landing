@@ -1,5 +1,32 @@
 # Conversation Log
 
+## 2026-03-15 — Homepage Polish: Identity, Colors & Components
+
+**Context:** Detailed UX/design feedback identified scattered color palette, vague identity, orphaned decorative elements, and component polish gaps.
+
+**Key decisions:**
+- Replace `u18181188` with `a10101100` (old coder handle) throughout
+- Keep "ideate. innovate. iterate." tagline
+- Full color consolidation: blue primary + violet secondary, demote amber/green to functional use
+
+**What changed:**
+
+1. **Identity** — `u18181188` → `a10101100` in hero label and footer. Added bio line: "I build tools, write about AI workflows, and ship experiments."
+2. **Color consolidation** — All section headings (Projects, News, Articles) now use `var(--accent)` (blue) instead of per-section green/coral/amber. Gradient text narrowed from blue→pink to blue→violet (`#6644CC`). Gradient dividers and footer border updated to 3-stop (blue→violet→coral).
+3. **Decorative cleanup** — Removed orphaned colored dots from hero and CTA sections. Removed colored pill bars next to Projects heading.
+4. **Lab teaser** — New "From the Lab" section on homepage showing 2 experiments with status badges.
+5. **Footer warmth** — Added descriptor line, updated identity and gradient border.
+6. **Theme toggle** — Added `title` tooltip for the moon/sun icon.
+7. **News dots** — Consolidated from 3-color rotation to alternating blue/coral.
+
+**Files changed (4):**
+- `app/page.tsx` — identity, bio, color consolidation, dots removed, lab teaser added
+- `app/globals.css` — gradient-text and gradient-divider narrowed to blue→violet
+- `components/Footer.tsx` — identity, gradient border, descriptor line
+- `components/Nav.tsx` — title tooltip on theme toggle
+
+---
+
 ## 2026-03-15 — Homepage 3D Carousel
 
 **Context:** Homepage projects section used a static card grid while `/projects` had a 3D orbit carousel. User wanted the same carousel on the homepage.
