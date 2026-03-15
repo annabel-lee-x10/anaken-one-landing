@@ -1,0 +1,196 @@
+import Link from "next/link";
+import { getAllArticles } from "@/lib/articles";
+import SectionTracker from "@/components/SectionTracker";
+
+export const metadata = {
+  title: "Anaken — Workflows, Tools & AI",
+  description: "Ageless hobbyist. I love learning workflows and processes — then taking them apart to make them faster, leaner, and smarter.",
+  alternates: { canonical: "https://anaken.one" },
+};
+
+const PROJECTS = [
+  { name: "AI Fact-Check Engine", desc: "Verify AI-generated claims in real time.", href: "https://aifactchecker.anaken.one/", tag: "Tool" },
+  { name: "promptVault",           desc: "Your personal prompt engineering HQ.",    href: "https://promptvault.anaken.one/",   tag: "Tool" },
+  { name: "Space Commanders",      desc: "Classic arcade shooter for the browser.", href: "https://space-commanders-classic.anaken.one/", tag: "Game" },
+  { name: "Simple Snake",          desc: "Snake, rebuilt collaboratively.",          href: "https://simple-snake.anaken.one/",  tag: "Game" },
+];
+
+async function getNews() {
+  try {
+    const base = process.env.NEXT_PUBLIC_SITE_URL || process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : "http://localhost:3000";
+    const res = await fetch(`${base}/api/news`, { next: { revalidate: 28800 } });
+    if (!res.ok) return [];
+    const data = await res.json();
+    return (data.items ?? data.articles ?? []).slice(0, 3);
+  } catch {
+    return [];
+  }
+}
+
+export default async function HomePage() {
+  const articles = getAllArticles().slice(0, 3);
+  const news = await getNews();
+
+  return (
+    <>
+      {/* ── Hero ─────────────────────────────────────────── */}
+      <SectionTracker name="hero">
+        <section className="section" style={{ textAlign: "center", paddingTop: "7.5rem", paddingBottom: "6rem" }}>
+          <div className="container-narrow fade-up">
+            <p className="label-upper" style={{ marginBottom: "20px" }}>Anaken · u18181188</p>
+            <h1 style={{ marginBottom: "24px", lineHeight: 1.08 }}>
+              Workflows, Tools<br />& AI.
+            </h1>
+            <p style={{ fontSize: "19px", color: "var(--text-muted)", lineHeight: 1.65, maxWidth: "480px", margin: "0 auto 36px" }}>
+              Ageless hobbyist. I love learning workflows and processes — then taking them apart to make them faster, leaner, and smarter.
+            </p>
+            <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
+              <Link href="/articles" className="btn btn-primary">Read Articles</Link>
+              <Link href="/projects" className="btn btn-secondary">See Projects</Link>
+            </div>
+          </div>
+        </section>
+      </SectionTracker>
+
+      {/* ── Stats strip ──────────────────────────────────── */}
+      <section className="section-alt" style={{ padding: "0" }}>
+        <hr className="divider" />
+        <div className="container" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)" }}>
+          {[
+            { label: "Focus",  value: "Workflow Optimization" },
+            { label: "Mode",   value: "Perpetual Learner"     },
+            { label: "Stack",  value: "AI-first Tooling"      },
+          ].map(({ label, value }, i) => (
+            <div key={label} style={{
+              padding: "28px 24px",
+              borderRight: i < 2 ? "1px solid var(--border-mid)" : "none",
+              textAlign: "center",
+            }}>
+              <p className="label-upper" style={{ marginBottom: "8px" }}>{label}</p>
+              <p style={{ fontSize: "15px", fontWeight: 600, color: "var(--text-head)" }}>{value}</p>
+            </div>
+          ))}
+        </div>
+        <hr className="divider" />
+      </section>
+
+      {/* ── Projects ─────────────────────────────────────── */}
+      <SectionTracker name="projects-preview">
+        <section className="section">
+          <div className="container">
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "40px", flexWrap: "wrap", gap: "16px" }}>
+              <div>
+                <p className="label-upper" style={{ marginBottom: "10px" }}>Projects</p>
+                <h2>Things I&apos;ve built</h2>
+              </div>
+              <Link href="/projects" className="btn btn-secondary btn-sm">View all</Link>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "12px" }}>
+              {PROJECTS.map(({ name, desc, href, tag }) => (
+                <a key={name} href={href} target="_blank" rel="noopener noreferrer" className="card card-hover" style={{
+                  display: "block", padding: "28px 24px", textDecoration: "none",
+                }}>
+                  <span style={{
+                    display: "inline-block", marginBottom: "16px",
+                    fontSize: "12px", fontWeight: 600, color: "var(--text-muted)",
+                    background: "var(--bg-alt)", padding: "4px 10px", borderRadius: "20px",
+                    letterSpacing: "0.04em", textTransform: "uppercase",
+                  }}>
+                    {tag}
+                  </span>
+                  <h3 style={{ fontSize: "18px", marginBottom: "8px", letterSpacing: "-0.02em" }}>{name}</h3>
+                  <p style={{ fontSize: "14px", color: "var(--text-muted)", lineHeight: 1.6 }}>{desc}</p>
+                  <p style={{ marginTop: "20px", fontSize: "13px", color: "var(--accent)", fontWeight: 500 }}>Visit &rarr;</p>
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+      </SectionTracker>
+
+      {/* ── News Preview ─────────────────────────────────── */}
+      {news.length > 0 && (
+        <SectionTracker name="news-preview">
+          <section className="section section-alt">
+            <div className="container">
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "40px", flexWrap: "wrap", gap: "16px" }}>
+                <div>
+                  <p className="label-upper" style={{ marginBottom: "10px" }}>News</p>
+                  <h2>Latest in AI</h2>
+                </div>
+                <Link href="/news" className="btn btn-secondary btn-sm">All news</Link>
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
+                {news.map((n: { title: string; source: string; date: string; url: string; summary: string }, i: number) => (
+                  <a key={i} href={n.url} target="_blank" rel="noopener noreferrer" className="card-hover" style={{
+                    display: "flex", justifyContent: "space-between", alignItems: "flex-start",
+                    gap: "24px", padding: "24px",
+                    background: "var(--bg-card)", borderRadius: "var(--radius)",
+                    textDecoration: "none",
+                  }}>
+                    <div style={{ flex: 1 }}>
+                      <p style={{ fontSize: "16px", fontWeight: 600, color: "var(--text-head)", letterSpacing: "-0.02em", marginBottom: "6px" }}>{n.title}</p>
+                      <p style={{ fontSize: "13px", color: "var(--text-muted)" }}>{n.source} {n.date ? `· ${n.date}` : ""}</p>
+                    </div>
+                    <span style={{ fontSize: "14px", color: "var(--accent)", flexShrink: 0, paddingTop: "4px" }}>&rarr;</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </section>
+        </SectionTracker>
+      )}
+
+      {/* ── Articles ─────────────────────────────────────── */}
+      <SectionTracker name="articles-preview">
+        <section className={`section ${news.length > 0 ? "" : "section-alt"}`}>
+          <div className="container">
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "40px", flexWrap: "wrap", gap: "16px" }}>
+              <div>
+                <p className="label-upper" style={{ marginBottom: "10px" }}>Writing</p>
+                <h2>Recent Articles</h2>
+              </div>
+              <Link href="/articles" className="btn btn-secondary btn-sm">All articles</Link>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
+              {articles.map(a => (
+                <Link key={a.slug} href={`/articles/${a.slug}`} className="card-hover" style={{
+                  display: "flex", justifyContent: "space-between", alignItems: "flex-start",
+                  gap: "24px", padding: "24px",
+                  background: "var(--bg-card)", borderRadius: "var(--radius)",
+                  textDecoration: "none",
+                }}>
+                  <div style={{ flex: 1 }}>
+                    <p style={{ fontSize: "18px", fontWeight: 600, color: "var(--text-head)", letterSpacing: "-0.02em", marginBottom: "6px" }}>{a.title}</p>
+                    <p style={{ fontSize: "14px", color: "var(--text-muted)", lineHeight: 1.6 }}>{a.description}</p>
+                  </div>
+                  <div style={{ textAlign: "right", flexShrink: 0 }}>
+                    <p style={{ fontSize: "13px", color: "var(--text-muted)", marginBottom: "8px" }}>
+                      {a.date ? new Date(a.date).toLocaleDateString("en-US", { month: "short", day: "numeric" }) : ""}
+                    </p>
+                    <span style={{ fontSize: "14px", color: "var(--accent)" }}>&rarr;</span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      </SectionTracker>
+
+      {/* ── CTA ──────────────────────────────────────────── */}
+      <SectionTracker name="cta">
+        <section className="section" style={{ textAlign: "center" }}>
+          <div className="container-narrow">
+            <h2 style={{ marginBottom: "16px" }}>Let&apos;s connect</h2>
+            <p style={{ fontSize: "17px", color: "var(--text-muted)", marginBottom: "32px", lineHeight: 1.6 }}>
+              Got feedback, an idea, or just want to say hi?
+            </p>
+            <Link href="/contact" className="btn btn-primary">Get in touch</Link>
+          </div>
+        </section>
+      </SectionTracker>
+    </>
+  );
+}
