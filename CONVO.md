@@ -1,5 +1,18 @@
 # Conversation Log
 
+## 2026-03-15 — Homepage 3D Carousel
+
+**Context:** Homepage projects section used a static card grid while `/projects` had a 3D orbit carousel. User wanted the same carousel on the homepage.
+
+**What changed:**
+- Replaced homepage projects grid with `ProjectsClient` 3D orbit carousel component
+- Removed unused `TYPE_COLORS` import from homepage
+
+**Files changed:**
+- `app/page.tsx` — swapped grid for `<ProjectsClient projects={PROJECTS} />`
+
+---
+
 ## 2026-03-15 — 3D Carousel + Accent Color Reorder
 
 **Context:** Project cards on `/projects` used a grid layout with expand-to-view-details pattern. User wanted direct click-through to `/projects/[slug]` for GA4 tracking, plus a visual upgrade to a 3D animated carousel.
