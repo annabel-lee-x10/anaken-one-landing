@@ -18,7 +18,7 @@ export default function Footer() {
             Anaken
           </Link>
           <p style={{ fontSize: "14px", color: "var(--text-muted)", maxWidth: "240px", lineHeight: 1.65 }}>
-            Ageless hobbyist. Workflows, tools, and AI.
+            ideate. innovate. iterate.
           </p>
         </div>
         <nav style={{ display: "flex", gap: "40px", flexWrap: "wrap" }}>

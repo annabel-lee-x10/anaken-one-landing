@@ -14,17 +14,17 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: { default: "Anaken", template: "%s — Anaken" },
-  description: "Ageless hobbyist. I love learning workflows and processes — then taking them apart to make them faster, leaner, and smarter.",
+  description: "ideate. innovate. iterate. — Exploring workflows, AI tooling, and systems optimization.",
   metadataBase: new URL("https://anaken.one"),
   robots: { index: true, follow: true },
   openGraph: {
     type: "website",
     url: "https://anaken.one",
     title: "Anaken",
-    description: "Ageless hobbyist. Workflows, tools, and AI.",
+    description: "ideate. innovate. iterate. — Workflows, AI tools, and optimization.",
     siteName: "Anaken",
   },
-  twitter: { card: "summary", title: "Anaken", description: "Ageless hobbyist. Workflows, tools, and AI." },
+  twitter: { card: "summary", title: "Anaken", description: "ideate. innovate. iterate. — Workflows, AI tools, and optimization." },
   alternates: { canonical: "https://anaken.one" },
 };
 

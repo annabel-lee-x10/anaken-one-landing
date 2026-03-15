@@ -23,3 +23,17 @@
 - News page Refresh button removed per user request
 
 **PR:** https://github.com/annabel-lee-x10/anaken-one-landing/pull/1
+
+## 2026-03-15 — Update profile tagline
+
+**Goal:** Replace the old bio tagline ("Ageless hobbyist. I love learning workflows and processes...") with a new motto: **"ideate. innovate. iterate."**
+
+**Analysis:** Shifts from 25-word conversational bio to 3-word manifesto. Maps to the same site themes — ideate (curiosity/AI exploration), innovate (building tools/projects), iterate (workflow optimization) — at a higher abstraction level.
+
+**Changes (7 locations, 4 files):**
+- `app/page.tsx` — hero bio text + restyled for motto (larger font, letter-spacing), page meta description
+- `app/layout.tsx` — root description, OpenGraph description, Twitter card description
+- `components/Footer.tsx` — footer tagline
+- `app/mockup/page.tsx` — design reference bio
+
+**SEO:** Metadata uses hybrid format ("ideate. innovate. iterate. — Exploring workflows, AI tooling, and systems optimization.") to preserve keywords. Stats grid kept as-is.

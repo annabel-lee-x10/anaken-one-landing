@@ -7,7 +7,7 @@ export default function MockupPage() {
         <div className="container">
           <h1>anaken.one</h1>
           <p style={{ fontSize: 19, color: "var(--text-muted)", maxWidth: 520, margin: "1rem auto 2rem" }}>
-            Ageless hobbyist, workflow optimizer, AI-first thinker. A personal corner of the internet.
+            ideate. innovate. iterate. — A personal corner of the internet.
           </p>
           <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
             <button className="btn btn-primary">Read Articles</button>
