@@ -3,6 +3,7 @@ title: "The Literacy Gap Nobody Wants to Talk About"
 date: "2026-03-09"
 description: "Most AI debate happens between people who build it and people who fear it. The majority in the middle — who use it daily without understanding it — are making the consequential decisions."
 slug: "the-literacy-gap-nobody-wants-to-talk-about"
+tags: ["AI literacy", "responsible AI", "digital fluency", "AI risk", "user education"]
 ---
 
 There's a version of this conversation that never includes you. It happens between engineers who trained the models and ethicists who critique them — sharp, well-funded, and completely fluent in a language most people don't speak. If you've ever nodded along to an AI debate while only half-understanding it, you're not alone. You're the majority. And you're the one making the consequential decisions.
@@ -65,7 +66,7 @@ Institutions — schools, employers, professional associations — need to treat
 
 And individuals, to the extent they can, are better served by curiosity than by either evangelism or avoidance. The question isn't whether to use these tools. Most people already do. The question is whether to understand them well enough to use them wisely.
 
-## The Honest Picture
+## Where This Goes From Here
 
 The AI debate is not going to slow down. The tools are not going to get simpler. The decisions made by people who don't fully understand what they're using will not become less consequential.
 

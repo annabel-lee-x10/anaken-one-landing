@@ -64,7 +64,7 @@ npm run start  # Start production server
 ```
 
 ## Git / PR Workflow
-
+- always fetch origin/main
 - Main branch: `main`
 - Feature branches follow: `claude/<slug>` (e.g. `claude/dark-mode`)
 - Branch to feature branch before starting coding

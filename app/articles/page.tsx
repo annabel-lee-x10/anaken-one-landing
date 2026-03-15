@@ -5,7 +5,7 @@ import SectionTracker from "@/components/SectionTracker";
 
 export const metadata: Metadata = {
   title: "Articles",
-  description: "Writing on AI, workflows, tools, and the way things work.",
+  description: "Original writing on AI literacy, workflow systems, and how technology reshapes the way we think and work.",
 };
 
 export default function ArticlesPage() {
@@ -19,7 +19,7 @@ export default function ArticlesPage() {
           <p className="label-upper" style={{ marginBottom: "12px", color: "var(--accent)" }}>Writing</p>
           <h1 style={{ color: "var(--accent)" }}>Articles</h1>
           <p style={{ fontSize: "17px", color: "var(--text-muted)", marginTop: "12px", lineHeight: 1.6 }}>
-            {articles.length} articles on AI, workflows, tools, and thinking.
+            Long-form takes on AI, workflows, and the systems behind how we work. No listicles — just honest thinking about tools that are changing everything.
           </p>
         </header>
 
