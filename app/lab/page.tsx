@@ -4,9 +4,9 @@ import SectionTracker from "@/components/SectionTracker";
 export const metadata: Metadata = { title: "Lab", description: "Experiments, demos, and half-formed ideas." };
 
 const STATUS: Record<string, { label: string; color: string; bg: string }> = {
-  live: { label: "Live",  color: "#16a34a", bg: "#f0fdf4" },
-  wip:  { label: "WIP",  color: "#d97706", bg: "#fffbeb" },
-  idea: { label: "Idea", color: "#848281", bg: "#f5f5f4" },
+  live: { label: "Live",  color: "var(--status-live-fg)", bg: "var(--status-live-bg)" },
+  wip:  { label: "WIP",  color: "var(--status-wip-fg)",  bg: "var(--status-wip-bg)"  },
+  idea: { label: "Idea", color: "var(--status-idea-fg)", bg: "var(--status-idea-bg)" },
 };
 
 const EXPERIMENTS = [

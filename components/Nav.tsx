@@ -3,6 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { trackEvent } from "@/lib/analytics";
+import { useTheme } from "@/components/ThemeProvider";
 
 const LINKS = [
   { href: "/articles", label: "Articles" },
@@ -16,6 +17,7 @@ export default function Nav() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const { theme, toggle } = useTheme();
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 8);
@@ -26,6 +28,7 @@ export default function Nav() {
   useEffect(() => { setOpen(false); }, [pathname]);
 
   const isActive = (href: string) => pathname.startsWith(href);
+  const isDark = theme === "dark";
 
   return (
     <>
@@ -33,14 +36,16 @@ export default function Nav() {
         position: "fixed", top: 0, left: 0, right: 0,
         height: "60px", zIndex: 200,
         display: "flex", alignItems: "center",
-        background: scrolled ? "rgba(255,255,255,0.92)" : "transparent",
+        background: scrolled
+          ? (isDark ? "rgba(0,0,0,0.92)" : "rgba(255,255,255,0.92)")
+          : "transparent",
         backdropFilter: scrolled ? "blur(16px)" : "none",
         borderBottom: scrolled ? "1px solid var(--border-mid)" : "1px solid transparent",
         transition: "background 200ms ease, border-color 200ms ease",
       }}>
         <div className="container" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
           {/* Logo */}
-          <Link href="/" onClick={() => trackEvent("nav_click", { link_label: "Anaken", link_url: "/", from_page: pathname })} style={{ fontSize: "18px", fontWeight: 700, color: "var(--text-head)", letterSpacing: "-0.04em", textDecoration: "none" }}>
+          <Link href="/" onClick={() => trackEvent("nav_click", { link_label: "Anaken", link_url: "/", from_page: pathname })} className="gradient-text" style={{ fontSize: "18px", fontWeight: 700, letterSpacing: "-0.04em", textDecoration: "none" }}>
             Anaken
           </Link>
 
@@ -58,8 +63,22 @@ export default function Nav() {
             ))}
           </nav>
 
-          {/* CTA */}
+          {/* CTA + Theme toggle */}
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            {/* Theme toggle */}
+            <button
+              onClick={toggle}
+              aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+              style={{
+                background: "none", border: "none", cursor: "pointer",
+                padding: "6px", fontSize: "18px", lineHeight: 1,
+                color: "var(--text-muted)",
+                transition: "color var(--t-fast) ease",
+              }}
+            >
+              {isDark ? "☀" : "☽"}
+            </button>
+
             <Link href="/contact" onClick={() => trackEvent("nav_click", { link_label: "Contact", link_url: "/contact", from_page: pathname })} className="btn btn-primary btn-sm" style={{ textDecoration: "none" }}>
               Contact
             </Link>
