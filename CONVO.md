@@ -1,5 +1,23 @@
 # Conversation Log
 
+## 2026-03-15 — New Article: "The Floor Is Dropping"
+
+**Goal:** Format and publish a new article about how AI compounds the intelligence divide by making thinking optional.
+
+**What was done:**
+- Created `content/articles/the-floor-is-dropping-how-ai-is-compounding-the-intelligence-gap.md` with frontmatter (title, date, description) matching existing article format
+- Slug derived from filename per `lib/articles.ts` convention
+- Replaced all em dashes with hyphens across all 7 articles (95 occurrences)
+- Date set to 2026-03-15 — becomes the most recent article, shown on homepage
+- Verified: article count (6→7), homepage preview, sitemap, prev/next nav all update automatically
+- Build passes with zero errors
+
+**Files changed:**
+- `content/articles/the-floor-is-dropping-how-ai-is-compounding-the-intelligence-gap.md` — NEW: full article
+- `content/articles/*.md` — all 6 existing articles: em dashes replaced with hyphens
+
+---
+
 ## 2026-03-15 — Homepage 3D Carousel
 
 **Context:** Homepage projects section used a static card grid while `/projects` had a 3D orbit carousel. User wanted the same carousel on the homepage.
