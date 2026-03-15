@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getAllArticles } from "@/lib/articles";
+import { PROJECTS, TYPE_COLORS } from "@/lib/projects";
 import SectionTracker from "@/components/SectionTracker";
 
 export const metadata = {
@@ -8,19 +9,7 @@ export const metadata = {
   alternates: { canonical: "https://anaken.one" },
 };
 
-const PROJECTS = [
-  { name: "AI Fact-Check Engine", desc: "Verify AI-generated claims in real time.", href: "https://aifactchecker.anaken.one/", tag: "Tool" },
-  { name: "promptVault",           desc: "Your personal prompt engineering HQ.",    href: "https://promptvault.anaken.one/",   tag: "Tool" },
-  { name: "Space Commanders",      desc: "Classic arcade shooter for the browser.", href: "https://space-commanders-classic.anaken.one/", tag: "Game" },
-  { name: "Simple Snake",          desc: "Snake, rebuilt collaboratively.",          href: "https://simple-snake.anaken.one/",  tag: "Game" },
-];
-
 const DOT_COLORS = ["#3366FF", "#FF3355", "#FFCC00", "#00CC66"];
-
-const tagStyle = (tag: string) =>
-  tag === "Tool"
-    ? { bg: "var(--accent)", color: "#ffffff" }
-    : { bg: "var(--accent-coral)", color: "#ffffff" };
 
 async function getNews() {
   try {
@@ -113,24 +102,24 @@ export default async function HomePage() {
               <Link href="/projects" className="btn btn-secondary btn-sm">View all</Link>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "12px" }}>
-              {PROJECTS.map(({ name, desc, href, tag }) => {
-                const ts = tagStyle(tag);
+              {PROJECTS.map(p => {
+                const color = TYPE_COLORS[p.type] ?? "var(--accent)";
                 return (
-                  <a key={name} href={href} target="_blank" rel="noopener noreferrer" className="card card-hover" style={{
+                  <Link key={p.id} href={`/projects/${p.slug}`} className="card card-hover" style={{
                     display: "block", padding: "28px 24px", textDecoration: "none",
                   }}>
                     <span style={{
                       display: "inline-block", marginBottom: "16px",
-                      fontSize: "12px", fontWeight: 600, color: ts.color,
-                      background: ts.bg, padding: "4px 10px", borderRadius: "20px",
+                      fontSize: "12px", fontWeight: 600, color: "#ffffff",
+                      background: color, padding: "4px 10px", borderRadius: "20px",
                       letterSpacing: "0.04em", textTransform: "uppercase",
                     }}>
-                      {tag}
+                      {p.type}
                     </span>
-                    <h3 style={{ fontSize: "18px", marginBottom: "8px", letterSpacing: "-0.02em" }}>{name}</h3>
-                    <p style={{ fontSize: "14px", color: "var(--text-muted)", lineHeight: 1.6 }}>{desc}</p>
-                    <p style={{ marginTop: "20px", fontSize: "13px", color: ts.bg, fontWeight: 500 }}>Visit →</p>
-                  </a>
+                    <h3 style={{ fontSize: "18px", marginBottom: "8px", letterSpacing: "-0.02em" }}>{p.name}</h3>
+                    <p style={{ fontSize: "14px", color: "var(--text-muted)", lineHeight: 1.6 }}>{p.tagline}</p>
+                    <p style={{ marginTop: "20px", fontSize: "13px", color, fontWeight: 500 }}>View details →</p>
+                  </Link>
                 );
               })}
             </div>

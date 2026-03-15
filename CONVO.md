@@ -1,5 +1,17 @@
 # Conversation Log
 
+## 2026-03-15 — Project Slug Routes for Analytics
+
+**Context:** All 6 projects shared a single `/projects` pageview in GA4, making it impossible to track per-project interest.
+
+**What changed:**
+- Created `lib/projects.ts` — shared project data with auto-generated slugs from project names
+- Added `app/projects/[slug]/page.tsx` — individual SSG detail pages per project with SEO metadata and SectionTracker
+- Updated `/projects` listing to import from shared module, added "View Details" internal link alongside "Visit Project"
+- Updated homepage to show all 6 projects (was 4) and link to `/projects/[slug]` instead of external URLs
+- Each project now gets a distinct GA4 pageview automatically (e.g. `/projects/space-commanders`)
+- Adding a new project only requires adding one entry to `RAW_PROJECTS` in `lib/projects.ts` — slug is auto-generated
+
 ## 2026-03-15 — v2 Architecture Migration
 
 **Context:** Merged two repos — `anaken-one-landing` (repo 1, production content) and `anaken-one-new` (repo 2, new architecture) — into a single codebase.
