@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { getAllArticles } from "@/lib/articles";
-import { PROJECTS, TYPE_COLORS } from "@/lib/projects";
+import { PROJECTS } from "@/lib/projects";
 import SectionTracker from "@/components/SectionTracker";
+import ProjectsClient from "./projects/ProjectsClient";
 
 export const metadata = {
   title: "Anaken — Workflows, Tools & AI",
@@ -101,28 +102,7 @@ export default async function HomePage() {
               </div>
               <Link href="/projects" className="btn btn-secondary btn-sm">View all</Link>
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "12px" }}>
-              {PROJECTS.map(p => {
-                const color = TYPE_COLORS[p.type] ?? "var(--accent)";
-                return (
-                  <Link key={p.id} href={`/projects/${p.slug}`} className="card card-hover" style={{
-                    display: "block", padding: "28px 24px", textDecoration: "none",
-                  }}>
-                    <span style={{
-                      display: "inline-block", marginBottom: "16px",
-                      fontSize: "12px", fontWeight: 600, color: "#ffffff",
-                      background: color, padding: "4px 10px", borderRadius: "20px",
-                      letterSpacing: "0.04em", textTransform: "uppercase",
-                    }}>
-                      {p.type}
-                    </span>
-                    <h3 style={{ fontSize: "18px", marginBottom: "8px", letterSpacing: "-0.02em" }}>{p.name}</h3>
-                    <p style={{ fontSize: "14px", color: "var(--text-muted)", lineHeight: 1.6 }}>{p.tagline}</p>
-                    <p style={{ marginTop: "20px", fontSize: "13px", color, fontWeight: 500 }}>View details →</p>
-                  </Link>
-                );
-              })}
-            </div>
+            <ProjectsClient projects={PROJECTS} />
           </div>
         </section>
       </SectionTracker>
