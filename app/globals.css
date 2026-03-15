@@ -164,9 +164,13 @@ h3 { font-size: clamp(20px, 2.5vw, 26px); font-weight: 600; }
   padding: 0 1.5rem;
 }
 
-.section { padding: 6.5rem 0; }
-.section-sm { padding: 4rem 0; }
-.section-alt { background: var(--bg-alt); }
+.section { padding: 5rem 0; }
+.section-sm { padding: 3rem 0; }
+.section-alt {
+  background: var(--bg-alt);
+  background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
 
 /* ── Buttons ────────────────────────────────────────────────── */
 .btn {
@@ -208,6 +212,7 @@ h3 { font-size: clamp(20px, 2.5vw, 26px); font-weight: 600; }
 /* ── Hover utilities ────────────────────────────────────────── */
 .card-hover { transition: box-shadow var(--t) var(--ease), background var(--t) var(--ease), transform var(--t) var(--ease); }
 .card-hover:hover { background: var(--bg-card-hover) !important; box-shadow: var(--shadow-lift) !important; }
+.section-alt .card-hover:hover { box-shadow: var(--shadow-lift-hv) !important; }
 
 .link-dim { color: var(--text-body); transition: color var(--t-fast) ease; }
 .link-dim:hover { color: var(--text-head); text-decoration: none; }
@@ -271,6 +276,6 @@ h3 { font-size: clamp(20px, 2.5vw, 26px); font-weight: 600; }
 
 /* ── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 720px) {
-  .section { padding: 3.5rem 0; }
-  .section-sm { padding: 2.5rem 0; }
+  .section { padding: 2.5rem 0; }
+  .section-sm { padding: 2rem 0; }
 }

@@ -250,3 +250,25 @@
 
 **Files changed:**
 - `components/ThemeProvider.tsx` — async `isSamsungDevice()` with Client Hints API + type declarations
+
+---
+
+## 2026-03-15 — Visual Overhaul: Corp Comms Critique
+
+**Context:** Head of Corporate Communications review of site visuals. Site is technically solid but visually generic — lacks brand distinctiveness, visual hierarchy between content types, and has excessive whitespace.
+
+**Changes (7 recommendations, all implemented):**
+
+1. **Tightened accent palette** — Stats strip uses consistent `--accent` (blue) instead of 3 random colors. Article date badges use `--accent` instead of `--accent-sky`.
+2. **Differentiated content types** — Articles: blue left border. News: coral top stripe. Lab: status-colored left border + larger badges.
+3. **Reduced section padding** — `.section` 6.5rem→5rem, `.section-sm` 4rem→3rem, hero 7.5rem→6rem / 6rem→4.5rem. Mobile proportional.
+4. **Strengthened hero** — Added positioning line "Building at the intersection of AI & developer tooling", blue glow shadow on primary CTA.
+5. **Enriched footer** — Tagline in body color (not faded), extended positioning line, wider column gap (40→56px).
+6. **Added grid view for projects** — Grid/carousel toggle on desktop, defaults to grid on mobile. 3→2→1 col responsive. Carousel preserved as alternative.
+7. **Added visual texture** — Subtle dot pattern on `.section-alt` via CSS radial-gradient. Stronger hover lift for cards in alt sections.
+
+**Files changed (4):**
+- `app/globals.css` — padding, texture, hover states, responsive
+- `app/page.tsx` — hero, card borders, color consolidation, stats strip
+- `app/projects/ProjectsClient.tsx` — grid view toggle + extracted ProjectCard component
+- `components/Footer.tsx` — enriched content + spacing
