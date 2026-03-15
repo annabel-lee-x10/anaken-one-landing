@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getAllArticles } from "@/lib/articles";
+import { fetchNews } from "@/lib/news";
 import { PROJECTS } from "@/lib/projects";
 import SectionTracker from "@/components/SectionTracker";
 import ProjectsClient from "./projects/ProjectsClient";
@@ -10,23 +11,10 @@ export const metadata = {
   alternates: { canonical: "https://anaken.one" },
 };
 
-async function getNews() {
-  try {
-    const base = process.env.NEXT_PUBLIC_SITE_URL || process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : "http://localhost:3000";
-    const res = await fetch(`${base}/api/news`, { next: { revalidate: 28800 } });
-    if (!res.ok) return [];
-    const data = await res.json();
-    return (data.items ?? data.articles ?? []).slice(0, 3);
-  } catch {
-    return [];
-  }
-}
-
 export default async function HomePage() {
   const articles = getAllArticles().slice(0, 3);
-  const news = await getNews();
+  const { items } = await fetchNews();
+  const news = items.slice(0, 3);
 
   return (
     <>
