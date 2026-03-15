@@ -37,3 +37,26 @@
 - `app/mockup/page.tsx` — design reference bio
 
 **SEO:** Metadata uses hybrid format ("ideate. innovate. iterate. — Exploring workflows, AI tooling, and systems optimization.") to preserve keywords. Stats grid kept as-is.
+
+## 2026-03-15 — Internal Analytics Enhancement
+
+**Goal:** Comprehensive internal analytics for personal analysis — track footprints, per-section engagement, and user journeys. Nothing visible on the site; all analysis via GA4 dashboard.
+
+**What was built:**
+- `lib/analytics.ts` (NEW) — typed `trackEvent()` utility with `EventMap` for type-safe GA4 events
+- Refactored `SectionTracker.tsx` to use centralized `trackEvent` instead of raw `window.gtag`
+- Added `SectionTracker` to all 7 subpages (articles, article detail, projects, news, lab, now, contact)
+- Nav journey tracking — `nav_click` events on all nav links (desktop, mobile, logo, contact CTA) with `from_page` context
+- Interaction events: `contact_submit`, `share_click` (twitter/linkedin/copy), `project_select`, `project_visit`, `news_click`
+
+**Files changed (14):**
+- `lib/analytics.ts` — NEW: event map + trackEvent utility
+- `components/SectionTracker.tsx` — uses trackEvent
+- `components/Nav.tsx` — nav_click tracking on all links
+- `app/articles/page.tsx`, `app/articles/[slug]/page.tsx`, `app/projects/page.tsx`, `app/news/page.tsx`, `app/lab/page.tsx`, `app/now/page.tsx`, `app/contact/page.tsx` — SectionTracker added
+- `app/contact/ContactForm.tsx` — contact_submit event
+- `app/articles/[slug]/ShareButtons.tsx` — share_click events
+- `app/projects/ProjectsClient.tsx` — project_select + project_visit events
+- `app/news/NewsClient.tsx` — news_click event
+
+**GA4 setup required:** Register custom dimensions (section_name, link_label, from_page, article_slug, project_name, method) in GA4 Admin > Custom Definitions.

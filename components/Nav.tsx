@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
+import { trackEvent } from "@/lib/analytics";
 
 const LINKS = [
   { href: "/articles", label: "Articles" },
@@ -39,14 +40,14 @@ export default function Nav() {
       }}>
         <div className="container" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
           {/* Logo */}
-          <Link href="/" style={{ fontSize: "18px", fontWeight: 700, color: "var(--text-head)", letterSpacing: "-0.04em", textDecoration: "none" }}>
+          <Link href="/" onClick={() => trackEvent("nav_click", { link_label: "Anaken", link_url: "/", from_page: pathname })} style={{ fontSize: "18px", fontWeight: 700, color: "var(--text-head)", letterSpacing: "-0.04em", textDecoration: "none" }}>
             Anaken
           </Link>
 
           {/* Desktop links */}
           <nav className="desktop-nav" style={{ display: "flex", alignItems: "center", gap: "4px" }}>
             {LINKS.map(({ href, label }) => (
-              <Link key={href} href={href} style={{
+              <Link key={href} href={href} onClick={() => trackEvent("nav_click", { link_label: label, link_url: href, from_page: pathname })} style={{
                 fontSize: "15px", fontWeight: 500,
                 color: isActive(href) ? "var(--text-head)" : "var(--text-muted)",
                 padding: "6px 12px", borderRadius: "8px",
@@ -59,7 +60,7 @@ export default function Nav() {
 
           {/* CTA */}
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <Link href="/contact" className="btn btn-primary btn-sm" style={{ textDecoration: "none" }}>
+            <Link href="/contact" onClick={() => trackEvent("nav_click", { link_label: "Contact", link_url: "/contact", from_page: pathname })} className="btn btn-primary btn-sm" style={{ textDecoration: "none" }}>
               Contact
             </Link>
             {/* Hamburger */}
@@ -88,7 +89,7 @@ export default function Nav() {
           gap: "4px",
         }}>
           {LINKS.map(({ href, label }) => (
-            <Link key={href} href={href} style={{
+            <Link key={href} href={href} onClick={() => trackEvent("nav_click", { link_label: label, link_url: href, from_page: pathname })} style={{
               fontSize: "20px", fontWeight: 500,
               color: isActive(href) ? "var(--text-head)" : "var(--text-body)",
               padding: "14px 0",
@@ -96,7 +97,7 @@ export default function Nav() {
               borderBottom: "1px solid var(--border)",
             }}>{label}</Link>
           ))}
-          <Link href="/contact" className="btn btn-primary" style={{ marginTop: "24px", textDecoration: "none", justifyContent: "center" }}>
+          <Link href="/contact" onClick={() => trackEvent("nav_click", { link_label: "Contact", link_url: "/contact", from_page: pathname })} className="btn btn-primary" style={{ marginTop: "24px", textDecoration: "none", justifyContent: "center" }}>
             Contact
           </Link>
         </div>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import SectionTracker from "@/components/SectionTracker";
 
 export const metadata: Metadata = { title: "Lab", description: "Experiments, demos, and half-formed ideas." };
 
@@ -16,6 +17,7 @@ const EXPERIMENTS = [
 
 export default function LabPage() {
   return (
+    <SectionTracker name="lab">
     <section className="section">
       <div className="container-narrow">
         <header style={{ marginBottom: "48px" }} className="fade-up">
@@ -49,5 +51,6 @@ export default function LabPage() {
         </div>
       </div>
     </section>
+    </SectionTracker>
   );
 }

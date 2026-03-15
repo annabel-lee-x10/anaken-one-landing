@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ProjectsClient from "./ProjectsClient";
+import SectionTracker from "@/components/SectionTracker";
 
 export const metadata: Metadata = {
   title: "Projects",
@@ -15,7 +16,7 @@ const PROJECTS = [
 
 export default function ProjectsPage() {
   return (
-    <>
+    <SectionTracker name="projects">
       <section className="section">
         <div className="container">
           <header style={{ marginBottom: "52px" }} className="fade-up">
@@ -26,6 +27,6 @@ export default function ProjectsPage() {
           <ProjectsClient projects={PROJECTS} />
         </div>
       </section>
-    </>
+    </SectionTracker>
   );
 }

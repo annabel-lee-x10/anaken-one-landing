@@ -4,6 +4,7 @@ import { getAllArticles, getArticleBySlug } from "@/lib/articles";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import ShareButtons from "./ShareButtons";
+import SectionTracker from "@/components/SectionTracker";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -54,6 +55,7 @@ export default async function ArticlePage({ params }: Props) {
           )}
         </header>
 
+        <SectionTracker name="article-content">
         <article style={{ fontSize: "17px", lineHeight: 1.8, color: "var(--text-body)" }}>
           <ReactMarkdown components={{
             h2: ({ children }) => (
@@ -83,7 +85,9 @@ export default async function ArticlePage({ params }: Props) {
             {content}
           </ReactMarkdown>
         </article>
+        </SectionTracker>
 
+        <SectionTracker name="article-nav">
         <nav style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginTop: "64px", paddingTop: "40px", borderTop: "1px solid var(--border-mid)" }}>
           {prev ? (
             <Link href={`/articles/${prev.slug}`} className="card card-hover" style={{ padding: "20px 24px", textDecoration: "none" }}>
@@ -98,6 +102,7 @@ export default async function ArticlePage({ params }: Props) {
             </Link>
           ) : <div />}
         </nav>
+        </SectionTracker>
       </div>
     </section>
   );
