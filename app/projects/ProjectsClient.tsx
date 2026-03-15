@@ -4,6 +4,12 @@ import { trackEvent } from "@/lib/analytics";
 
 type Project = { id: string; type: string; name: string; tagline: string; description: string; url: string; };
 
+const TYPE_COLORS: Record<string, string> = {
+  Tool:  "#3B8CF5",
+  Game:  "#EF5B4B",
+  Guide: "#F5B731",
+};
+
 export default function ProjectsClient({ projects }: { projects: Project[] }) {
   const [active, setActive] = useState(0);
   const [touch, setTouch] = useState<number | null>(null);
@@ -40,8 +46,9 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
           >
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "16px" }}>
               <span style={{
-                fontSize: "12px", fontWeight: 600, color: i === active ? "var(--accent)" : "var(--text-muted)",
-                background: i === active ? "var(--badge-active-bg)" : "var(--border)",
+                fontSize: "12px", fontWeight: 600,
+                color: i === active ? (TYPE_COLORS[p.type] ?? "var(--accent)") : "var(--text-muted)",
+                background: i === active ? `var(--type-bg-${p.type.toLowerCase()}, var(--badge-active-bg))` : "var(--border)",
                 padding: "4px 10px", borderRadius: "20px",
                 letterSpacing: "0.04em", textTransform: "uppercase",
                 transition: "all var(--t) var(--ease)",

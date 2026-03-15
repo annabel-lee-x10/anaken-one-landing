@@ -94,7 +94,7 @@ export default function NewsClient() {
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "12px", marginBottom: "12px" }}>
                 <span style={{
                   fontSize: "12px", fontWeight: 600, color: "var(--accent)",
-                  background: "#EEF4FF", padding: "3px 10px", borderRadius: "20px",
+                  background: "var(--badge-active-bg)", padding: "3px 10px", borderRadius: "20px",
                   letterSpacing: "0.04em", textTransform: "uppercase", flexShrink: 0,
                 }}>
                   {item.source}
