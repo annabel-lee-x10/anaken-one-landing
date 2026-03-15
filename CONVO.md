@@ -137,3 +137,21 @@
 
 **Changes:**
 - `components/Footer.tsx` — replaced per-link color array with two semantic groups (EXPLORE, CONNECT), added uppercase column headers with `var(--text-head)`, links use `var(--text-muted)` with hover to `var(--text-body)` via CSS class
+
+## 2026-03-15 — Dark Mode: Soft Graphite + Samsung AMOLED Detection
+
+**Problem:** Eye fatigue complaints with pure black (`#000000`) dark mode on non-AMOLED screens.
+
+**Solution:**
+- Default dark mode switched to **Soft Graphite** (`#1e1e1e`) — neutral gray palette that reduces eye strain on LCD/IPS displays
+- Samsung AMOLED devices (detected via user agent: `samsung`, `sm-`, `gt-`) keep pure black for power efficiency
+- Detection uses `data-display` attribute (`amoled` | `lcd`) on `<html>`, with CSS specificity layering
+
+**Selection process:** 3 aesthetics prototyped in parallel worktrees and evaluated side by side:
+1. Warm Charcoal (`#1a1917`) — warm brown-gray
+2. Cool Slate (`#161a22`) — blue-gray
+3. **Soft Graphite (`#1e1e1e`)** — neutral gray (selected)
+
+**Files changed:**
+- `app/globals.css` — Soft Graphite palette + Samsung AMOLED override block
+- `components/ThemeProvider.tsx` — `isSamsungDevice()` detection, sets `data-display` attribute
