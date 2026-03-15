@@ -16,8 +16,8 @@ export default function ArticlesPage() {
     <section className="section">
       <div className="container-narrow">
         <header style={{ marginBottom: "48px" }} className="fade-up">
-          <p className="label-upper" style={{ marginBottom: "12px" }}>Writing</p>
-          <h1>Articles</h1>
+          <p className="label-upper" style={{ marginBottom: "12px", color: "var(--accent)" }}>Writing</p>
+          <h1 style={{ color: "var(--accent)" }}>Articles</h1>
           <p style={{ fontSize: "17px", color: "var(--text-muted)", marginTop: "12px", lineHeight: 1.6 }}>
             {articles.length} articles on AI, workflows, tools, and thinking.
           </p>

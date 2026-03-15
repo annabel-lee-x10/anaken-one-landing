@@ -21,8 +21,8 @@ export default function NowPage() {
     <section className="section">
       <div className="container-narrow">
         <header style={{ marginBottom: "48px" }} className="fade-up">
-          <p className="label-upper" style={{ marginBottom: "12px" }}>Now</p>
-          <h1>Current Focus</h1>
+          <p className="label-upper" style={{ marginBottom: "12px", color: "var(--accent-green)" }}>Now</p>
+          <h1 style={{ color: "var(--accent-green)" }}>Current Focus</h1>
           <p style={{ fontSize: "14px", color: "var(--text-muted)", marginTop: "12px" }}>
             Updated {new Date(NOW.updated).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
           </p>
