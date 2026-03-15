@@ -60,3 +60,24 @@
 - `app/news/NewsClient.tsx` — news_click event
 
 **GA4 setup required:** Register custom dimensions (section_name, link_label, from_page, article_slug, project_name, method) in GA4 Admin > Custom Definitions.
+
+## 2026-03-15 — Playful Pops + Dark Mode
+
+**Goal:** Add color to the site (was looking dull/monochromatic) and implement dark mode with pure black background.
+
+**Process:**
+- Mocked up 3 color treatment looks: Subtle Warmth, Bold Blocks, Playful Pops
+- User chose **Look 3: Playful Pops** — gradient text, decorative dots, rainbow dividers, colorful pills
+- Created dark mode variant mockup with pure black (#000) background
+- Applied to the live site with full dark mode support
+
+**What changed:**
+- `app/globals.css` — dark mode CSS variables (`[data-theme="dark"]`), `.gradient-text` and `.gradient-divider` utility classes, status/badge CSS vars
+- `components/ThemeProvider.tsx` — re-enabled with localStorage persistence + prefers-color-scheme detection
+- `components/Nav.tsx` — theme toggle button (☽/☀), dark-aware scrolled header, gradient logo
+- `components/Footer.tsx` — rainbow gradient top border, colorful per-link accent colors, gradient logo
+- `app/page.tsx` — full Playful Pops: gradient heading, dots, colored stats, pill badges, gradient dividers, gradient CTA
+- `app/projects/ProjectsClient.tsx` — hardcoded #fff and #EEF4FF → CSS variables
+- `app/lab/page.tsx` — status badge colors → CSS variables for dark mode
+
+**Mockup pages kept for reference:** `/mockup/look-1`, `/mockup/look-2`, `/mockup/look-3`, `/mockup/look-3-dark`

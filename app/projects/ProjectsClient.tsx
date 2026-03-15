@@ -30,7 +30,7 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
             style={{
               padding: "28px 24px",
               borderRadius: "var(--radius)",
-              background: i === active ? "#fff" : "var(--bg-alt)",
+              background: i === active ? "var(--bg-card)" : "var(--bg-alt)",
               boxShadow: i === active ? "var(--shadow-lift)" : "var(--shadow-card)",
               border: i === active ? "1.5px solid var(--border-mid)" : "1px solid var(--border)",
               cursor: "pointer",
@@ -41,7 +41,7 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "16px" }}>
               <span style={{
                 fontSize: "12px", fontWeight: 600, color: i === active ? "var(--accent)" : "var(--text-muted)",
-                background: i === active ? "#EEF4FF" : "var(--border)",
+                background: i === active ? "var(--badge-active-bg)" : "var(--border)",
                 padding: "4px 10px", borderRadius: "20px",
                 letterSpacing: "0.04em", textTransform: "uppercase",
                 transition: "all var(--t) var(--ease)",
