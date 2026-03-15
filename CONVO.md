@@ -155,3 +155,12 @@
 **Files changed:**
 - `app/globals.css` — Soft Graphite palette + Samsung AMOLED override block
 - `components/ThemeProvider.tsx` — `isSamsungDevice()` detection, sets `data-display` attribute
+
+## 2026-03-15 — Samsung UA Detection Fix
+
+**Problem:** Pure black not displaying on Samsung Galaxy Z Fold 7. Chrome 110+ strips device model from UA string (UA reduction), so `sm-`/`gt-` patterns never match.
+
+**Fix:** Use `navigator.userAgentData.getHighEntropyValues()` (UA Client Hints API) to get real manufacturer/model, with fallback to legacy UA sniffing for Samsung Internet and older browsers.
+
+**Files changed:**
+- `components/ThemeProvider.tsx` — async `isSamsungDevice()` with Client Hints API + type declarations
