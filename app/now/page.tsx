@@ -66,9 +66,6 @@ export default function NowPage() {
           </section>
           </SectionTracker>
 
-          <p style={{ fontSize: "13px", color: "var(--text-muted)" }}>
-            Inspired by <a href="https://nownownow.com/about" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent)" }}>nownownow.com</a>
-          </p>
         </div>
       </div>
     </section>

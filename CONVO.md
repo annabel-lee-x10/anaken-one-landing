@@ -61,6 +61,26 @@
 
 **GA4 setup required:** Register custom dimensions (section_name, link_label, from_page, article_slug, project_name, method) in GA4 Admin > Custom Definitions.
 
+## 2026-03-15 — UI Tweaks Batch
+
+**Goal:** Various UI improvements and content updates.
+
+**Changes:**
+- **Footer hover hint** — `u18181188` now shows tooltip "you can call me a10101100 if you wished" on hover
+- **Project type pill colors** — Tool (blue), Game (coral), Guide (amber) with matching dark mode backgrounds via CSS variables (`--type-bg-tool`, `--type-bg-game`, `--type-bg-guide`)
+- **New projects** — Added Where's Munki (Game, wheresmunki.anaken.one) and Solo in Seoul (Guide, soloinseoul.anaken.one)
+- **Now page** — Removed nownownow.com attribution link
+- **News API diagnosis** — newsdata.io returning 401 (API key expired/revoked), RSS fallback working correctly
+- **Dark mode news pill fix** — Hardcoded `#EEF4FF` background on news source pill → `var(--badge-active-bg)` for proper dark mode support
+
+**Files changed (6):**
+- `components/Footer.tsx` — title attribute on u18181188
+- `app/globals.css` — type-specific badge CSS variables (light + dark)
+- `app/projects/page.tsx` — 2 new projects added
+- `app/projects/ProjectsClient.tsx` — TYPE_COLORS map, per-type badge styling
+- `app/now/page.tsx` — removed nownownow.com reference
+- `app/news/NewsClient.tsx` — badge background uses CSS variable
+
 ## 2026-03-15 — Playful Pops + Dark Mode
 
 **Goal:** Add color to the site (was looking dull/monochromatic) and implement dark mode with pure black background.

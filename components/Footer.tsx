@@ -37,7 +37,7 @@ export default function Footer() {
       <div style={{ borderTop: "1px solid var(--border-mid)" }}>
         <div className="container" style={{ padding: "18px 1.5rem", display: "flex", justifyContent: "space-between", alignItems: "center", gap: "8px" }}>
           <p style={{ fontSize: "13px", color: "var(--text-muted)" }}>&copy; {new Date().getFullYear()} Anaken</p>
-          <p style={{ fontSize: "13px", color: "var(--text-muted)" }}>u18181188</p>
+          <p style={{ fontSize: "13px", color: "var(--text-muted)", cursor: "default" }} title="you can call me a10101100 if you wished">u18181188</p>
         </div>
       </div>
     </footer>
