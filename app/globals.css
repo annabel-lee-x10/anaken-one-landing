@@ -63,23 +63,23 @@
   --shadow-lift-hv:0px 8px 28px rgba(0,0,0,0.12);
 }
 
-/* ── Dark Mode ─────────────────────────────────────────────── */
+/* ── Dark Mode — Soft Graphite ────────────────────────────── */
 [data-theme="dark"] {
-  --bg:            #000000;
-  --bg-alt:        #050505;
+  --bg:            #1e1e1e;
+  --bg-alt:        #181818;
   --bg-dark:       #f0f0f0;
-  --bg-card:       #0a0a0a;
-  --bg-card-hover: #111111;
-  --bg-btn-sec:    #111111;
-  --bg-btn-sec-hv: #1a1a1a;
+  --bg-card:       #242424;
+  --bg-card-hover: #2a2a2a;
+  --bg-btn-sec:    #2a2a2a;
+  --bg-btn-sec-hv: #333333;
 
   --text-head:     #F2EFF6;
-  --text-body:     #B5B0BF;
-  --text-muted:    #6E6A78;
+  --text-body:     #B5B5B5;
+  --text-muted:    #737373;
   --text-inv:      #000000;
 
-  --border:        #1a1a1a;
-  --border-mid:    #1a1a1a;
+  --border:        #2e2e2e;
+  --border-mid:    #2e2e2e;
 
   --accent-mint:   #0a1f0a;
   --accent-sage:   #1a2a1a;
@@ -88,17 +88,35 @@
   --status-live-fg:  #4ade80;
   --status-wip-bg:   #2a1a00;
   --status-wip-fg:   #fbbf24;
-  --status-idea-bg:  #1a1a1a;
+  --status-idea-bg:  #252525;
   --status-idea-fg:  #888888;
 
-  --badge-active-bg: #0d1520;
-  --type-bg-tool:    #0d1a2e;
-  --type-bg-game:    #2e0d0d;
-  --type-bg-guide:   #2e2200;
+  --badge-active-bg: #1a1a22;
+  --type-bg-tool:    #141a28;
+  --type-bg-game:    #281414;
+  --type-bg-guide:   #282010;
 
-  --shadow-card:   inset 0 0 0 1px #1a1a1a;
+  --shadow-card:   inset 0 0 0 1px #2e2e2e;
   --shadow-lift:   0px 3px 16px rgba(0,0,0,0.3);
   --shadow-lift-hv:0px 8px 28px rgba(0,0,0,0.4);
+}
+
+/* Samsung AMOLED — pure black override */
+[data-theme="dark"][data-display="amoled"] {
+  --bg:            #000000;
+  --bg-alt:        #050505;
+  --bg-card:       #0a0a0a;
+  --bg-card-hover: #111111;
+  --bg-btn-sec:    #111111;
+  --bg-btn-sec-hv: #1a1a1a;
+  --border:        #1a1a1a;
+  --border-mid:    #1a1a1a;
+  --status-idea-bg:#1a1a1a;
+  --badge-active-bg:#0d1520;
+  --type-bg-tool:  #0d1a2e;
+  --type-bg-game:  #2e0d0d;
+  --type-bg-guide: #2e2200;
+  --shadow-card:   inset 0 0 0 1px #1a1a1a;
 }
 
 /* ── Reset ──────────────────────────────────────────────────── */

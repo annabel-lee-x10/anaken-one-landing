@@ -12,6 +12,12 @@ export function useTheme() {
   return useContext(ThemeContext);
 }
 
+function isSamsungDevice(): boolean {
+  if (typeof navigator === "undefined") return false;
+  const ua = navigator.userAgent.toLowerCase();
+  return ua.includes("samsung") || ua.includes("sm-") || ua.includes("gt-");
+}
+
 export default function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>("light");
   const [mounted, setMounted] = useState(false);
@@ -22,6 +28,11 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
     const initial = stored || preferred;
     setTheme(initial);
     document.documentElement.setAttribute("data-theme", initial);
+
+    // Samsung AMOLED devices get pure black, others get gray tinge
+    const displayType = isSamsungDevice() ? "amoled" : "lcd";
+    document.documentElement.setAttribute("data-display", displayType);
+
     setMounted(true);
   }, []);
 
