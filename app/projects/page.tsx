@@ -14,8 +14,8 @@ export default function ProjectsPage() {
       <section className="section">
         <div className="container">
           <header style={{ marginBottom: "52px" }} className="fade-up">
-            <p className="label-upper" style={{ marginBottom: "12px", color: "var(--accent-green)" }}>Projects</p>
-            <h1 style={{ color: "var(--accent-green)" }}>Things I&apos;ve built</h1>
+            <p className="label-upper" style={{ marginBottom: "12px", color: "var(--accent-amber)" }}>Projects</p>
+            <h1 style={{ color: "var(--accent-amber)" }}>Things I&apos;ve built</h1>
             <p style={{ fontSize: "17px", color: "var(--text-muted)", marginTop: "12px" }}>Tools and games. All live.</p>
           </header>
           <ProjectsClient projects={PROJECTS} />

@@ -1,5 +1,39 @@
 # Conversation Log
 
+## 2026-03-15 — 3D Carousel + Accent Color Reorder
+
+**Context:** Project cards on `/projects` used a grid layout with expand-to-view-details pattern. User wanted direct click-through to `/projects/[slug]` for GA4 tracking, plus a visual upgrade to a 3D animated carousel.
+
+**What changed:**
+
+1. **3D Orbit Carousel** — Replaced grid layout with a framer-motion 3D carousel (inspired by 21st.dev animated-carousel). Cards orbit in 3D space with auto-rotation, hover-to-pause, click-to-snap, and 1.15x hover scale. Uses `perspective: 1200px`, `preserve-3d`, and counter-rotation so cards always face the viewer.
+   - Added `motion` (framer-motion) dependency
+   - Cards link directly to `/projects/[slug]` — no more expand/details pattern
+
+2. **Card Images** — Added `image` field to project data. Each card now has a 25% height color strip at the top with an SVG placeholder (solid type color + white label). Ready for real screenshots.
+
+3. **Accent Color Reorder** — Changed global accent cascade from blue→red→yellow→green to **blue→green→yellow→red**:
+   - `globals.css` — CSS variable declaration order + gradient updated
+   - Section color assignments cycled: Articles=blue, News=green, Projects=yellow, Lab=red, Now=blue, Contact=green
+   - `DOT_COLORS`, footer gradient, news dot colors, project section bars all updated
+   - `TYPE_COLORS`: Game changed from red to green
+
+4. **Card Pill Fix** — Type badge pills changed from colored-text-on-light-bg to white-text-on-solid-color (dark text for Guide/yellow for readability)
+
+**Files changed:**
+- `app/projects/ProjectsClient.tsx` — full rewrite: 3D carousel with motion
+- `lib/projects.ts` — added `image` field, Game type color → green
+- `app/globals.css` — accent order: amber before coral, gradient updated
+- `app/page.tsx` — DOT_COLORS, section colors, news dots reordered
+- `app/news/page.tsx` — green heading
+- `app/projects/page.tsx` — amber heading
+- `app/lab/page.tsx` — coral heading
+- `app/now/page.tsx` — blue (accent) heading
+- `app/contact/page.tsx` — green heading
+- `components/Footer.tsx` — gradient reordered
+- `public/projects/*.svg` — NEW: 6 placeholder card images
+- `package.json` — added `motion` dependency
+
 ## 2026-03-15 — Project Slug Routes for Analytics
 
 **Context:** All 6 projects shared a single `/projects` pageview in GA4, making it impossible to track per-project interest.

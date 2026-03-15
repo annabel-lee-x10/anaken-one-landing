@@ -21,8 +21,8 @@ export default function NowPage() {
     <section className="section">
       <div className="container-narrow">
         <header style={{ marginBottom: "48px" }} className="fade-up">
-          <p className="label-upper" style={{ marginBottom: "12px", color: "var(--accent-green)" }}>Now</p>
-          <h1 style={{ color: "var(--accent-green)" }}>Current Focus</h1>
+          <p className="label-upper" style={{ marginBottom: "12px", color: "var(--accent)" }}>Now</p>
+          <h1 style={{ color: "var(--accent)" }}>Current Focus</h1>
           <p style={{ fontSize: "14px", color: "var(--text-muted)", marginTop: "12px" }}>
             Updated {new Date(NOW.updated).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
           </p>
@@ -39,7 +39,7 @@ export default function NowPage() {
                   padding: "18px 24px",
                   borderBottom: i < NOW.focus.length - 1 ? "1px solid var(--border)" : "none",
                 }}>
-                  <span style={{ color: "var(--accent-green)", fontSize: "14px", flexShrink: 0, paddingTop: "2px" }}>▸</span>
+                  <span style={{ color: "var(--accent)", fontSize: "14px", flexShrink: 0, paddingTop: "2px" }}>▸</span>
                   <span style={{ fontSize: "15px", color: "var(--text-body)", lineHeight: 1.6 }}>{item}</span>
                 </div>
               ))}
