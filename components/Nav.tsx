@@ -68,6 +68,7 @@ export default function Nav() {
             {/* Theme toggle */}
             <button
               onClick={toggle}
+              title={isDark ? "Switch to light mode" : "Switch to dark mode"}
               aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
               style={{
                 background: "none", border: "none", cursor: "pointer",

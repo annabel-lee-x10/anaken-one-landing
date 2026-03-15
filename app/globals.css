@@ -246,7 +246,7 @@ h3 { font-size: clamp(20px, 2.5vw, 26px); font-weight: 600; }
 
 /* ── Playful Pops — gradient text ──────────────────────────── */
 .gradient-text {
-  background: linear-gradient(135deg, var(--accent), var(--accent-coral));
+  background: linear-gradient(135deg, var(--accent), #6644CC);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -255,7 +255,7 @@ h3 { font-size: clamp(20px, 2.5vw, 26px); font-weight: 600; }
 /* ── Playful Pops — gradient divider ───────────────────────── */
 .gradient-divider {
   height: 2px;
-  background: linear-gradient(90deg, var(--accent), var(--accent-green), var(--accent-amber), var(--accent-coral));
+  background: linear-gradient(90deg, var(--accent), #6644CC, var(--accent-coral));
   margin: 0 auto;
   max-width: 200px;
   border-radius: 2px;
