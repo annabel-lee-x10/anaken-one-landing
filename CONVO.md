@@ -253,6 +253,32 @@
 
 ---
 
+## 2026-03-15 — Security & Refactoring Review
+
+**Context:** Senior engineer review of tech stack for security posture and refactoring needs.
+
+**Findings & Fixes:**
+
+1. **URL construction bug (HIGH)** — `getNews()` in `app/page.tsx` had operator precedence error (`||` vs `?:`) that could produce `https://undefined`. Fixed with `??` operator.
+2. **Server self-fetch (MEDIUM)** — Homepage called its own `/api/news` route via HTTP, risking cold-start deadlocks. Extracted news logic to `lib/news.ts`; both homepage and API route now use shared `fetchNews()`.
+3. **No error boundaries** — Added `app/error.tsx` (global error fallback) and `app/not-found.tsx` (branded 404).
+4. **Missing prefers-reduced-motion** — Added `@media (prefers-reduced-motion: reduce)` to `globals.css` to disable animations for users who request it.
+
+**Not fixed (low risk for personal site):**
+- In-memory rate limiting (acceptable, Vercel provides DDoS protection)
+- Markdown `javascript:` href (self-authored content only)
+- Contact origin check without CORS headers (validation + rate limiting is the real protection)
+
+**Files changed (6):**
+- `app/page.tsx` — fixed URL logic, replaced self-fetch with direct `fetchNews()` call
+- `app/api/news/route.ts` — thin wrapper around shared `fetchNews()`
+- `lib/news.ts` — NEW: extracted news fetching logic (API → RSS → fallback)
+- `app/error.tsx` — NEW: global error boundary
+- `app/not-found.tsx` — NEW: branded 404 page
+- `app/globals.css` — added `prefers-reduced-motion` media query
+
+---
+
 ## 2026-03-15 — Visual Overhaul: Corp Comms Critique
 
 **Context:** Head of Corporate Communications review of site visuals. Site is technically solid but visually generic — lacks brand distinctiveness, visual hierarchy between content types, and has excessive whitespace.
