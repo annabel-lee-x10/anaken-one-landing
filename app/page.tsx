@@ -15,7 +15,7 @@ const PROJECTS = [
   { name: "Simple Snake",          desc: "Snake, rebuilt collaboratively.",          href: "https://simple-snake.anaken.one/",  tag: "Game" },
 ];
 
-const DOT_COLORS = ["#3B8CF5", "#EF5B4B", "#F5B731", "#3BD66B"];
+const DOT_COLORS = ["#3366FF", "#FF3355", "#FFCC00", "#00CC66"];
 
 const tagStyle = (tag: string) =>
   tag === "Tool"
@@ -73,9 +73,9 @@ export default async function HomePage() {
       <section className="section-alt" style={{ padding: "0" }}>
         <div className="container" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)" }}>
           {[
-            { label: "Focus",  value: "Workflow Optimization", color: "#3B8CF5" },
-            { label: "Mode",   value: "Perpetual Learner",     color: "#EF5B4B" },
-            { label: "Stack",  value: "AI-first Tooling",      color: "#3BD66B" },
+            { label: "Focus",  value: "Workflow Optimization", color: "#3366FF" },
+            { label: "Mode",   value: "Perpetual Learner",     color: "#FF3355" },
+            { label: "Stack",  value: "AI-first Tooling",      color: "#00CC66" },
           ].map(({ label, value, color }, i) => (
             <div key={label} style={{
               padding: "28px 24px",
@@ -101,14 +101,14 @@ export default async function HomePage() {
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "40px", flexWrap: "wrap", gap: "16px" }}>
               <div>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
-                  <p className="label-upper" style={{ margin: 0 }}>Projects</p>
+                  <p className="label-upper" style={{ margin: 0, color: "var(--accent-green)" }}>Projects</p>
                   <div style={{ display: "flex", gap: "4px" }}>
-                    {["#3B8CF5", "#EF5B4B", "#F5B731"].map((c, i) => (
+                    {["#3366FF", "#FF3355", "#FFCC00"].map((c, i) => (
                       <div key={i} style={{ width: "20px", height: "6px", borderRadius: "3px", background: c }} />
                     ))}
                   </div>
                 </div>
-                <h2>Things I&apos;ve built</h2>
+                <h2 style={{ color: "var(--accent-green)" }}>Things I&apos;ve built</h2>
               </div>
               <Link href="/projects" className="btn btn-secondary btn-sm">View all</Link>
             </div>
@@ -147,14 +147,14 @@ export default async function HomePage() {
             <div className="container">
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "40px", flexWrap: "wrap", gap: "16px" }}>
                 <div>
-                  <p className="label-upper" style={{ marginBottom: "10px" }}>News</p>
-                  <h2>Latest in AI</h2>
+                  <p className="label-upper" style={{ marginBottom: "10px", color: "var(--accent-coral)" }}>News</p>
+                  <h2 style={{ color: "var(--accent-coral)" }}>Latest in AI</h2>
                 </div>
                 <Link href="/news" className="btn btn-secondary btn-sm">All news</Link>
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
                 {news.map((n: { title: string; source: string; date: string; url: string; summary: string }, i: number) => {
-                  const dotColor = ["#EF5B4B", "#F5B731", "#FF5310"][i % 3];
+                  const dotColor = ["#FF3355", "#FFCC00", "#FF6633"][i % 3];
                   return (
                     <a key={i} href={n.url} target="_blank" rel="noopener noreferrer" className="card-hover" style={{
                       display: "flex", justifyContent: "space-between", alignItems: "flex-start",
@@ -188,8 +188,8 @@ export default async function HomePage() {
           <div className="container">
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "40px", flexWrap: "wrap", gap: "16px" }}>
               <div>
-                <p className="label-upper" style={{ marginBottom: "10px" }}>Writing</p>
-                <h2>Recent Articles</h2>
+                <p className="label-upper" style={{ marginBottom: "10px", color: "var(--accent)" }}>Writing</p>
+                <h2 style={{ color: "var(--accent)" }}>Recent Articles</h2>
               </div>
               <Link href="/articles" className="btn btn-secondary btn-sm">All articles</Link>
             </div>

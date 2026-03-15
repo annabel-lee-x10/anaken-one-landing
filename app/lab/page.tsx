@@ -21,8 +21,8 @@ export default function LabPage() {
     <section className="section">
       <div className="container-narrow">
         <header style={{ marginBottom: "48px" }} className="fade-up">
-          <p className="label-upper" style={{ marginBottom: "12px" }}>Lab</p>
-          <h1>Experiments</h1>
+          <p className="label-upper" style={{ marginBottom: "12px", color: "var(--accent-amber)" }}>Lab</p>
+          <h1 style={{ color: "#E6B800" }}>Experiments</h1>
           <p style={{ fontSize: "17px", color: "var(--text-muted)", marginTop: "12px", maxWidth: "480px", lineHeight: 1.65 }}>
             Half-formed ideas, active builds, and things that might become something. Or might not.
           </p>

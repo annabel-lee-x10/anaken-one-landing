@@ -102,6 +102,31 @@
 
 **Mockup pages kept for reference:** `/mockup/look-1`, `/mockup/look-2`, `/mockup/look-3`, `/mockup/look-3-dark`
 
+## 2026-03-15 — Bright Playful Color Refinement
+
+**Goal:** Monochrome gray text felt jarring against playful pops accents. User wanted bold, clean primary colors like Google/Microsoft applied to headings, labels, and accents — "full playful" energy.
+
+**Process:**
+- Presented 3 warm-tinting options (Plum, Earthy, Rose) — user rejected, wanted basic primary colors instead
+- Clarified depth: colored headings only vs accent refresh vs full playful — user chose **Full Playful**
+- Spun up 3 dev servers with different palettes: Google Primaries (:3001), Microsoft Fluent (:3002), Bright Playful (:3003)
+- User chose **Option C: Bright Playful** — the most vibrant and youthful palette
+
+**Color Palette:**
+- Blue: `#3366FF`, Red: `#FF3355`, Yellow: `#FFCC00`, Green: `#00CC66`, Orange: `#FF6633`, Cyan: `#00CCFF`
+
+**Changes (10 files):**
+- `app/globals.css` — 6 accent variables updated to bright primaries, dark mode text warmed (#F2EFF6, #B5B0BF, #6E6A78)
+- `app/page.tsx` — section headings/labels colored (Projects=green, News=red, Articles=blue), DOT_COLORS + stats updated
+- `app/projects/page.tsx` — green heading + label
+- `app/projects/ProjectsClient.tsx` — TYPE_COLORS: Tool=#3366FF, Game=#FF3355, Guide=#FFCC00
+- `app/articles/page.tsx` — blue heading + label
+- `app/news/page.tsx` — red heading + label
+- `app/lab/page.tsx` — amber heading + label (#E6B800 for h1 readability)
+- `app/now/page.tsx` — green heading + label
+- `app/contact/page.tsx` — red heading + label
+- `components/Footer.tsx` — gradient border updated to new primaries
+
 ## 2026-03-15 — Footer Nav Cleanup
 
 **Goal:** Fix clunky footer nav — per-link rainbow colors with repeated hues across two uneven columns looked inconsistent.

@@ -37,7 +37,7 @@ export default function Footer() {
       `}</style>
 
       {/* Gradient top border */}
-      <div style={{ height: "2px", background: "linear-gradient(90deg, #3B8CF5, #EF5B4B, #F5B731, #3BD66B)" }} />
+      <div style={{ height: "2px", background: "linear-gradient(90deg, #3366FF, #FF3355, #FFCC00, #00CC66)" }} />
 
       <div className="container" style={{ padding: "52px 1.5rem 44px", display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "32px" }}>
         <div>

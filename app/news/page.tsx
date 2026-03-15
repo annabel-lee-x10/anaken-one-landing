@@ -13,8 +13,8 @@ export default function NewsPage() {
     <section className="section">
       <div className="container">
         <header style={{ marginBottom: "48px" }} className="fade-up">
-          <p className="label-upper" style={{ marginBottom: "12px" }}>News</p>
-          <h1>AI &amp; Tech News</h1>
+          <p className="label-upper" style={{ marginBottom: "12px", color: "var(--accent-coral)" }}>News</p>
+          <h1 style={{ color: "var(--accent-coral)" }}>AI &amp; Tech News</h1>
           <p style={{ fontSize: "17px", color: "var(--text-muted)", marginTop: "12px", lineHeight: 1.6 }}>
             Latest headlines from top sources. Updated every 8 hours.
           </p>

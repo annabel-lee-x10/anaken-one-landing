@@ -5,9 +5,9 @@ import { trackEvent } from "@/lib/analytics";
 type Project = { id: string; type: string; name: string; tagline: string; description: string; url: string; };
 
 const TYPE_COLORS: Record<string, string> = {
-  Tool:  "#3B8CF5",
-  Game:  "#EF5B4B",
-  Guide: "#F5B731",
+  Tool:  "#3366FF",
+  Game:  "#FF3355",
+  Guide: "#FFCC00",
 };
 
 export default function ProjectsClient({ projects }: { projects: Project[] }) {
