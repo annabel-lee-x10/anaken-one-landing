@@ -32,7 +32,7 @@ export default async function HomePage() {
     <>
       {/* ── Hero ─────────────────────────────────────────── */}
       <SectionTracker name="hero">
-        <section className="section" style={{ textAlign: "center", paddingTop: "7.5rem", paddingBottom: "6rem" }}>
+        <section className="section" style={{ textAlign: "center", paddingTop: "6rem", paddingBottom: "4.5rem" }}>
           <div className="container-narrow fade-up">
             <p className="label-upper" style={{ marginBottom: "20px" }}>Anaken · a10101100</p>
             <h1 className="gradient-text" style={{ marginBottom: "24px", lineHeight: 1.08 }}>
@@ -41,11 +41,14 @@ export default async function HomePage() {
             <p style={{ fontSize: "clamp(20px, 4vw, 26px)", color: "var(--text-body)", lineHeight: 1.4, letterSpacing: "0.12em", margin: "0 auto 16px" }}>
               ideate. innovate. iterate.
             </p>
-            <p style={{ fontSize: "15px", color: "var(--text-muted)", lineHeight: 1.65, maxWidth: "420px", margin: "0 auto 36px" }}>
+            <p style={{ fontSize: "15px", color: "var(--text-muted)", lineHeight: 1.65, maxWidth: "420px", margin: "0 auto 24px" }}>
               I build tools, write about AI workflows, and ship experiments. a10101100 is where it all started.
             </p>
+            <p style={{ fontSize: "13px", fontWeight: 600, color: "var(--text-body)", letterSpacing: "0.04em", textTransform: "uppercase", margin: "0 auto 32px", opacity: 0.6 }}>
+              Building at the intersection of AI &amp; developer tooling
+            </p>
             <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
-              <Link href="/articles" className="btn" style={{ background: "var(--accent)", color: "#ffffff" }}>Read Articles</Link>
+              <Link href="/articles" className="btn" style={{ background: "var(--accent)", color: "#ffffff", boxShadow: "0 2px 12px rgba(51,102,255,0.3)" }}>Read Articles</Link>
               <Link href="/projects" className="btn btn-secondary">See Projects</Link>
             </div>
           </div>
@@ -58,17 +61,17 @@ export default async function HomePage() {
       <section className="section-alt" style={{ padding: "0" }}>
         <div className="container" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)" }}>
           {[
-            { label: "Focus",  value: "Workflow Optimization", color: "#3366FF" },
-            { label: "Mode",   value: "Perpetual Learner",     color: "#FF3355" },
-            { label: "Stack",  value: "AI-first Tooling",      color: "#00CC66" },
-          ].map(({ label, value, color }, i) => (
+            { label: "Focus",  value: "Workflow Optimization", color: "var(--accent)",      dot: "var(--accent)" },
+            { label: "Mode",   value: "Perpetual Learner",     color: "var(--accent)",      dot: "var(--accent-coral)" },
+            { label: "Stack",  value: "AI-first Tooling",      color: "var(--accent)",      dot: "var(--accent)" },
+          ].map(({ label, value, color, dot }, i) => (
             <div key={label} style={{
               padding: "28px 24px",
               borderRight: i < 2 ? "1px solid var(--border-mid)" : "none",
               textAlign: "center",
             }}>
               <p className="label-upper" style={{ marginBottom: "8px", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
-                <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: color, display: "inline-block" }} />
+                <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: dot, display: "inline-block" }} />
                 {label}
               </p>
               <p style={{ fontSize: "15px", fontWeight: 600, color }}>{value}</p>
@@ -119,6 +122,7 @@ export default async function HomePage() {
                       display: "flex", justifyContent: "space-between", alignItems: "flex-start",
                       gap: "24px", padding: "24px",
                       background: "var(--bg-card)", borderRadius: "var(--radius)",
+                      borderTop: "2px solid var(--accent-coral)",
                       textDecoration: "none",
                     }}>
                       <div style={{ flex: 1, display: "flex", gap: "12px", alignItems: "flex-start" }}>
@@ -158,6 +162,7 @@ export default async function HomePage() {
                   display: "flex", justifyContent: "space-between", alignItems: "flex-start",
                   gap: "24px", padding: "24px",
                   background: "var(--bg-card)", borderRadius: "var(--radius)",
+                  borderLeft: "3px solid var(--accent)",
                   textDecoration: "none",
                 }}>
                   <div style={{ flex: 1 }}>
@@ -167,7 +172,7 @@ export default async function HomePage() {
                   <div style={{ textAlign: "right", flexShrink: 0 }}>
                     <span style={{
                       display: "inline-block", fontSize: "12px", fontWeight: 600,
-                      color: "var(--accent-sky)", background: "var(--badge-active-bg)",
+                      color: "var(--accent)", background: "var(--badge-active-bg)",
                       padding: "2px 10px", borderRadius: "20px", marginBottom: "8px",
                     }}>
                       {a.date ? new Date(a.date).toLocaleDateString("en-US", { month: "short", day: "numeric" }) : ""}
@@ -200,15 +205,15 @@ export default async function HomePage() {
                 { name: "Prompt Diff", status: "WIP", description: "Compare two prompt versions side-by-side with structured output diffing.", statusColor: "var(--status-wip-fg)", statusBg: "var(--status-wip-bg)" },
                 { name: "Token Counter", status: "Idea", description: "Paste any text, get token counts for major models with cost estimates.", statusColor: "var(--status-idea-fg)", statusBg: "var(--status-idea-bg)" },
               ].map(exp => (
-                <div key={exp.name} className="card" style={{ padding: "24px 28px", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "20px" }}>
+                <div key={exp.name} className="card" style={{ padding: "24px 28px", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "20px", borderLeft: `3px solid ${exp.statusColor}` }}>
                   <div style={{ flex: 1 }}>
                     <p style={{ fontSize: "17px", fontWeight: 600, color: "var(--text-head)", letterSpacing: "-0.02em", marginBottom: "6px" }}>{exp.name}</p>
                     <p style={{ fontSize: "14px", color: "var(--text-muted)", lineHeight: 1.6 }}>{exp.description}</p>
                   </div>
                   <span style={{
-                    flexShrink: 0, fontSize: "12px", fontWeight: 600,
+                    flexShrink: 0, fontSize: "13px", fontWeight: 600,
                     color: exp.statusColor, background: exp.statusBg,
-                    padding: "4px 10px", borderRadius: "20px",
+                    padding: "5px 14px", borderRadius: "20px",
                     letterSpacing: "0.04em",
                   }}>
                     {exp.status}

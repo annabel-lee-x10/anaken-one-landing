@@ -44,14 +44,14 @@ export default function Footer() {
           <Link href="/" className="gradient-text" style={{ fontSize: "20px", fontWeight: 700, letterSpacing: "-0.04em", textDecoration: "none", display: "block", marginBottom: "10px" }}>
             Anaken
           </Link>
-          <p style={{ fontSize: "14px", color: "var(--text-muted)", maxWidth: "240px", lineHeight: 1.65 }}>
+          <p style={{ fontSize: "14px", color: "var(--text-body)", maxWidth: "240px", lineHeight: 1.65 }}>
             ideate. innovate. iterate.
           </p>
-          <p style={{ fontSize: "13px", color: "var(--text-muted)", marginTop: "8px", opacity: 0.7 }}>
-            Tools, workflows, and AI experiments.
+          <p style={{ fontSize: "14px", color: "var(--text-muted)", marginTop: "8px", maxWidth: "240px", lineHeight: 1.6 }}>
+            Tools, workflows, and AI experiments — building at the intersection of automation and craft.
           </p>
         </div>
-        <nav style={{ display: "flex", gap: "40px", flexWrap: "wrap" }}>
+        <nav style={{ display: "flex", gap: "56px", flexWrap: "wrap" }}>
           <div style={{ display: "flex", flexDirection: "column" }}>
             <p style={columnHeaderStyle}>Explore</p>
             <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
