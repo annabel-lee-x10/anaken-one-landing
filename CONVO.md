@@ -346,3 +346,25 @@
 - `app/page.tsx` — hero, card borders, color consolidation, stats strip
 - `app/projects/ProjectsClient.tsx` — grid view toggle + extracted ProjectCard component
 - `components/Footer.tsx` — enriched content + spacing
+
+---
+
+## 2026-03-15 — Site Repositioning: Investor-Ready Copy
+
+**Context:** Startup investor critique identified key weaknesses: no clear target audience, generic value proposition ("Exploring how AI changes..."), premature vanity metrics, scattered lab experiments, and "updated weekly" liability.
+
+**Decision:** Reposition as **AI Workflow Toolkit** (product-first) with secondary content monetization lane.
+
+**Changes:**
+
+1. **Hero rewrite** — Headline: "Workflows, Tools & AI." → "AI Workflow Tools." Identity line added ("Built by Anaken — software engineer & AI workflow builder"). Subheading now product-focused: "I build tools that make AI workflows visible, testable, and repeatable." CTA order swapped: "Explore Tools" (primary) → "Read Articles" (secondary).
+2. **Stats strip** — Removed vanity metrics (project/article counts). Replaced with qualitative signals: "Live & Free" (tools), "New Biweekly" (deep dives), "Building in Public" (lab).
+3. **Lab preview** — Filtered to WIP/Live only (removed "Idea" status Token Counter from homepage).
+4. **Lab page** — Split experiments into "In Progress" (WIP/Live) and "On the Roadmap" (Idea) sections. Roadmap items rendered at 75% opacity.
+5. **Newsletter CTA** — Added "Stay in the loop" section with "Get notified" link before contact CTA.
+6. **Metadata** — Updated title to "AI Workflow Tools & Deep Dives" and description to reflect toolkit positioning.
+7. **Removed "updated weekly"** — Replaced with "Open-source tools & deep-dive articles".
+
+**Files changed:**
+- `app/page.tsx` — hero, stats, lab preview, newsletter CTA, metadata
+- `app/lab/page.tsx` — split active vs roadmap experiments
