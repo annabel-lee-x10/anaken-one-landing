@@ -15,6 +15,53 @@
 **Files changed:**
 - `content/articles/the-floor-is-dropping-how-ai-is-compounding-the-intelligence-gap.md` — NEW: full article
 - `content/articles/*.md` — all 6 existing articles: em dashes replaced with hyphens
+## 2026-03-15 — Content Polish: Corp Comms Review
+
+**Context:** Corporate communications review of all user-facing copy. Site was technically solid and visually polished but content was thin, generic, or stale across several pages.
+
+**Changes (12 files):**
+
+1. **Homepage hero** — Replaced generic bio and insider handle reference with curiosity-driven positioning. Stats strip changed from buzzword labels ("Workflow Optimization", "Perpetual Learner") to real proof points ("6 Shipped", "6 Published", "3 In Progress").
+2. **Now page** — Removed stale "Building anaken-one-new" (already merged). Added /now movement explainer. Updated to 4 current focus items with context. "Not doing" items now explain why.
+3. **Lab page** — Reframed intro from self-deprecating ("might become something. Or might not.") to intentional experimentation. Enriched each experiment description with why-it-matters context.
+4. **Project descriptions** — Removed dev-speak ("No dependencies, pure browser", "rebuilt collaboratively"). Rewrote to lead with user value. Projects page intro contextualizes the collection.
+5. **Contact page** — Warmer intro that promises a reply. Richer metadata.
+6. **Articles page** — Editorial framing line ("No listicles — just honest thinking"). Richer metadata.
+7. **News page** — Enriched SEO metadata.
+8. **Article tags** — Added tags to 4 articles that had none (role-reversal, literacy-gap, then-and-now, ai-threat).
+9. **Duplicate heading fix** — Renamed second "The Honest Picture" section in literacy-gap article to "Where This Goes From Here".
+
+**Files changed (12):**
+- `app/page.tsx`, `app/now/page.tsx`, `app/lab/page.tsx`, `app/projects/page.tsx`, `app/contact/page.tsx`, `app/articles/page.tsx`, `app/news/page.tsx`
+- `lib/projects.ts`
+- `content/articles/the-great-role-reversal.md`, `content/articles/the-literacy-gap.md`, `content/articles/use-of-ai-then-and-now.md`, `content/articles/is-ai-really-a-threat.md`
+
+---
+
+## 2026-03-15 — Homepage Polish: Identity, Colors & Components
+
+**Context:** Detailed UX/design feedback identified scattered color palette, vague identity, orphaned decorative elements, and component polish gaps.
+
+**Key decisions:**
+- Replace `u18181188` with `a10101100` (old coder handle) throughout
+- Keep "ideate. innovate. iterate." tagline
+- Full color consolidation: blue primary + violet secondary, demote amber/green to functional use
+
+**What changed:**
+
+1. **Identity** — `u18181188` → `a10101100` in hero label and footer. Added bio line: "I build tools, write about AI workflows, and ship experiments."
+2. **Color consolidation** — All section headings (Projects, News, Articles) now use `var(--accent)` (blue) instead of per-section green/coral/amber. Gradient text narrowed from blue→pink to blue→violet (`#6644CC`). Gradient dividers and footer border updated to 3-stop (blue→violet→coral).
+3. **Decorative cleanup** — Removed orphaned colored dots from hero and CTA sections. Removed colored pill bars next to Projects heading.
+4. **Lab teaser** — New "From the Lab" section on homepage showing 2 experiments with status badges.
+5. **Footer warmth** — Added descriptor line, updated identity and gradient border.
+6. **Theme toggle** — Added `title` tooltip for the moon/sun icon.
+7. **News dots** — Consolidated from 3-color rotation to alternating blue/coral.
+
+**Files changed (4):**
+- `app/page.tsx` — identity, bio, color consolidation, dots removed, lab teaser added
+- `app/globals.css` — gradient-text and gradient-divider narrowed to blue→violet
+- `components/Footer.tsx` — identity, gradient border, descriptor line
+- `components/Nav.tsx` — title tooltip on theme toggle
 
 ---
 
@@ -241,3 +288,51 @@
 
 **Files changed:**
 - `components/ThemeProvider.tsx` — async `isSamsungDevice()` with Client Hints API + type declarations
+
+---
+
+## 2026-03-15 — Security & Refactoring Review
+
+**Context:** Senior engineer review of tech stack for security posture and refactoring needs.
+
+**Findings & Fixes:**
+
+1. **URL construction bug (HIGH)** — `getNews()` in `app/page.tsx` had operator precedence error (`||` vs `?:`) that could produce `https://undefined`. Fixed with `??` operator.
+2. **Server self-fetch (MEDIUM)** — Homepage called its own `/api/news` route via HTTP, risking cold-start deadlocks. Extracted news logic to `lib/news.ts`; both homepage and API route now use shared `fetchNews()`.
+3. **No error boundaries** — Added `app/error.tsx` (global error fallback) and `app/not-found.tsx` (branded 404).
+4. **Missing prefers-reduced-motion** — Added `@media (prefers-reduced-motion: reduce)` to `globals.css` to disable animations for users who request it.
+
+**Not fixed (low risk for personal site):**
+- In-memory rate limiting (acceptable, Vercel provides DDoS protection)
+- Markdown `javascript:` href (self-authored content only)
+- Contact origin check without CORS headers (validation + rate limiting is the real protection)
+
+**Files changed (6):**
+- `app/page.tsx` — fixed URL logic, replaced self-fetch with direct `fetchNews()` call
+- `app/api/news/route.ts` — thin wrapper around shared `fetchNews()`
+- `lib/news.ts` — NEW: extracted news fetching logic (API → RSS → fallback)
+- `app/error.tsx` — NEW: global error boundary
+- `app/not-found.tsx` — NEW: branded 404 page
+- `app/globals.css` — added `prefers-reduced-motion` media query
+
+---
+
+## 2026-03-15 — Visual Overhaul: Corp Comms Critique
+
+**Context:** Head of Corporate Communications review of site visuals. Site is technically solid but visually generic — lacks brand distinctiveness, visual hierarchy between content types, and has excessive whitespace.
+
+**Changes (7 recommendations, all implemented):**
+
+1. **Tightened accent palette** — Stats strip uses consistent `--accent` (blue) instead of 3 random colors. Article date badges use `--accent` instead of `--accent-sky`.
+2. **Differentiated content types** — Articles: blue left border. News: coral top stripe. Lab: status-colored left border + larger badges.
+3. **Reduced section padding** — `.section` 6.5rem→5rem, `.section-sm` 4rem→3rem, hero 7.5rem→6rem / 6rem→4.5rem. Mobile proportional.
+4. **Strengthened hero** — Added positioning line "Building at the intersection of AI & developer tooling", blue glow shadow on primary CTA.
+5. **Enriched footer** — Tagline in body color (not faded), extended positioning line, wider column gap (40→56px).
+6. **Added grid view for projects** — Grid/carousel toggle on desktop, defaults to grid on mobile. 3→2→1 col responsive. Carousel preserved as alternative.
+7. **Added visual texture** — Subtle dot pattern on `.section-alt` via CSS radial-gradient. Stronger hover lift for cards in alt sections.
+
+**Files changed (4):**
+- `app/globals.css` — padding, texture, hover states, responsive
+- `app/page.tsx` — hero, card borders, color consolidation, stats strip
+- `app/projects/ProjectsClient.tsx` — grid view toggle + extracted ProjectCard component
+- `components/Footer.tsx` — enriched content + spacing

@@ -1,18 +1,19 @@
 import type { Metadata } from "next";
 import SectionTracker from "@/components/SectionTracker";
 
-export const metadata: Metadata = { title: "Now", description: "What I'm working on right now." };
+export const metadata: Metadata = { title: "Now", description: "What I'm focused on right now — current projects, learning, and priorities. Updated regularly." };
 
 const NOW = {
-  updated: "2026-03-13",
+  updated: "2026-03-15",
   focus: [
-    "Building anaken-one-new — the next version of this site",
-    "Deepening AI workflow automation — prompt chaining and agent pipelines",
-    "Reading: The Staff Engineer's Path",
+    "Shipping new lab experiments — Prompt Diff is the current build, Token Counter is next",
+    "Writing about AI literacy and workflow systems — new articles every week or two",
+    "Exploring agent pipelines — chaining Claude, tool use, and structured outputs for real tasks",
+    "Reading: The Staff Engineer's Path by Tanya Reilly",
   ],
   notFocus: [
-    "Social media",
-    "Meetings",
+    "Social media — this site is the main channel",
+    "Chasing trends — depth over breadth",
   ],
 };
 
@@ -23,8 +24,11 @@ export default function NowPage() {
         <header style={{ marginBottom: "48px" }} className="fade-up">
           <p className="label-upper" style={{ marginBottom: "12px", color: "var(--accent)" }}>Now</p>
           <h1 style={{ color: "var(--accent)" }}>Current Focus</h1>
-          <p style={{ fontSize: "14px", color: "var(--text-muted)", marginTop: "12px" }}>
-            Updated {new Date(NOW.updated).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+          <p style={{ fontSize: "15px", color: "var(--text-muted)", marginTop: "12px", lineHeight: 1.6, maxWidth: "480px" }}>
+            A snapshot of what I'm working on and thinking about. Inspired by the <a href="https://nownownow.com/about" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent)", textDecoration: "none" }}>/now page</a> movement.
+          </p>
+          <p style={{ fontSize: "13px", color: "var(--text-muted)", marginTop: "10px", opacity: 0.7 }}>
+            Last updated {new Date(NOW.updated).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
           </p>
         </header>
 

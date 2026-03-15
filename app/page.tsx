@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getAllArticles } from "@/lib/articles";
+import { fetchNews } from "@/lib/news";
 import { PROJECTS } from "@/lib/projects";
 import SectionTracker from "@/components/SectionTracker";
 import ProjectsClient from "./projects/ProjectsClient";
@@ -10,47 +11,32 @@ export const metadata = {
   alternates: { canonical: "https://anaken.one" },
 };
 
-const DOT_COLORS = ["#3366FF", "#00CC66", "#FFCC00", "#FF3355"];
-
-async function getNews() {
-  try {
-    const base = process.env.NEXT_PUBLIC_SITE_URL || process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : "http://localhost:3000";
-    const res = await fetch(`${base}/api/news`, { next: { revalidate: 28800 } });
-    if (!res.ok) return [];
-    const data = await res.json();
-    return (data.items ?? data.articles ?? []).slice(0, 3);
-  } catch {
-    return [];
-  }
-}
-
 export default async function HomePage() {
   const articles = getAllArticles().slice(0, 3);
-  const news = await getNews();
+  const { items } = await fetchNews();
+  const news = items.slice(0, 3);
 
   return (
     <>
       {/* ── Hero ─────────────────────────────────────────── */}
       <SectionTracker name="hero">
-        <section className="section" style={{ textAlign: "center", paddingTop: "7.5rem", paddingBottom: "6rem" }}>
+        <section className="section" style={{ textAlign: "center", paddingTop: "6rem", paddingBottom: "4.5rem" }}>
           <div className="container-narrow fade-up">
-            <p className="label-upper" style={{ marginBottom: "20px" }}>Anaken · u18181188</p>
+            <p className="label-upper" style={{ marginBottom: "20px" }}>Anaken · a10101100</p>
             <h1 className="gradient-text" style={{ marginBottom: "24px", lineHeight: 1.08 }}>
               Workflows, Tools<br />& AI.
             </h1>
-            <p style={{ fontSize: "clamp(20px, 4vw, 26px)", color: "var(--text-body)", lineHeight: 1.4, letterSpacing: "0.12em", margin: "0 auto 24px" }}>
+            <p style={{ fontSize: "clamp(20px, 4vw, 26px)", color: "var(--text-body)", lineHeight: 1.4, letterSpacing: "0.12em", margin: "0 auto 16px" }}>
               ideate. innovate. iterate.
             </p>
-            {/* Decorative dots */}
-            <div style={{ display: "flex", gap: "8px", justifyContent: "center", marginBottom: "36px" }}>
-              {DOT_COLORS.map((c, i) => (
-                <div key={i} style={{ width: "8px", height: "8px", borderRadius: "50%", background: c }} />
-              ))}
-            </div>
+            <p style={{ fontSize: "15px", color: "var(--text-muted)", lineHeight: 1.65, maxWidth: "420px", margin: "0 auto 24px" }}>
+              Exploring how AI changes the way we build, think, and work — then writing about what I find.
+            </p>
+            <p style={{ fontSize: "13px", fontWeight: 600, color: "var(--text-body)", letterSpacing: "0.04em", textTransform: "uppercase", margin: "0 auto 32px", opacity: 0.6 }}>
+              Tools, articles &amp; experiments — updated weekly
+            </p>
             <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
-              <Link href="/articles" className="btn" style={{ background: "var(--accent)", color: "#ffffff" }}>Read Articles</Link>
+              <Link href="/articles" className="btn" style={{ background: "var(--accent)", color: "#ffffff", boxShadow: "0 2px 12px rgba(51,102,255,0.3)" }}>Read Articles</Link>
               <Link href="/projects" className="btn btn-secondary">See Projects</Link>
             </div>
           </div>
@@ -63,17 +49,17 @@ export default async function HomePage() {
       <section className="section-alt" style={{ padding: "0" }}>
         <div className="container" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)" }}>
           {[
-            { label: "Focus",  value: "Workflow Optimization", color: "#3366FF" },
-            { label: "Mode",   value: "Perpetual Learner",     color: "#FF3355" },
-            { label: "Stack",  value: "AI-first Tooling",      color: "#00CC66" },
-          ].map(({ label, value, color }, i) => (
+            { label: "Projects",    value: "6 Shipped",        color: "var(--accent)",      dot: "var(--accent)" },
+            { label: "Articles",    value: "6 Published",      color: "var(--accent)",      dot: "var(--accent-coral)" },
+            { label: "Experiments", value: "3 In Progress",    color: "var(--accent)",      dot: "var(--accent)" },
+          ].map(({ label, value, color, dot }, i) => (
             <div key={label} style={{
               padding: "28px 24px",
               borderRight: i < 2 ? "1px solid var(--border-mid)" : "none",
               textAlign: "center",
             }}>
               <p className="label-upper" style={{ marginBottom: "8px", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
-                <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: color, display: "inline-block" }} />
+                <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: dot, display: "inline-block" }} />
                 {label}
               </p>
               <p style={{ fontSize: "15px", fontWeight: 600, color }}>{value}</p>
@@ -91,14 +77,9 @@ export default async function HomePage() {
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "40px", flexWrap: "wrap", gap: "16px" }}>
               <div>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
-                  <p className="label-upper" style={{ margin: 0, color: "var(--accent-amber)" }}>Projects</p>
-                  <div style={{ display: "flex", gap: "4px" }}>
-                    {["#3366FF", "#00CC66", "#FFCC00"].map((c, i) => (
-                      <div key={i} style={{ width: "20px", height: "6px", borderRadius: "3px", background: c }} />
-                    ))}
-                  </div>
+                  <p className="label-upper" style={{ margin: 0, color: "var(--accent)" }}>Projects</p>
                 </div>
-                <h2 style={{ color: "var(--accent-amber)" }}>Things I&apos;ve built</h2>
+                <h2 style={{ color: "var(--accent)" }}>Things I&apos;ve built</h2>
               </div>
               <Link href="/projects" className="btn btn-secondary btn-sm">View all</Link>
             </div>
@@ -116,19 +97,20 @@ export default async function HomePage() {
             <div className="container">
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "40px", flexWrap: "wrap", gap: "16px" }}>
                 <div>
-                  <p className="label-upper" style={{ marginBottom: "10px", color: "var(--accent-green)" }}>News</p>
-                  <h2 style={{ color: "var(--accent-green)" }}>Latest in AI</h2>
+                  <p className="label-upper" style={{ marginBottom: "10px", color: "var(--accent)" }}>News</p>
+                  <h2 style={{ color: "var(--accent)" }}>Latest in AI</h2>
                 </div>
                 <Link href="/news" className="btn btn-secondary btn-sm">All news</Link>
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
                 {news.map((n: { title: string; source: string; date: string; url: string; summary: string }, i: number) => {
-                  const dotColor = ["#00CC66", "#FFCC00", "#FF3355"][i % 3];
+                  const dotColor = ["var(--accent)", "var(--accent-coral)"][i % 2];
                   return (
                     <a key={i} href={n.url} target="_blank" rel="noopener noreferrer" className="card-hover" style={{
                       display: "flex", justifyContent: "space-between", alignItems: "flex-start",
                       gap: "24px", padding: "24px",
                       background: "var(--bg-card)", borderRadius: "var(--radius)",
+                      borderTop: "2px solid var(--accent-coral)",
                       textDecoration: "none",
                     }}>
                       <div style={{ flex: 1, display: "flex", gap: "12px", alignItems: "flex-start" }}>
@@ -168,6 +150,7 @@ export default async function HomePage() {
                   display: "flex", justifyContent: "space-between", alignItems: "flex-start",
                   gap: "24px", padding: "24px",
                   background: "var(--bg-card)", borderRadius: "var(--radius)",
+                  borderLeft: "3px solid var(--accent)",
                   textDecoration: "none",
                 }}>
                   <div style={{ flex: 1 }}>
@@ -177,7 +160,7 @@ export default async function HomePage() {
                   <div style={{ textAlign: "right", flexShrink: 0 }}>
                     <span style={{
                       display: "inline-block", fontSize: "12px", fontWeight: 600,
-                      color: "var(--accent-sky)", background: "var(--badge-active-bg)",
+                      color: "var(--accent)", background: "var(--badge-active-bg)",
                       padding: "2px 10px", borderRadius: "20px", marginBottom: "8px",
                     }}>
                       {a.date ? new Date(a.date).toLocaleDateString("en-US", { month: "short", day: "numeric" }) : ""}
@@ -186,6 +169,44 @@ export default async function HomePage() {
                     <span style={{ fontSize: "14px", color: "var(--accent)" }}>→</span>
                   </div>
                 </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      </SectionTracker>
+
+      <div className="gradient-divider" />
+
+      {/* ── Lab Preview ─────────────────────────────────── */}
+      <SectionTracker name="lab-preview">
+        <section className="section section-alt">
+          <div className="container">
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "40px", flexWrap: "wrap", gap: "16px" }}>
+              <div>
+                <p className="label-upper" style={{ marginBottom: "10px", color: "var(--accent)" }}>Lab</p>
+                <h2 style={{ color: "var(--accent)" }}>From the Lab</h2>
+              </div>
+              <Link href="/lab" className="btn btn-secondary btn-sm">View Lab</Link>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+              {[
+                { name: "Prompt Diff", status: "WIP", description: "Compare two prompt versions side-by-side with structured output diffing. See exactly what changed in your results when you tweak a prompt.", statusColor: "var(--status-wip-fg)", statusBg: "var(--status-wip-bg)" },
+                { name: "Token Counter", status: "Idea", description: "Paste any text and instantly see token counts across GPT-4, Claude, and Gemini — with cost estimates per model.", statusColor: "var(--status-idea-fg)", statusBg: "var(--status-idea-bg)" },
+              ].map(exp => (
+                <div key={exp.name} className="card" style={{ padding: "24px 28px", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "20px", borderLeft: `3px solid ${exp.statusColor}` }}>
+                  <div style={{ flex: 1 }}>
+                    <p style={{ fontSize: "17px", fontWeight: 600, color: "var(--text-head)", letterSpacing: "-0.02em", marginBottom: "6px" }}>{exp.name}</p>
+                    <p style={{ fontSize: "14px", color: "var(--text-muted)", lineHeight: 1.6 }}>{exp.description}</p>
+                  </div>
+                  <span style={{
+                    flexShrink: 0, fontSize: "13px", fontWeight: 600,
+                    color: exp.statusColor, background: exp.statusBg,
+                    padding: "5px 14px", borderRadius: "20px",
+                    letterSpacing: "0.04em",
+                  }}>
+                    {exp.status}
+                  </span>
+                </div>
               ))}
             </div>
           </div>
@@ -204,11 +225,6 @@ export default async function HomePage() {
               background: "linear-gradient(135deg, var(--accent), var(--accent-coral))",
               color: "#ffffff",
             }}>Get in touch</Link>
-            <div style={{ display: "flex", gap: "8px", justifyContent: "center", marginTop: "24px" }}>
-              {DOT_COLORS.map((c, i) => (
-                <div key={i} style={{ width: "6px", height: "6px", borderRadius: "50%", background: c }} />
-              ))}
-            </div>
           </div>
         </section>
       </SectionTracker>

@@ -3,6 +3,7 @@ title: "The Great Role Reversal: Testers Are the New Elite"
 date: "2026-03-09"
 description: "Developers were the rock stars. Testers were the support act. In the age of vibe coding and AI-generated software, that hierarchy has quietly flipped."
 slug: "the-great-role-reversal"
+tags: ["software testing", "vibe coding", "AI-generated code", "QA engineering", "developer culture"]
 ---
 
 For decades, the software industry ran on an unspoken caste system. Developers sat at the top - the architects of logic, the conjurers of systems from nothing. Their compensation reflected their status. Their culture shaped the industry. Testers occupied a different rung. Seen, often unfairly, as the people who couldn't code well enough to build things, so they were tasked with poking at what others had built. Reactive. Low-creativity. Structurally subordinate.

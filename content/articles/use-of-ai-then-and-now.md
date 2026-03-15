@@ -3,6 +3,7 @@ title: "The Use of AI, Then and Now - How to Stay Relevant"
 date: "2026-03-09"
 description: "AI didn't arrive overnight. But the pressure to adapt feels like it did. Here's an honest look at how AI evolved, what changed for everyday people, and how to stay sharp in a world where the tools keep moving."
 slug: "use-of-ai-then-and-now"
+tags: ["AI history", "career relevance", "staying sharp", "AI adoption", "professional development"]
 ---
 
 There's a version of this article that starts with 'AI is changing everything.' You've read that version fifty times. This isn't that. This is about something more practical - where AI actually came from, what quietly shifted in the last few years, and what you can do today to not feel like you're always one step behind.
