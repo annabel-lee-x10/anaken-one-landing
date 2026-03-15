@@ -12,7 +12,8 @@ export const metadata = {
 };
 
 export default async function HomePage() {
-  const articles = getAllArticles().slice(0, 3);
+  const allArticles = getAllArticles();
+  const articles = allArticles.slice(0, 3);
   const { items } = await fetchNews();
   const news = items.slice(0, 3);
 
@@ -49,8 +50,8 @@ export default async function HomePage() {
       <section className="section-alt" style={{ padding: "0" }}>
         <div className="container" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)" }}>
           {[
-            { label: "Projects",    value: "6 Shipped",        color: "var(--accent)",      dot: "var(--accent)" },
-            { label: "Articles",    value: "6 Published",      color: "var(--accent)",      dot: "var(--accent-coral)" },
+            { label: "Projects",    value: `${PROJECTS.length} Shipped`,        color: "var(--accent)",      dot: "var(--accent)" },
+            { label: "Articles",    value: `${allArticles.length} Published`,      color: "var(--accent)",      dot: "var(--accent-coral)" },
             { label: "Experiments", value: "3 In Progress",    color: "var(--accent)",      dot: "var(--accent)" },
           ].map(({ label, value, color, dot }, i) => (
             <div key={label} style={{
