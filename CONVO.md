@@ -1,5 +1,15 @@
 # Conversation Log
 
+## 2026-03-15 — Fix: Dynamic article/project counts on homepage
+
+**Problem:** Stats strip on homepage had hardcoded "6 Published" and "6 Shipped" — article count was stale after adding the 7th article.
+
+**Fix:** Replaced hardcoded strings with dynamic `allArticles.length` and `PROJECTS.length` (both already imported). Counts now auto-update.
+
+**Files changed:** `app/page.tsx`
+
+---
+
 ## 2026-03-15 — New Article: "The Floor Is Dropping"
 
 **Goal:** Format and publish a new article about how AI compounds the intelligence divide by making thinking optional.
