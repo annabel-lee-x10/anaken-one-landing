@@ -6,9 +6,9 @@ slug: "the-great-role-reversal"
 tags: ["software testing", "vibe coding", "AI-generated code", "QA engineering", "developer culture"]
 ---
 
-For decades, the software industry ran on an unspoken caste system. Developers sat at the top — the architects of logic, the conjurers of systems from nothing. Their compensation reflected their status. Their culture shaped the industry. Testers occupied a different rung. Seen, often unfairly, as the people who couldn't code well enough to build things, so they were tasked with poking at what others had built. Reactive. Low-creativity. Structurally subordinate.
+For decades, the software industry ran on an unspoken caste system. Developers sat at the top - the architects of logic, the conjurers of systems from nothing. Their compensation reflected their status. Their culture shaped the industry. Testers occupied a different rung. Seen, often unfairly, as the people who couldn't code well enough to build things, so they were tasked with poking at what others had built. Reactive. Low-creativity. Structurally subordinate.
 
-That hierarchy made sense — for its time. When code had to be written character by character, the scarce resource was construction. Developers were scarce. Developers were valuable.
+That hierarchy made sense - for its time. When code had to be written character by character, the scarce resource was construction. Developers were scarce. Developers were valuable.
 
 That time is over.
 
@@ -18,13 +18,13 @@ The rise of AI coding tools has fundamentally changed the economics of software 
 
 This is genuinely remarkable. It has democratised software creation in ways that are exciting and important. But it has also introduced an underappreciated crisis: a flood of code that works in the demo and fails in the field.
 
-AI-generated code is not inherently worse than human-written code. But it is generated at a scale and speed that human review struggles to match. It confidently hallucinates APIs. It generates plausible-but-broken edge case handling. It replicates subtle security vulnerabilities because it was trained on codebases that contained them. And the developers accepting this code are often doing so without deeply understanding it — because the point of the tool is that you don't have to.
+AI-generated code is not inherently worse than human-written code. But it is generated at a scale and speed that human review struggles to match. It confidently hallucinates APIs. It generates plausible-but-broken edge case handling. It replicates subtle security vulnerabilities because it was trained on codebases that contained them. And the developers accepting this code are often doing so without deeply understanding it - because the point of the tool is that you don't have to.
 
 When everyone can build, the value shifts to those who can verify.
 
 ## What Testers Actually Do
 
-Let's be precise about what we mean by testing. We're not talking about clicking through a UI and checking that buttons do what they say. Modern software testing, done well, is an investigative discipline. It requires deep systems thinking — understanding how components interact and where assumptions break down. Adversarial creativity — the ability to imagine conditions the builder never considered. Domain expertise — knowing not just that something works, but whether it works correctly for the actual use case. Risk modelling — judging which failures matter and which are catastrophic.
+Let's be precise about what we mean by testing. We're not talking about clicking through a UI and checking that buttons do what they say. Modern software testing, done well, is an investigative discipline. It requires deep systems thinking - understanding how components interact and where assumptions break down. Adversarial creativity - the ability to imagine conditions the builder never considered. Domain expertise - knowing not just that something works, but whether it works correctly for the actual use case. Risk modelling - judging which failures matter and which are catastrophic.
 
 None of this is easy. All of it is more important than ever in an AI-accelerated development cycle.
 
@@ -34,9 +34,9 @@ The tester operating in a vibe coding environment is no longer checking that a h
 
 There is a trust problem embedded in AI-generated software that doesn't get discussed enough. When a developer writes code manually, there is an implicit chain of reasoning that can be audited. You can ask them why they made a choice. You can understand the intent.
 
-When code is AI-generated, that chain dissolves. The code may be syntactically perfect, logically coherent in isolation, and utterly wrong in context. It may pass every unit test the AI also helpfully generated — tests that were written to match the code, not to challenge it. It may handle the happy path beautifully and silently corrupt data on every exception.
+When code is AI-generated, that chain dissolves. The code may be syntactically perfect, logically coherent in isolation, and utterly wrong in context. It may pass every unit test the AI also helpfully generated - tests that were written to match the code, not to challenge it. It may handle the happy path beautifully and silently corrupt data on every exception.
 
-A tester who understands this — who approaches AI-generated code with appropriate scepticism, who designs tests that probe intent rather than just behaviour, who asks "what should this actually do?" rather than "does it do what it says?" — is operating at a level of sophistication that most AI tools cannot replicate and many developers currently don't prioritise.
+A tester who understands this - who approaches AI-generated code with appropriate scepticism, who designs tests that probe intent rather than just behaviour, who asks "what should this actually do?" rather than "does it do what it says?" - is operating at a level of sophistication that most AI tools cannot replicate and many developers currently don't prioritise.
 
 The bottleneck has shifted. Building is cheap. Trusting is expensive.
 
@@ -44,19 +44,19 @@ The bottleneck has shifted. Building is cheap. Trusting is expensive.
 
 Here's the uncomfortable truth: the industry's compensation structures, hiring practices, and cultural attitudes haven't caught up with this reality. Senior QA engineers still frequently earn less than mid-level developers. Test automation roles are still often treated as a stepping stone to "real" engineering. The org chart still implicitly signals that building is the high-status work.
 
-This is a structural lag. The companies that recognise it first — that invest in exceptional testers, that elevate QA to a strategic function rather than a compliance gate — will have a significant advantage as AI-generated code becomes the norm. The risk for everyone else is not just buggy software. In sectors where failures have real-world consequences — healthcare, finance, infrastructure — this isn't a productivity question. It's a liability question.
+This is a structural lag. The companies that recognise it first - that invest in exceptional testers, that elevate QA to a strategic function rather than a compliance gate - will have a significant advantage as AI-generated code becomes the norm. The risk for everyone else is not just buggy software. In sectors where failures have real-world consequences - healthcare, finance, infrastructure - this isn't a productivity question. It's a liability question.
 
 ## What to Do With This
 
-If you're a tester: your moment is arriving. The skills you've developed — the patience to find what's broken, the rigour to document it precisely, the knowledge of where software characteristically fails — are more valuable than they have ever been. Don't apologise for them.
+If you're a tester: your moment is arriving. The skills you've developed - the patience to find what's broken, the rigour to document it precisely, the knowledge of where software characteristically fails - are more valuable than they have ever been. Don't apologise for them.
 
 If you're a developer: the most dangerous thing you can do right now is confuse the ease of generation with the assurance of quality. The AI that wrote your code had no skin in the game. You do. Stop treating bug reports as criticism and start treating them as intelligence.
 
-If you're a leader: audit your incentive structures. Are you rewarding the people who ship fast, or the people who ship well? In the age of vibe coding, those are increasingly different populations — and you almost certainly have the balance wrong.
+If you're a leader: audit your incentive structures. Are you rewarding the people who ship fast, or the people who ship well? In the age of vibe coding, those are increasingly different populations - and you almost certainly have the balance wrong.
 
 ## The Scarce Resource Has Changed
 
-The great irony of the AI coding revolution is this: it was supposed to make software better. It can — but only if we invest as heavily in verification as we do in generation. Only if we stop treating testing as the supporting act.
+The great irony of the AI coding revolution is this: it was supposed to make software better. It can - but only if we invest as heavily in verification as we do in generation. Only if we stop treating testing as the supporting act.
 
 The developer who can generate ten thousand lines of code in an afternoon is impressive. The tester who can tell you which three hundred of those lines will cause you to wake up at 3am is invaluable.
 
