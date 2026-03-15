@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import SectionTracker from "@/components/SectionTracker";
 
 export const metadata: Metadata = { title: "Now", description: "What I'm working on right now." };
 
@@ -28,6 +29,7 @@ export default function NowPage() {
         </header>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "36px" }}>
+          <SectionTracker name="now-doing">
           <section>
             <p className="label-upper" style={{ marginBottom: "16px", color: "var(--text-head)" }}>Doing</p>
             <div className="card" style={{ overflow: "hidden" }}>
@@ -43,7 +45,9 @@ export default function NowPage() {
               ))}
             </div>
           </section>
+          </SectionTracker>
 
+          <SectionTracker name="now-not-doing">
           <section>
             <p className="label-upper" style={{ marginBottom: "16px" }}>Not Doing</p>
             <div className="card" style={{ overflow: "hidden" }}>
@@ -60,6 +64,7 @@ export default function NowPage() {
               ))}
             </div>
           </section>
+          </SectionTracker>
 
           <p style={{ fontSize: "13px", color: "var(--text-muted)" }}>
             Inspired by <a href="https://nownownow.com/about" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent)" }}>nownownow.com</a>

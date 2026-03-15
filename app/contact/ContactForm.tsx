@@ -1,5 +1,6 @@
 "use client";
 import { useState, FormEvent } from "react";
+import { trackEvent } from "@/lib/analytics";
 
 type Status = "idle" | "sending" | "sent" | "error";
 const CATEGORIES = ["Feedback", "Bug", "Request", "Others"];
@@ -26,7 +27,12 @@ export default function ContactForm() {
     setStatus("sending");
     try {
       const res = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
-      setStatus(res.ok ? "sent" : "error");
+      if (res.ok) {
+        trackEvent("contact_submit", { category: form.category });
+        setStatus("sent");
+      } else {
+        setStatus("error");
+      }
     } catch { setStatus("error"); }
   };
 

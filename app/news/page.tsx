@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import NewsClient from "./NewsClient";
+import SectionTracker from "@/components/SectionTracker";
 
 export const metadata: Metadata = {
   title: "News",
@@ -8,6 +9,7 @@ export const metadata: Metadata = {
 
 export default function NewsPage() {
   return (
+    <SectionTracker name="news-feed">
     <section className="section">
       <div className="container">
         <header style={{ marginBottom: "48px" }} className="fade-up">
@@ -20,5 +22,6 @@ export default function NewsPage() {
         <NewsClient />
       </div>
     </section>
+    </SectionTracker>
   );
 }

@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
+import { trackEvent } from "@/lib/analytics";
 
 export default function SectionTracker({ name, children }: { name: string; children: React.ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -12,12 +13,10 @@ export default function SectionTracker({ name, children }: { name: string; child
       ([entry]) => {
         if (entry.isIntersecting && !tracked.current) {
           tracked.current = true;
-          if (typeof window.gtag === "function") {
-            window.gtag("event", "section_view", {
-              section_name: name,
-              page_path: window.location.pathname,
-            });
-          }
+          trackEvent("section_view", {
+            section_name: name,
+            page_path: window.location.pathname,
+          });
         }
       },
       { threshold: 0.3 }

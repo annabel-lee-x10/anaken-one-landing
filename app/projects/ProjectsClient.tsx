@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { trackEvent } from "@/lib/analytics";
 
 type Project = { id: string; type: string; name: string; tagline: string; description: string; url: string; };
 
@@ -25,7 +26,7 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
         {projects.map((p, i) => (
           <div
             key={p.id}
-            onClick={() => setActive(i)}
+            onClick={() => { setActive(i); trackEvent("project_select", { project_name: p.name, project_id: p.id }); }}
             style={{
               padding: "28px 24px",
               borderRadius: "var(--radius)",
@@ -59,7 +60,7 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
                   href={p.url} target="_blank" rel="noopener noreferrer"
                   className="btn btn-primary btn-sm"
                   style={{ textDecoration: "none" }}
-                  onClick={e => e.stopPropagation()}
+                  onClick={e => { e.stopPropagation(); trackEvent("project_visit", { project_name: p.name, project_url: p.url }); }}
                 >
                   Visit Project &rarr;
                 </a>

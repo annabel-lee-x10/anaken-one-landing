@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import ContactForm from "./ContactForm";
+import SectionTracker from "@/components/SectionTracker";
 
 export const metadata: Metadata = { title: "Contact", description: "Get in touch." };
 
 export default function ContactPage() {
   return (
-    <>
+    <SectionTracker name="contact-form">
       <section className="section">
         <div className="container-narrow">
           <header style={{ marginBottom: "48px" }} className="fade-up">
@@ -18,6 +19,6 @@ export default function ContactPage() {
           <ContactForm />
         </div>
       </section>
-    </>
+    </SectionTracker>
   );
 }

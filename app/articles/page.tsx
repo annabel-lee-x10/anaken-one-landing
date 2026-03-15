@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getAllArticles } from "@/lib/articles";
 import type { Metadata } from "next";
+import SectionTracker from "@/components/SectionTracker";
 
 export const metadata: Metadata = {
   title: "Articles",
@@ -11,6 +12,7 @@ export default function ArticlesPage() {
   const articles = getAllArticles();
 
   return (
+    <SectionTracker name="articles-listing">
     <section className="section">
       <div className="container-narrow">
         <header style={{ marginBottom: "48px" }} className="fade-up">
@@ -42,5 +44,6 @@ export default function ArticlesPage() {
         </div>
       </div>
     </section>
+    </SectionTracker>
   );
 }

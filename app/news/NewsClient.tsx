@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
+import { trackEvent } from "@/lib/analytics";
 
 type NewsItem = {
   title: string;
@@ -82,6 +83,7 @@ export default function NewsClient() {
             target="_blank"
             rel="noopener noreferrer"
             className="card card-hover"
+            onClick={() => trackEvent("news_click", { article_title: item.title, source: item.source, link_url: item.url })}
             style={{
               display: "flex", flexDirection: "column",
               padding: "28px 24px", textDecoration: "none",

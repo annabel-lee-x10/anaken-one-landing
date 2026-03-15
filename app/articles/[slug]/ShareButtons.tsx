@@ -1,7 +1,9 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
+import { trackEvent } from "@/lib/analytics";
 
 export default function ShareButtons({ url, title }: { url: string; title: string }) {
+  const slug = url.split("/articles/")[1] || url;
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const popoverRef = useRef<HTMLDivElement>(null);
@@ -82,6 +84,7 @@ export default function ShareButtons({ url, title }: { url: string; title: strin
   const handleCopyLink = () => {
     navigator.clipboard.writeText(url);
     setCopied(true);
+    trackEvent("share_click", { method: "copy_link", article_slug: slug });
     setTimeout(() => setCopied(false), 2000);
     setOpen(false);
   };
@@ -117,6 +120,7 @@ export default function ShareButtons({ url, title }: { url: string; title: strin
             target="_blank"
             rel="noopener noreferrer"
             style={shareItem}
+            onClick={() => trackEvent("share_click", { method: "twitter", article_slug: slug })}
             onMouseEnter={(e) => {
               e.currentTarget.style.background = "var(--bg-btn-sec)";
             }}
@@ -131,6 +135,7 @@ export default function ShareButtons({ url, title }: { url: string; title: strin
             target="_blank"
             rel="noopener noreferrer"
             style={shareItem}
+            onClick={() => trackEvent("share_click", { method: "linkedin", article_slug: slug })}
             onMouseEnter={(e) => {
               e.currentTarget.style.background = "var(--bg-btn-sec)";
             }}
