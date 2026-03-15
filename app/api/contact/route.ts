@@ -2,22 +2,23 @@ import nodemailer from "nodemailer";
 
 const ALLOWED_CATEGORIES = ["Feedback", "Bug", "Request", "Others"];
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const rateLimitMap = new Map();
+const rateLimitMap = new Map<string, { count: number; start: number }>();
 
-function isRateLimited(ip) {
+function isRateLimited(ip: string): boolean {
   const now = Date.now();
   const e = rateLimitMap.get(ip) || { count: 0, start: now };
   if (now - e.start > 60000) { rateLimitMap.set(ip, { count: 1, start: now }); return false; }
   if (e.count >= 3) return true;
   e.count++; rateLimitMap.set(ip, e); return false;
 }
-function sanitize(str) {
+
+function sanitize(str: unknown): string {
   return String(str).replace(/<[^>]*>/g, "").replace(/[<>]/g, "").replace(/[\r\n]/g, " ").trim();
 }
 
-const ALLOWED_ORIGINS = ["https://anaken.one", "https://www.anaken.one", "http://localhost:3000", "http://localhost:3001"];
+const ALLOWED_ORIGINS = ["https://anaken.one", "https://www.anaken.one", "http://localhost:3000", "http://localhost:3001", "http://localhost:3002"];
 
-export async function POST(request) {
+export async function POST(request: Request) {
   const origin = request.headers.get("origin") || "";
   if (!ALLOWED_ORIGINS.includes(origin)) return Response.json({ error: "Forbidden." }, { status: 403 });
 
@@ -27,7 +28,7 @@ export async function POST(request) {
   const contentLength = parseInt(request.headers.get("content-length") || "0", 10);
   if (contentLength > 8192) return Response.json({ error: "Request too large." }, { status: 413 });
 
-  let body;
+  let body: Record<string, unknown>;
   try { body = await request.json(); } catch { return Response.json({ error: "Invalid JSON." }, { status: 400 }); }
 
   const { name, email, category, message } = body ?? {};
@@ -54,7 +55,7 @@ export async function POST(request) {
     });
     return Response.json({ ok: true });
   } catch (err) {
-    console.error("[contact]", err.message);
+    console.error("[contact]", err instanceof Error ? err.message : err);
     return Response.json({ error: "Failed to send. Try again." }, { status: 500 });
   }
 }

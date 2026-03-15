@@ -1,0 +1,181 @@
+/* ── Design Tokens — family.co palette ─────────────────────── */
+:root {
+  /* Backgrounds */
+  --bg:            #ffffff;
+  --bg-alt:        #fbfaf9;
+  --bg-dark:       #171717;
+  --bg-card:       #ffffff;
+  --bg-card-hover: #fbfaf9;
+  --bg-btn-sec:    #f6f4ef;
+  --bg-btn-sec-hv: #eae6dd;
+
+  /* Text */
+  --text-head:     #343433;
+  --text-body:     #494440;
+  --text-muted:    #848281;
+  --text-inv:      #ffffff;
+
+  /* Borders */
+  --border:        #f2f0ed;
+  --border-mid:    #eaeaea;
+
+  /* Accents */
+  --accent:        #3B8CF5;
+  --accent-green:  #3BD66B;
+  --accent-coral:  #EF5B4B;
+  --accent-amber:  #F5B731;
+  --accent-orange: #FF5310;
+  --accent-sky:    #5BB8F5;
+  --accent-mint:   #D4F5DC;
+  --accent-sage:   #B8CEB5;
+
+  /* Font — Inter loaded via next/font/google */
+  --font:          var(--font-inter, 'Inter'), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Motion — family.co */
+  --ease:          cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-std:      cubic-bezier(0.4, 0, 0.2, 1);
+  --t:             220ms;
+  --t-fast:        100ms;
+
+  /* Radius */
+  --radius-sm:     8px;
+  --radius:        12px;
+  --radius-pill:   32px;
+
+  /* Shadows */
+  --shadow-card:   inset 0 0 0 1px #f2f0ed;
+  --shadow-lift:   0px 3px 16px rgba(0,0,0,0.08);
+  --shadow-lift-hv:0px 8px 28px rgba(0,0,0,0.12);
+}
+
+/* ── Reset ──────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text-body);
+  font-family: var(--font);
+  line-height: 1.65;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+img, svg { display: block; max-width: 100%; }
+
+/* ── Typography ─────────────────────────────────────────────── */
+h1, h2, h3, h4 {
+  color: var(--text-head);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+h1 { font-size: clamp(44px, 6vw, 68px); font-weight: 600; }
+h2 { font-size: clamp(30px, 4vw, 44px); font-weight: 500; }
+h3 { font-size: clamp(20px, 2.5vw, 26px); font-weight: 600; }
+
+/* ── Layout ─────────────────────────────────────────────────── */
+.container {
+  max-width: calc(1008px + 2rem);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.container-narrow {
+  max-width: calc(680px + 3rem);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.section { padding: 6.5rem 0; }
+.section-sm { padding: 4rem 0; }
+.section-alt { background: var(--bg-alt); }
+
+/* ── Buttons ────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 48px;
+  padding: 0 24px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color var(--t-fast) ease, opacity var(--t-fast) ease;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.btn-primary { background: var(--bg-dark); color: var(--text-inv); }
+.btn-primary:hover { background: #121212; text-decoration: none; }
+
+.btn-secondary { background: var(--bg-btn-sec); color: var(--text-head); }
+.btn-secondary:hover { background: var(--bg-btn-sec-hv); text-decoration: none; }
+
+.btn-sm { height: 38px; padding: 0 18px; font-size: 14px; }
+
+/* ── Cards ──────────────────────────────────────────────────── */
+.card {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--t) var(--ease), background var(--t) var(--ease);
+}
+
+/* ── Hover utilities ────────────────────────────────────────── */
+.card-hover { transition: box-shadow var(--t) var(--ease), background var(--t) var(--ease), transform var(--t) var(--ease); }
+.card-hover:hover { background: var(--bg-card-hover) !important; box-shadow: var(--shadow-lift) !important; }
+
+.link-dim { color: var(--text-body); transition: color var(--t-fast) ease; }
+.link-dim:hover { color: var(--text-head); text-decoration: none; }
+
+/* ── Animations ─────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.fade-up { animation: fadeUp 0.5s var(--ease) both; }
+
+/* ── Misc ───────────────────────────────────────────────────── */
+.divider { border: none; border-top: 1px solid var(--border-mid); }
+
+.label-upper {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ── Focus ──────────────────────────────────────────────────── */
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+/* ── Selection ──────────────────────────────────────────────── */
+::selection { background: #D8ECFC; color: #008cff; }
+
+/* ── Scrollbar ──────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 100px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.22); }
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 720px) {
+  .section { padding: 3.5rem 0; }
+  .section-sm { padding: 2.5rem 0; }
+}
