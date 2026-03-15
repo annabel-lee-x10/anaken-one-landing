@@ -1,17 +1,41 @@
 import Link from "next/link";
 
-const LINKS = [
-  { href: "/articles", label: "Articles", color: "#3B8CF5" },
-  { href: "/news",     label: "News",     color: "#EF5B4B" },
-  { href: "/projects", label: "Projects", color: "#F5B731" },
-  { href: "/lab",      label: "Lab",      color: "#3BD66B" },
-  { href: "/now",      label: "Now",      color: "#5BB8F5" },
-  { href: "/contact",  label: "Contact",  color: "#FF5310" },
+const EXPLORE = [
+  { href: "/articles", label: "Articles" },
+  { href: "/news",     label: "News" },
+  { href: "/projects", label: "Projects" },
+  { href: "/lab",      label: "Lab" },
 ];
+
+const CONNECT = [
+  { href: "/now",     label: "Now" },
+  { href: "/contact", label: "Contact" },
+];
+
+const columnHeaderStyle: React.CSSProperties = {
+  color: "var(--text-head)",
+  fontWeight: 600,
+  fontSize: "13px",
+  textTransform: "uppercase",
+  letterSpacing: "0.06em",
+  marginBottom: "14px",
+};
 
 export default function Footer() {
   return (
     <footer style={{ background: "var(--bg-alt)" }}>
+      <style>{`
+        .footer-link {
+          font-size: 14px;
+          color: var(--text-muted);
+          text-decoration: none;
+          transition: color 0.15s ease;
+        }
+        .footer-link:hover {
+          color: var(--text-body);
+        }
+      `}</style>
+
       {/* Gradient top border */}
       <div style={{ height: "2px", background: "linear-gradient(90deg, #3B8CF5, #EF5B4B, #F5B731, #3BD66B)" }} />
 
@@ -25,13 +49,22 @@ export default function Footer() {
           </p>
         </div>
         <nav style={{ display: "flex", gap: "40px", flexWrap: "wrap" }}>
-          {[LINKS.slice(0, 4), LINKS.slice(4)].map((group, gi) => (
-            <div key={gi} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-              {group.map(({ href, label, color }) => (
-                <Link key={href} href={href} style={{ fontSize: "14px", color, textDecoration: "none" }}>{label}</Link>
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <p style={columnHeaderStyle}>Explore</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+              {EXPLORE.map(({ href, label }) => (
+                <Link key={href} href={href} className="footer-link">{label}</Link>
               ))}
             </div>
-          ))}
+          </div>
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <p style={columnHeaderStyle}>Connect</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+              {CONNECT.map(({ href, label }) => (
+                <Link key={href} href={href} className="footer-link">{label}</Link>
+              ))}
+            </div>
+          </div>
         </nav>
       </div>
       <div style={{ borderTop: "1px solid var(--border-mid)" }}>
