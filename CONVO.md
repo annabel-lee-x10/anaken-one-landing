@@ -1,5 +1,28 @@
 # Conversation Log
 
+## 2026-03-15 — Content Polish: Corp Comms Review
+
+**Context:** Corporate communications review of all user-facing copy. Site was technically solid and visually polished but content was thin, generic, or stale across several pages.
+
+**Changes (12 files):**
+
+1. **Homepage hero** — Replaced generic bio and insider handle reference with curiosity-driven positioning. Stats strip changed from buzzword labels ("Workflow Optimization", "Perpetual Learner") to real proof points ("6 Shipped", "6 Published", "3 In Progress").
+2. **Now page** — Removed stale "Building anaken-one-new" (already merged). Added /now movement explainer. Updated to 4 current focus items with context. "Not doing" items now explain why.
+3. **Lab page** — Reframed intro from self-deprecating ("might become something. Or might not.") to intentional experimentation. Enriched each experiment description with why-it-matters context.
+4. **Project descriptions** — Removed dev-speak ("No dependencies, pure browser", "rebuilt collaboratively"). Rewrote to lead with user value. Projects page intro contextualizes the collection.
+5. **Contact page** — Warmer intro that promises a reply. Richer metadata.
+6. **Articles page** — Editorial framing line ("No listicles — just honest thinking"). Richer metadata.
+7. **News page** — Enriched SEO metadata.
+8. **Article tags** — Added tags to 4 articles that had none (role-reversal, literacy-gap, then-and-now, ai-threat).
+9. **Duplicate heading fix** — Renamed second "The Honest Picture" section in literacy-gap article to "Where This Goes From Here".
+
+**Files changed (12):**
+- `app/page.tsx`, `app/now/page.tsx`, `app/lab/page.tsx`, `app/projects/page.tsx`, `app/contact/page.tsx`, `app/articles/page.tsx`, `app/news/page.tsx`
+- `lib/projects.ts`
+- `content/articles/the-great-role-reversal.md`, `content/articles/the-literacy-gap.md`, `content/articles/use-of-ai-then-and-now.md`, `content/articles/is-ai-really-a-threat.md`
+
+---
+
 ## 2026-03-15 — Homepage Polish: Identity, Colors & Components
 
 **Context:** Detailed UX/design feedback identified scattered color palette, vague identity, orphaned decorative elements, and component polish gaps.

@@ -30,10 +30,10 @@ export default async function HomePage() {
               ideate. innovate. iterate.
             </p>
             <p style={{ fontSize: "15px", color: "var(--text-muted)", lineHeight: 1.65, maxWidth: "420px", margin: "0 auto 24px" }}>
-              I build tools, write about AI workflows, and ship experiments. a10101100 is where it all started.
+              Exploring how AI changes the way we build, think, and work — then writing about what I find.
             </p>
             <p style={{ fontSize: "13px", fontWeight: 600, color: "var(--text-body)", letterSpacing: "0.04em", textTransform: "uppercase", margin: "0 auto 32px", opacity: 0.6 }}>
-              Building at the intersection of AI &amp; developer tooling
+              Tools, articles &amp; experiments — updated weekly
             </p>
             <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
               <Link href="/articles" className="btn" style={{ background: "var(--accent)", color: "#ffffff", boxShadow: "0 2px 12px rgba(51,102,255,0.3)" }}>Read Articles</Link>
@@ -49,9 +49,9 @@ export default async function HomePage() {
       <section className="section-alt" style={{ padding: "0" }}>
         <div className="container" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)" }}>
           {[
-            { label: "Focus",  value: "Workflow Optimization", color: "var(--accent)",      dot: "var(--accent)" },
-            { label: "Mode",   value: "Perpetual Learner",     color: "var(--accent)",      dot: "var(--accent-coral)" },
-            { label: "Stack",  value: "AI-first Tooling",      color: "var(--accent)",      dot: "var(--accent)" },
+            { label: "Projects",    value: "6 Shipped",        color: "var(--accent)",      dot: "var(--accent)" },
+            { label: "Articles",    value: "6 Published",      color: "var(--accent)",      dot: "var(--accent-coral)" },
+            { label: "Experiments", value: "3 In Progress",    color: "var(--accent)",      dot: "var(--accent)" },
           ].map(({ label, value, color, dot }, i) => (
             <div key={label} style={{
               padding: "28px 24px",
@@ -190,8 +190,8 @@ export default async function HomePage() {
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
               {[
-                { name: "Prompt Diff", status: "WIP", description: "Compare two prompt versions side-by-side with structured output diffing.", statusColor: "var(--status-wip-fg)", statusBg: "var(--status-wip-bg)" },
-                { name: "Token Counter", status: "Idea", description: "Paste any text, get token counts for major models with cost estimates.", statusColor: "var(--status-idea-fg)", statusBg: "var(--status-idea-bg)" },
+                { name: "Prompt Diff", status: "WIP", description: "Compare two prompt versions side-by-side with structured output diffing. See exactly what changed in your results when you tweak a prompt.", statusColor: "var(--status-wip-fg)", statusBg: "var(--status-wip-bg)" },
+                { name: "Token Counter", status: "Idea", description: "Paste any text and instantly see token counts across GPT-4, Claude, and Gemini — with cost estimates per model.", statusColor: "var(--status-idea-fg)", statusBg: "var(--status-idea-bg)" },
               ].map(exp => (
                 <div key={exp.name} className="card" style={{ padding: "24px 28px", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "20px", borderLeft: `3px solid ${exp.statusColor}` }}>
                   <div style={{ flex: 1 }}>

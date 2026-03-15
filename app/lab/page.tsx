@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import SectionTracker from "@/components/SectionTracker";
 
-export const metadata: Metadata = { title: "Lab", description: "Experiments, demos, and half-formed ideas." };
+export const metadata: Metadata = { title: "Lab", description: "Active experiments in AI tooling — prompt diffing, workflow mapping, and token analysis. Some ship, all teach." };
 
 const STATUS: Record<string, { label: string; color: string; bg: string }> = {
   live: { label: "Live",  color: "var(--status-live-fg)", bg: "var(--status-live-bg)" },
@@ -10,9 +10,9 @@ const STATUS: Record<string, { label: string; color: string; bg: string }> = {
 };
 
 const EXPERIMENTS = [
-  { id: "01", name: "Prompt Diff",      status: "wip",  description: "Compare two prompt versions side-by-side with structured output diffing." },
-  { id: "02", name: "Workflow Mapper",  status: "idea", description: "Drag-and-drop tool for mapping and timing manual workflows before automating them." },
-  { id: "03", name: "Token Counter",    status: "idea", description: "Paste any text, get token counts for major models with cost estimates." },
+  { id: "01", name: "Prompt Diff",      status: "wip",  description: "Compare two prompt versions side-by-side with structured output diffing. See exactly what changed in your results when you tweak a prompt." },
+  { id: "02", name: "Workflow Mapper",  status: "idea", description: "Map out manual workflows visually before deciding what to automate. Drag-and-drop steps, estimate time per stage, and spot the bottlenecks." },
+  { id: "03", name: "Token Counter",    status: "idea", description: "Paste any text and instantly see token counts across GPT-4, Claude, and Gemini — with cost estimates per model. Useful for budgeting API calls." },
 ];
 
 export default function LabPage() {
@@ -24,7 +24,7 @@ export default function LabPage() {
           <p className="label-upper" style={{ marginBottom: "12px", color: "var(--accent-coral)" }}>Lab</p>
           <h1 style={{ color: "var(--accent-coral)" }}>Experiments</h1>
           <p style={{ fontSize: "17px", color: "var(--text-muted)", marginTop: "12px", maxWidth: "480px", lineHeight: 1.65 }}>
-            Half-formed ideas, active builds, and things that might become something. Or might not.
+            Where ideas get tested. Each experiment starts with a real problem — some graduate to full projects, others surface lessons worth keeping.
           </p>
         </header>
 

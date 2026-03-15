@@ -4,7 +4,7 @@ import SectionTracker from "@/components/SectionTracker";
 
 export const metadata: Metadata = {
   title: "News",
-  description: "Latest AI and technology news from around the web.",
+  description: "Curated AI and technology headlines from top sources — automatically updated every 8 hours.",
 };
 
 export default function NewsPage() {

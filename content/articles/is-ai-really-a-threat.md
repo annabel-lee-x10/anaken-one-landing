@@ -3,6 +3,7 @@ title: "Is AI Really a Threat? Separating Fear from Fact"
 date: "2026-03-09"
 description: "Everyone has an opinion on whether AI is dangerous. Most of those opinions are either dismissive or apocalyptic. Here's a more grounded read."
 slug: "is-ai-really-a-threat"
+tags: ["AI risk", "AI safety", "disinformation", "AI policy", "critical thinking"]
 ---
 
 Every few weeks a new headline arrives. Either AI is about to take every job, end democracy, and achieve sentience by Tuesday — or it's all hype, a glorified autocomplete that can't even count the letter R in a word. Neither framing is honest. Both are lazy. This is an attempt at something more useful.
