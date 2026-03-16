@@ -16,7 +16,9 @@
 
 **Usage:** Add `publishDate: "2026-04-01T09:00:00"` to article frontmatter to schedule publishing.
 
-**Files changed:** `lib/articles.ts`, `app/articles/page.tsx`, `app/articles/[slug]/page.tsx`, `app/page.tsx`, `CONVO.md`
+**Bug fix:** `...data` spread was overwriting the computed `date` field in `getArticleBySlug()` — moved spread before explicit fields so `publishDate` takes precedence. Caught during integration testing.
+
+**Files changed:** `lib/articles.ts`, `app/articles/page.tsx`, `app/articles/[slug]/page.tsx`, `app/page.tsx`, `HOWTO.md` (NEW), `CONVO.md`
 
 ---
 
