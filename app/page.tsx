@@ -5,6 +5,8 @@ import { PROJECTS } from "@/lib/projects";
 import SectionTracker from "@/components/SectionTracker";
 import ProjectsClient from "./projects/ProjectsClient";
 
+export const revalidate = 3600;
+
 export const metadata = {
   title: "Anaken — AI Workflow Tools & Deep Dives",
   description: "Open-source tools for AI workflows — prompt diffing, token analysis, workflow mapping. Plus deep dives on what actually works.",
