@@ -23,12 +23,13 @@ export function getAllArticles(): ArticleMeta[] {
     const slug = file.replace(/\.md$/, "");
     const raw = fs.readFileSync(path.join(articlesDir, file), "utf-8");
     const { data } = matter(raw);
+    const publishDate = (data.publishDate as string) || undefined;
     return {
       slug,
       title: (data.title as string) || slug,
-      date: (data.date as string) || "",
+      date: publishDate || (data.date as string) || "",
       description: (data.description as string) || "",
-      publishDate: (data.publishDate as string) || undefined,
+      publishDate,
     };
   });
   return articles
@@ -47,7 +48,7 @@ export function getArticleBySlug(slug: string) {
   return {
     frontmatter: {
       title: (data.title as string) || slug,
-      date: (data.date as string) || "",
+      date: (data.publishDate as string) || (data.date as string) || "",
       description: (data.description as string) || "",
       ...data,
     },

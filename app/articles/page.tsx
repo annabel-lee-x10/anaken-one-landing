@@ -3,6 +3,8 @@ import { getAllArticles } from "@/lib/articles";
 import type { Metadata } from "next";
 import SectionTracker from "@/components/SectionTracker";
 
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: "Articles",
   description: "Original writing on AI literacy, workflow systems, and how technology reshapes the way we think and work.",

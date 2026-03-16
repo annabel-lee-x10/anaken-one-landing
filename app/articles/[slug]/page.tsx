@@ -6,6 +6,9 @@ import type { Metadata } from "next";
 import ShareButtons from "./ShareButtons";
 import SectionTracker from "@/components/SectionTracker";
 
+export const revalidate = 3600;
+export const dynamicParams = true;
+
 type Props = { params: Promise<{ slug: string }> };
 
 export async function generateStaticParams() {

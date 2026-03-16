@@ -1,19 +1,22 @@
 # Conversation Log
 
-## 2026-03-16 — Scheduled Article Publishing
+## 2026-03-16 — Scheduled Article Publishing with ISR
 
-**Request:** Add ability to set a scheduled publish date/time for articles.
+**Request:** Add ability to schedule articles with a future publish date, "queue and forget" — no manual redeployment needed.
 
 **Changes:**
-- Added optional `publishDate` field to `ArticleMeta` type in `lib/articles.ts`
+- Added optional `publishDate` frontmatter field to `ArticleMeta` type in `lib/articles.ts`
 - Added `isPublished()` helper that checks if the current time is past the `publishDate`
-- `getAllArticles()` now filters out articles with a future `publishDate`
-- `getArticleBySlug()` returns 404 for articles not yet published (prevents direct URL access)
+- `getAllArticles()` filters out articles with a future `publishDate`
+- `getArticleBySlug()` returns 404 for unpublished articles (prevents direct URL access)
+- `publishDate` overrides `date` for display and sorting — the article shows the scheduled date, not the upload date
+- Added ISR (`revalidate = 3600`) to article listing, article detail, and homepage — Vercel re-checks hourly so scheduled articles auto-appear within ~1 hour
+- Added `dynamicParams = true` to article detail page so scheduled slugs not in build-time params can render on-demand
 - Articles without `publishDate` publish immediately (backward compatible)
 
 **Usage:** Add `publishDate: "2026-04-01T09:00:00"` to article frontmatter to schedule publishing.
 
-**Files changed:** `lib/articles.ts`, `CONVO.md`
+**Files changed:** `lib/articles.ts`, `app/articles/page.tsx`, `app/articles/[slug]/page.tsx`, `app/page.tsx`, `CONVO.md`
 
 ---
 
