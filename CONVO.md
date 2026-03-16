@@ -1,5 +1,23 @@
 # Conversation Log
 
+## 2026-03-16 — Add Vercel Web Analytics
+
+**Goal:** Add Vercel Web Analytics for visitor tracking (unique visitors, pageviews, top pages, referrers) alongside existing GA4 setup.
+
+**Context:** User referenced solo-in-seoul project which had both `@vercel/analytics` and `@vercel/speed-insights`. Speed Insights requires Vercel Pro plan — user is on Hobby, so only Web Analytics was added.
+
+**What changed:**
+- Installed `@vercel/analytics` package
+- Added `<VercelAnalytics />` component to root layout (aliased to avoid naming collision with existing GA4 `<Analytics />` component)
+
+**Files changed:**
+- `app/layout.tsx` — import + render `<VercelAnalytics />`
+- `package.json` / `package-lock.json` — added `@vercel/analytics` dependency
+
+**Dashboard setup required:** Enable Web Analytics in Vercel project settings (Settings → Analytics).
+
+---
+
 ## 2026-03-15 — Fix: Dynamic article/project counts on homepage
 
 **Problem:** Stats strip on homepage had hardcoded "6 Published" and "6 Shipped" — article count was stale after adding the 7th article.
