@@ -368,3 +368,5 @@
 **Files changed:**
 - `app/page.tsx` — hero, stats, lab preview, newsletter CTA, metadata
 - `app/lab/page.tsx` — split active vs roadmap experiments
+
+**PR:** https://github.com/annabel-lee-x10/anaken-one-landing/pull/19
