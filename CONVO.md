@@ -1,5 +1,22 @@
 # Conversation Log
 
+## 2026-03-16 — Scheduled Article Publishing
+
+**Request:** Add ability to set a scheduled publish date/time for articles.
+
+**Changes:**
+- Added optional `publishDate` field to `ArticleMeta` type in `lib/articles.ts`
+- Added `isPublished()` helper that checks if the current time is past the `publishDate`
+- `getAllArticles()` now filters out articles with a future `publishDate`
+- `getArticleBySlug()` returns 404 for articles not yet published (prevents direct URL access)
+- Articles without `publishDate` publish immediately (backward compatible)
+
+**Usage:** Add `publishDate: "2026-04-01T09:00:00"` to article frontmatter to schedule publishing.
+
+**Files changed:** `lib/articles.ts`, `CONVO.md`
+
+---
+
 ## 2026-03-16 — Add Vercel Web Analytics
 
 **Goal:** Add Vercel Web Analytics for visitor tracking (unique visitors, pageviews, top pages, referrers) alongside existing GA4 setup.

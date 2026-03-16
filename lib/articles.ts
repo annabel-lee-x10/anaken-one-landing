@@ -9,7 +9,13 @@ export type ArticleMeta = {
   title: string;
   date: string;
   description: string;
+  publishDate?: string;
 };
+
+function isPublished(publishDate?: string): boolean {
+  if (!publishDate) return true;
+  return new Date(publishDate) <= new Date();
+}
 
 export function getAllArticles(): ArticleMeta[] {
   const files = fs.readdirSync(articlesDir).filter(f => f.endsWith(".md"));
@@ -22,9 +28,12 @@ export function getAllArticles(): ArticleMeta[] {
       title: (data.title as string) || slug,
       date: (data.date as string) || "",
       description: (data.description as string) || "",
+      publishDate: (data.publishDate as string) || undefined,
     };
   });
-  return articles.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  return articles
+    .filter(a => isPublished(a.publishDate))
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
 export function getArticleBySlug(slug: string) {
@@ -32,6 +41,9 @@ export function getArticleBySlug(slug: string) {
   if (!fs.existsSync(filePath)) throw new Error(`Article not found: ${slug}`);
   const raw = fs.readFileSync(filePath, "utf-8");
   const { data, content } = matter(raw);
+  if (!isPublished(data.publishDate as string | undefined)) {
+    throw new Error(`Article not found: ${slug}`);
+  }
   return {
     frontmatter: {
       title: (data.title as string) || slug,
