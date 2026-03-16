@@ -6,8 +6,8 @@ import SectionTracker from "@/components/SectionTracker";
 import ProjectsClient from "./projects/ProjectsClient";
 
 export const metadata = {
-  title: "Anaken — Workflows, Tools & AI",
-  description: "ideate. innovate. iterate. — Exploring workflows, AI tooling, and systems optimization.",
+  title: "Anaken — AI Workflow Tools & Deep Dives",
+  description: "Open-source tools for AI workflows — prompt diffing, token analysis, workflow mapping. Plus deep dives on what actually works.",
   alternates: { canonical: "https://anaken.one" },
 };
 
@@ -23,22 +23,22 @@ export default async function HomePage() {
       <SectionTracker name="hero">
         <section className="section" style={{ textAlign: "center", paddingTop: "6rem", paddingBottom: "4.5rem" }}>
           <div className="container-narrow fade-up">
-            <p className="label-upper" style={{ marginBottom: "20px" }}>Anaken · a10101100</p>
+            <p className="label-upper" style={{ marginBottom: "20px" }}>Built by Anaken — software engineer &amp; AI workflow builder</p>
             <h1 className="gradient-text" style={{ marginBottom: "24px", lineHeight: 1.08 }}>
-              Workflows, Tools<br />& AI.
+              AI Workflow<br />Tools.
             </h1>
             <p style={{ fontSize: "clamp(20px, 4vw, 26px)", color: "var(--text-body)", lineHeight: 1.4, letterSpacing: "0.12em", margin: "0 auto 16px" }}>
               ideate. innovate. iterate.
             </p>
-            <p style={{ fontSize: "15px", color: "var(--text-muted)", lineHeight: 1.65, maxWidth: "420px", margin: "0 auto 24px" }}>
-              Exploring how AI changes the way we build, think, and work — then writing about what I find.
+            <p style={{ fontSize: "15px", color: "var(--text-muted)", lineHeight: 1.65, maxWidth: "480px", margin: "0 auto 24px" }}>
+              I build tools that make AI workflows visible, testable, and repeatable — then write about what actually works.
             </p>
             <p style={{ fontSize: "13px", fontWeight: 600, color: "var(--text-body)", letterSpacing: "0.04em", textTransform: "uppercase", margin: "0 auto 32px", opacity: 0.6 }}>
-              Tools, articles &amp; experiments — updated weekly
+              Open-source tools &amp; deep-dive articles
             </p>
             <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
-              <Link href="/articles" className="btn" style={{ background: "var(--accent)", color: "#ffffff", boxShadow: "0 2px 12px rgba(51,102,255,0.3)" }}>Read Articles</Link>
-              <Link href="/projects" className="btn btn-secondary">See Projects</Link>
+              <Link href="/projects" className="btn" style={{ background: "var(--accent)", color: "#ffffff", boxShadow: "0 2px 12px rgba(51,102,255,0.3)" }}>Explore Tools</Link>
+              <Link href="/articles" className="btn btn-secondary">Read Articles</Link>
             </div>
           </div>
         </section>
@@ -50,9 +50,9 @@ export default async function HomePage() {
       <section className="section-alt" style={{ padding: "0" }}>
         <div className="container" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)" }}>
           {[
-            { label: "Projects",    value: `${PROJECTS.length} Shipped`,        color: "var(--accent)",      dot: "var(--accent)" },
-            { label: "Articles",    value: `${allArticles.length} Published`,      color: "var(--accent)",      dot: "var(--accent-coral)" },
-            { label: "Experiments", value: "3 In Progress",    color: "var(--accent)",      dot: "var(--accent)" },
+            { label: "Tools",      value: "Live & Free",          color: "var(--accent-green)", dot: "var(--accent-green)" },
+            { label: "Deep Dives", value: "New Biweekly",         color: "var(--accent-coral)", dot: "var(--accent-coral)" },
+            { label: "Lab",        value: "Building in Public",   color: "var(--accent)",       dot: "var(--accent)" },
           ].map(({ label, value, color, dot }, i) => (
             <div key={label} style={{
               padding: "28px 24px",
@@ -192,7 +192,6 @@ export default async function HomePage() {
             <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
               {[
                 { name: "Prompt Diff", status: "WIP", description: "Compare two prompt versions side-by-side with structured output diffing. See exactly what changed in your results when you tweak a prompt.", statusColor: "var(--status-wip-fg)", statusBg: "var(--status-wip-bg)" },
-                { name: "Token Counter", status: "Idea", description: "Paste any text and instantly see token counts across GPT-4, Claude, and Gemini — with cost estimates per model.", statusColor: "var(--status-idea-fg)", statusBg: "var(--status-idea-bg)" },
               ].map(exp => (
                 <div key={exp.name} className="card" style={{ padding: "24px 28px", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "20px", borderLeft: `3px solid ${exp.statusColor}` }}>
                   <div style={{ flex: 1 }}>
@@ -214,9 +213,28 @@ export default async function HomePage() {
         </section>
       </SectionTracker>
 
+      {/* ── Newsletter CTA ────────────────────────────────── */}
+      <SectionTracker name="notify">
+        <section className="section" style={{ textAlign: "center" }}>
+          <div className="container-narrow">
+            <h2 className="gradient-text" style={{ marginBottom: "16px" }}>Stay in the loop</h2>
+            <p style={{ fontSize: "17px", color: "var(--text-muted)", marginBottom: "32px", lineHeight: 1.6 }}>
+              Get notified when I ship a new tool or publish a deep dive.
+            </p>
+            <Link href="/contact?ref=notify" className="btn" style={{
+              background: "var(--accent)",
+              color: "#ffffff",
+              boxShadow: "0 2px 12px rgba(51,102,255,0.3)",
+            }}>Get notified →</Link>
+          </div>
+        </section>
+      </SectionTracker>
+
+      <div className="gradient-divider" />
+
       {/* ── CTA ──────────────────────────────────────────── */}
       <SectionTracker name="cta">
-        <section className="section" style={{ textAlign: "center" }}>
+        <section className="section section-alt" style={{ textAlign: "center" }}>
           <div className="container-narrow">
             <h2 className="gradient-text" style={{ marginBottom: "16px" }}>Let&apos;s connect</h2>
             <p style={{ fontSize: "17px", color: "var(--text-muted)", marginBottom: "32px", lineHeight: 1.6 }}>

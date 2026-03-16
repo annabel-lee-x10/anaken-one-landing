@@ -16,6 +16,9 @@ const EXPERIMENTS = [
 ];
 
 export default function LabPage() {
+  const active = EXPERIMENTS.filter(e => e.status === "live" || e.status === "wip");
+  const roadmap = EXPERIMENTS.filter(e => e.status === "idea");
+
   return (
     <SectionTracker name="lab">
     <section className="section">
@@ -28,27 +31,56 @@ export default function LabPage() {
           </p>
         </header>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-          {EXPERIMENTS.map(exp => {
-            const s = STATUS[exp.status];
-            return (
-              <div key={exp.id} className="card" style={{ padding: "24px 28px", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "20px" }}>
-                <div style={{ flex: 1 }}>
-                  <p style={{ fontSize: "17px", fontWeight: 600, color: "var(--text-head)", letterSpacing: "-0.02em", marginBottom: "6px" }}>{exp.name}</p>
-                  <p style={{ fontSize: "14px", color: "var(--text-muted)", lineHeight: 1.6 }}>{exp.description}</p>
+        {active.length > 0 && (
+          <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: "48px" }}>
+            {active.map(exp => {
+              const s = STATUS[exp.status];
+              return (
+                <div key={exp.id} className="card" style={{ padding: "24px 28px", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "20px" }}>
+                  <div style={{ flex: 1 }}>
+                    <p style={{ fontSize: "17px", fontWeight: 600, color: "var(--text-head)", letterSpacing: "-0.02em", marginBottom: "6px" }}>{exp.name}</p>
+                    <p style={{ fontSize: "14px", color: "var(--text-muted)", lineHeight: 1.6 }}>{exp.description}</p>
+                  </div>
+                  <span style={{
+                    flexShrink: 0, fontSize: "12px", fontWeight: 600,
+                    color: s.color, background: s.bg,
+                    padding: "4px 10px", borderRadius: "20px",
+                    letterSpacing: "0.04em",
+                  }}>
+                    {s.label}
+                  </span>
                 </div>
-                <span style={{
-                  flexShrink: 0, fontSize: "12px", fontWeight: 600,
-                  color: s.color, background: s.bg,
-                  padding: "4px 10px", borderRadius: "20px",
-                  letterSpacing: "0.04em",
-                }}>
-                  {s.label}
-                </span>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        )}
+
+        {roadmap.length > 0 && (
+          <>
+            <p className="label-upper" style={{ marginBottom: "16px", color: "var(--text-muted)" }}>On the Roadmap</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+              {roadmap.map(exp => {
+                const s = STATUS[exp.status];
+                return (
+                  <div key={exp.id} className="card" style={{ padding: "24px 28px", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "20px", opacity: 0.75 }}>
+                    <div style={{ flex: 1 }}>
+                      <p style={{ fontSize: "17px", fontWeight: 600, color: "var(--text-head)", letterSpacing: "-0.02em", marginBottom: "6px" }}>{exp.name}</p>
+                      <p style={{ fontSize: "14px", color: "var(--text-muted)", lineHeight: 1.6 }}>{exp.description}</p>
+                    </div>
+                    <span style={{
+                      flexShrink: 0, fontSize: "12px", fontWeight: 600,
+                      color: s.color, background: s.bg,
+                      padding: "4px 10px", borderRadius: "20px",
+                      letterSpacing: "0.04em",
+                    }}>
+                      {s.label}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        )}
       </div>
     </section>
     </SectionTracker>
