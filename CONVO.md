@@ -1,5 +1,15 @@
 # Conversation Log
 
+## 2026-03-16 — Test Scheduled Publishing with "The Floor Is Dropping"
+
+**Goal:** Test the scheduled publishing feature by setting a future `publishDate` on an existing article.
+
+**Change:** Added `publishDate: "2026-03-17T10:00:00+08:00"` to `the-floor-is-dropping-how-ai-is-compounding-the-intelligence-gap.md` frontmatter. Article will be hidden until 17 Mar 2026 10am SGT, then auto-appear via ISR.
+
+**Files changed:** `content/articles/the-floor-is-dropping-how-ai-is-compounding-the-intelligence-gap.md`
+
+---
+
 ## 2026-03-16 — Scheduled Article Publishing with ISR
 
 **Request:** Add ability to schedule articles with a future publish date, "queue and forget" — no manual redeployment needed.

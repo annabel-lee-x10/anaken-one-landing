@@ -1,6 +1,7 @@
 ---
 title: "The Floor Is Dropping - How AI Is Compounding the Intelligence Gap"
 date: "2026-03-15"
+publishDate: "2026-03-17T10:00:00+08:00"
 description: "AI doesn't just amplify good thinking - it makes thinking optional. The gap between those who use AI to go deeper and those who use it to opt out is widening faster than anyone is talking about."
 ---
 
