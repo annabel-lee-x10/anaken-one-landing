@@ -47,10 +47,10 @@ export function getArticleBySlug(slug: string) {
   }
   return {
     frontmatter: {
+      ...data,
       title: (data.title as string) || slug,
       date: (data.publishDate as string) || (data.date as string) || "",
       description: (data.description as string) || "",
-      ...data,
     },
     content,
   };
