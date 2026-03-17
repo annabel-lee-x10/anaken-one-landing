@@ -13,30 +13,14 @@ const ANGLE_SPEED = 0.5;
 const IMG_RATIO = 0.25;
 
 function ProjectCard({ project }: { project: Project }) {
-  return (
-    <Link
-      href={`/projects/${project.slug}`}
-      onClick={() => {
-        trackEvent("project_select", { project_name: project.name, project_id: project.id });
-      }}
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        width: "100%",
-        height: "100%",
-        borderRadius: `${BORDER_RADIUS}px`,
-        background: "var(--bg-card)",
-        boxShadow: "var(--shadow-lift)",
-        border: "1px solid var(--border-mid)",
-        textDecoration: "none",
-        color: "inherit",
-        overflow: "hidden",
-      }}
-    >
+  const isComingSoon = project.status === "coming-soon";
+
+  const content = (
+    <>
       <div style={{
         height: `${IMG_RATIO * 100}%`,
         minHeight: "70px",
-        background: TYPE_COLORS[project.type] ?? "var(--accent)",
+        background: isComingSoon ? "var(--bg-alt)" : (TYPE_COLORS[project.type] ?? "var(--accent)"),
         overflow: "hidden",
         flexShrink: 0,
       }}>
@@ -49,21 +33,64 @@ function ProjectCard({ project }: { project: Project }) {
       <div style={{ padding: "16px 20px", flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
         <div>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "10px" }}>
-            <span style={{
-              fontSize: "11px", fontWeight: 600,
-              color: project.type === "Guide" ? "#333" : "#fff",
-              background: TYPE_COLORS[project.type] ?? "var(--accent)",
-              padding: "3px 9px", borderRadius: "20px",
-              letterSpacing: "0.04em", textTransform: "uppercase",
-            }}>
-              {project.type}
-            </span>
+            {isComingSoon ? (
+              <span style={{
+                fontSize: "11px", fontWeight: 600,
+                color: "var(--text-muted)",
+                background: "var(--bg-alt)",
+                padding: "3px 9px", borderRadius: "20px",
+                letterSpacing: "0.04em", textTransform: "uppercase",
+              }}>
+                Coming Soon
+              </span>
+            ) : (
+              <span style={{
+                fontSize: "11px", fontWeight: 600,
+                color: project.type === "Guide" ? "#333" : "#fff",
+                background: TYPE_COLORS[project.type] ?? "var(--accent)",
+                padding: "3px 9px", borderRadius: "20px",
+                letterSpacing: "0.04em", textTransform: "uppercase",
+              }}>
+                {project.type}
+              </span>
+            )}
             <span style={{ fontSize: "12px", color: "var(--text-muted)", fontWeight: 500 }}>{project.id}</span>
           </div>
           <h3 style={{ fontSize: "16px", marginBottom: "6px" }}>{project.name}</h3>
         </div>
         <p style={{ fontSize: "13px", color: "var(--text-muted)", lineHeight: 1.5 }}>{project.tagline}</p>
       </div>
+    </>
+  );
+
+  const cardStyle: React.CSSProperties = {
+    display: "flex",
+    flexDirection: "column",
+    width: "100%",
+    height: "100%",
+    borderRadius: `${BORDER_RADIUS}px`,
+    background: "var(--bg-card)",
+    boxShadow: "var(--shadow-lift)",
+    border: `1px ${isComingSoon ? "dashed" : "solid"} var(--border-mid)`,
+    textDecoration: "none",
+    color: "inherit",
+    overflow: "hidden",
+    opacity: isComingSoon ? 0.85 : 1,
+  };
+
+  if (isComingSoon) {
+    return <div style={cardStyle}>{content}</div>;
+  }
+
+  return (
+    <Link
+      href={`/projects/${project.slug}`}
+      onClick={() => {
+        trackEvent("project_select", { project_name: project.name, project_id: project.id });
+      }}
+      style={cardStyle}
+    >
+      {content}
     </Link>
   );
 }
@@ -212,7 +239,7 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
             }
           `}</style>
           {projects.map(p => (
-            <div key={p.id} className="project-grid-card" style={{ height: "280px" }}>
+            <div key={p.id} className={p.status !== "coming-soon" ? "project-grid-card" : ""} style={{ height: "280px" }}>
               <ProjectCard project={p} />
             </div>
           ))}

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" fill="none">
+  <rect width="400" height="200" fill="#f2f0ed"/>
+  <circle cx="200" cy="90" r="28" stroke="#ccc" stroke-width="2" fill="none"/>
+  <line x1="200" y1="72" x2="200" y2="108" stroke="#ccc" stroke-width="2"/>
+  <line x1="182" y1="90" x2="218" y2="90" stroke="#ccc" stroke-width="2"/>
+  <text x="200" y="145" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#848281" font-weight="500">Coming Soon</text>
+</svg>

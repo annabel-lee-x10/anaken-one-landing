@@ -42,6 +42,7 @@
   --type-bg-tool:    #EEF4FF;
   --type-bg-game:    #FFF1F0;
   --type-bg-guide:   #FFF9EB;
+  --type-bg-app:     #FFF5EB;
 
   /* Font — Inter loaded via next/font/google */
   --font:          var(--font-inter, 'Inter'), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -95,6 +96,7 @@
   --type-bg-tool:    #141a28;
   --type-bg-game:    #281414;
   --type-bg-guide:   #282010;
+  --type-bg-app:     #28200a;
 
   --shadow-card:   inset 0 0 0 1px #2e2e2e;
   --shadow-lift:   0px 3px 16px rgba(0,0,0,0.3);
@@ -116,6 +118,7 @@
   --type-bg-tool:  #0d1a2e;
   --type-bg-game:  #2e0d0d;
   --type-bg-guide: #2e2200;
+  --type-bg-app:   #2e1a00;
   --shadow-card:   inset 0 0 0 1px #1a1a1a;
 }
 
