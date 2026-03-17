@@ -24,11 +24,40 @@ function ProjectCard({ project }: { project: Project }) {
         overflow: "hidden",
         flexShrink: 0,
       }}>
-        <img
-          src={project.image}
-          alt={project.name}
-          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-        />
+        {isComingSoon ? (
+          <div style={{
+            width: "100%", height: "100%",
+            display: "flex", flexDirection: "column",
+            alignItems: "center", justifyContent: "center", gap: "8px",
+          }}>
+            <div style={{ position: "relative", width: "28px", height: "28px" }}>
+              <div style={{
+                position: "absolute", top: "50%", left: "0",
+                width: "100%", height: "2px",
+                background: "var(--text-muted)", opacity: 0.4,
+                transform: "translateY(-50%)",
+              }} />
+              <div style={{
+                position: "absolute", left: "50%", top: "0",
+                height: "100%", width: "2px",
+                background: "var(--text-muted)", opacity: 0.4,
+                transform: "translateX(-50%)",
+              }} />
+            </div>
+            <span style={{
+              fontSize: "11px", fontWeight: 500,
+              color: "var(--text-muted)", opacity: 0.7,
+            }}>
+              Coming Soon
+            </span>
+          </div>
+        ) : (
+          <img
+            src={project.image}
+            alt={project.name}
+            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+          />
+        )}
       </div>
       <div style={{ padding: "16px 20px", flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
         <div>
