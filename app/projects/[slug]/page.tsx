@@ -7,7 +7,7 @@ import SectionTracker from "@/components/SectionTracker";
 type Props = { params: Promise<{ slug: string }> };
 
 export function generateStaticParams() {
-  return PROJECTS.map(p => ({ slug: p.slug }));
+  return PROJECTS.filter(p => p.status !== "coming-soon").map(p => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -23,16 +23,19 @@ export default async function ProjectPage({ params }: Props) {
   if (!project) notFound();
 
   const color = TYPE_COLORS[project.type] ?? "var(--accent)";
+  const isGameOrGuide = project.type === "Game" || project.type === "Guide";
+  const backHref = isGameOrGuide ? "/games" : "/projects";
+  const backLabel = isGameOrGuide ? "Games" : "Projects";
 
   return (
     <SectionTracker name={`project-${project.slug}`}>
       <section className="section">
         <div className="container-narrow">
-          <Link href="/projects" className="link-dim" style={{
+          <Link href={backHref} className="link-dim" style={{
             display: "inline-flex", alignItems: "center", gap: "6px",
             fontSize: "14px", textDecoration: "none", marginBottom: "40px",
           }}>
-            &larr; Projects
+            ← {backLabel}
           </Link>
 
           <header style={{ marginBottom: "48px", paddingBottom: "40px", borderBottom: "1px solid var(--border-mid)" }}>
@@ -49,26 +52,30 @@ export default async function ProjectPage({ params }: Props) {
             <p style={{ fontSize: "18px", color: "var(--text-muted)", lineHeight: 1.65 }}>{project.tagline}</p>
           </header>
 
-          <div style={{ fontSize: "17px", lineHeight: 1.8, color: "var(--text-body)", marginBottom: "48px" }}>
-            <p>{project.description}</p>
-          </div>
+          {project.description && (
+            <div style={{ fontSize: "17px", lineHeight: 1.8, color: "var(--text-body)", marginBottom: "48px" }}>
+              <p>{project.description}</p>
+            </div>
+          )}
 
-          <a
-            href={project.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn"
-            style={{
-              background: color,
-              color: "#ffffff",
-              textDecoration: "none",
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "8px",
-            }}
-          >
-            Visit Project &rarr;
-          </a>
+          {project.url && (
+            <a
+              href={project.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn"
+              style={{
+                background: color,
+                color: "#ffffff",
+                textDecoration: "none",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+              }}
+            >
+              Visit Project →
+            </a>
+          )}
         </div>
       </section>
     </SectionTracker>

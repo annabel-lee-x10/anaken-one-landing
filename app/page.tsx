@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getAllArticles } from "@/lib/articles";
 import { fetchNews } from "@/lib/news";
-import { PROJECTS } from "@/lib/projects";
+import { TOOLS } from "@/lib/projects";
 import SectionTracker from "@/components/SectionTracker";
 import ProjectsClient from "./projects/ProjectsClient";
 
@@ -25,7 +25,7 @@ export default async function HomePage() {
       <SectionTracker name="hero">
         <section className="section" style={{ textAlign: "center", paddingTop: "6rem", paddingBottom: "4.5rem" }}>
           <div className="container-narrow fade-up">
-            <p className="label-upper" style={{ marginBottom: "20px" }}>Built by Anaken — software engineer &amp; AI workflow builder</p>
+            <p className="label-upper" style={{ marginBottom: "20px" }}>Building tools that make AI workflows visible, testable, and repeatable.</p>
             <h1 className="gradient-text" style={{ marginBottom: "24px", lineHeight: 1.08 }}>
               AI Workflow<br />Tools.
             </h1>
@@ -52,9 +52,9 @@ export default async function HomePage() {
       <section className="section-alt" style={{ padding: "0" }}>
         <div className="container" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)" }}>
           {[
-            { label: "Tools",      value: "Live & Free",          color: "var(--accent-green)", dot: "var(--accent-green)" },
-            { label: "Deep Dives", value: "New Biweekly",         color: "var(--accent-coral)", dot: "var(--accent-coral)" },
-            { label: "Lab",        value: "Building in Public",   color: "var(--accent)",       dot: "var(--accent)" },
+            { label: "Tools",      value: `${TOOLS.filter(t => t.status !== "coming-soon").length} Tools Live`,  color: "var(--accent-green)", dot: "var(--accent-green)" },
+            { label: "Deep Dives", value: `${allArticles.length} Articles Published`,                           color: "var(--accent-coral)", dot: "var(--accent-coral)" },
+            { label: "Lab",        value: "2 Experiments in Lab",                                               color: "var(--accent)",       dot: "var(--accent)" },
           ].map(({ label, value, color, dot }, i) => (
             <div key={label} style={{
               padding: "28px 24px",
@@ -73,6 +73,19 @@ export default async function HomePage() {
 
       <div className="gradient-divider" />
 
+      {/* ── Thesis ──────────────────────────────────────── */}
+      <SectionTracker name="thesis">
+        <section className="section-alt" style={{ textAlign: "center", padding: "3.5rem 1.5rem" }}>
+          <div className="container-narrow" style={{ maxWidth: "640px" }}>
+            <p style={{ fontSize: "18px", color: "var(--text-body)", lineHeight: 1.7, fontStyle: "normal" }}>
+              Most AI tools are black boxes. I build the ones that let you see what's happening, test whether it works, and do it again reliably.
+            </p>
+          </div>
+        </section>
+      </SectionTracker>
+
+      <div className="gradient-divider" />
+
       {/* ── Projects ─────────────────────────────────────── */}
       <SectionTracker name="projects-preview">
         <section className="section">
@@ -80,13 +93,13 @@ export default async function HomePage() {
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "40px", flexWrap: "wrap", gap: "16px" }}>
               <div>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
-                  <p className="label-upper" style={{ margin: 0, color: "var(--accent)" }}>Projects</p>
+                  <p className="label-upper" style={{ margin: 0, color: "var(--accent)" }}>Tools</p>
                 </div>
-                <h2 style={{ color: "var(--accent)" }}>Things I&apos;ve built</h2>
+                <h2 style={{ color: "var(--accent)" }}>Tools & Products</h2>
               </div>
               <Link href="/projects" className="btn btn-secondary btn-sm">View all</Link>
             </div>
-            <ProjectsClient projects={PROJECTS} />
+            <ProjectsClient projects={TOOLS} />
           </div>
         </section>
       </SectionTracker>
