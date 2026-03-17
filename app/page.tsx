@@ -52,9 +52,9 @@ export default async function HomePage() {
       <section className="section-alt" style={{ padding: "0" }}>
         <div className="container" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)" }}>
           {[
-            { label: "Tools",      value: `${TOOLS.filter(t => t.status !== "coming-soon").length} Tools Live`,  color: "var(--accent-green)", dot: "var(--accent-green)" },
+            { label: "Tools",      value: `${TOOLS.filter(t => t.status !== "coming-soon").length} Tools Live`,  color: "var(--accent)",       dot: "var(--accent)" },
             { label: "Deep Dives", value: `${allArticles.length} Articles Published`,                           color: "var(--accent-coral)", dot: "var(--accent-coral)" },
-            { label: "Lab",        value: "2 Experiments in Lab",                                               color: "var(--accent)",       dot: "var(--accent)" },
+            { label: "Lab",        value: "2 Experiments in Lab",                                               color: "var(--accent-amber)", dot: "var(--accent-amber)" },
           ].map(({ label, value, color, dot }, i) => (
             <div key={label} style={{
               padding: "28px 24px",
@@ -113,8 +113,8 @@ export default async function HomePage() {
             <div className="container">
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "40px", flexWrap: "wrap", gap: "16px" }}>
                 <div>
-                  <p className="label-upper" style={{ marginBottom: "10px", color: "var(--accent-green)" }}>News</p>
-                  <h2 style={{ color: "var(--accent-green)" }}>Latest in AI</h2>
+                  <p className="label-upper" style={{ marginBottom: "10px", color: "var(--accent)" }}>News</p>
+                  <h2 style={{ color: "var(--accent)" }}>Latest in AI</h2>
                 </div>
                 <Link href="/news" className="btn btn-secondary btn-sm">All news</Link>
               </div>
@@ -155,8 +155,8 @@ export default async function HomePage() {
           <div className="container">
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "40px", flexWrap: "wrap", gap: "16px" }}>
               <div>
-                <p className="label-upper" style={{ marginBottom: "10px", color: "var(--accent-amber)" }}>Writing</p>
-                <h2 style={{ color: "var(--accent-amber)" }}>Recent Articles</h2>
+                <p className="label-upper" style={{ marginBottom: "10px", color: "var(--accent)" }}>Writing</p>
+                <h2 style={{ color: "var(--accent)" }}>Recent Articles</h2>
               </div>
               <Link href="/articles" className="btn btn-secondary btn-sm">All articles</Link>
             </div>
@@ -199,8 +199,8 @@ export default async function HomePage() {
           <div className="container">
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "40px", flexWrap: "wrap", gap: "16px" }}>
               <div>
-                <p className="label-upper" style={{ marginBottom: "10px", color: "var(--accent-amber)" }}>Lab</p>
-                <h2 style={{ color: "var(--accent-amber)" }}>From the Lab</h2>
+                <p className="label-upper" style={{ marginBottom: "10px", color: "var(--accent)" }}>Lab</p>
+                <h2 style={{ color: "var(--accent)" }}>From the Lab</h2>
               </div>
               <Link href="/lab" className="btn btn-secondary btn-sm">View Lab</Link>
             </div>

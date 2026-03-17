@@ -31,6 +31,9 @@
 - Always confirm before: deleting files, dropping tables, force-pushing, clearing caches
 - If unsure whether an action is reversible, STOP and ask
 
+### After Building
+- Run full test suites (unit / integration / regression tests / simulation)
+
 ### Git Hygiene
 - Always check `git status` before committing
 - Never stage `.env` or secret files — verify with `git diff --cached` first
@@ -99,4 +102,4 @@ ease:     cubic-bezier(0.19,1,0.22,1) 220ms  /  fast: 100ms ease
 
 **Out of scope:** auth, CMS, comments, e-commerce.
 
-<!-- sync:mastermind:33d485e42b6e41c9f8573ea433e7eda142bfad2930797c5f724d8c0365c0c4b5 -->
+<!-- sync:mastermind:4456caa39814474f85e7ca6061c8761b3ca416508fdfab596ad415adaa40cfa0 -->
