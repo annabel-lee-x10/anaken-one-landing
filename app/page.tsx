@@ -9,7 +9,7 @@ export const revalidate = 3600;
 
 export const metadata = {
   title: "Anaken — AI Workflow Tools & Deep Dives",
-  description: "Open-source tools for AI workflows — prompt diffing, token analysis, workflow mapping. Plus deep dives on what actually works.",
+  description: "Tools for AI workflows — prompt diffing, token analysis, workflow mapping. Plus deep dives on what actually works.",
   alternates: { canonical: "https://anaken.one" },
 };
 
@@ -36,7 +36,7 @@ export default async function HomePage() {
               I build tools that make AI workflows visible, testable, and repeatable — then write about what actually works.
             </p>
             <p style={{ fontSize: "13px", fontWeight: 600, color: "var(--text-body)", letterSpacing: "0.04em", textTransform: "uppercase", margin: "0 auto 32px", opacity: 0.6 }}>
-              Open-source tools &amp; deep-dive articles
+              Tools & deep-dive articles
             </p>
             <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
               <Link href="/projects" className="btn" style={{ background: "var(--accent)", color: "#ffffff", boxShadow: "0 2px 12px rgba(51,102,255,0.3)" }}>Explore Tools</Link>
