@@ -1,59 +1,44 @@
 "use client";
 import Link from "next/link";
 import { trackEvent } from "@/lib/analytics";
-import { TYPE_COLORS } from "@/lib/projects";
 import type { Project } from "@/lib/projects";
 
 const BORDER_RADIUS = 12;
 const IMG_RATIO = 0.25;
 
-function ProjectCard({ project }: { project: Project }) {
+/* Gradient stops matching the footer line: blue → purple → coral */
+const GRADIENT_STOPS: [number, number, number][] = [
+  [0x33, 0x66, 0xFF], // #3366FF  (0%)
+  [0x66, 0x44, 0xCC], // #6644CC  (50%)
+  [0xFF, 0x33, 0x55], // #FF3355 (100%)
+];
+
+function sampleGradient(index: number, total: number): string {
+  if (total <= 1) return `rgb(${GRADIENT_STOPS[0].join(",")})`;
+  const t = index / (total - 1); // 0 → 1
+  const segment = t * (GRADIENT_STOPS.length - 1);
+  const lo = Math.min(Math.floor(segment), GRADIENT_STOPS.length - 2);
+  const frac = segment - lo;
+  const a = GRADIENT_STOPS[lo], b = GRADIENT_STOPS[lo + 1];
+  const r = Math.round(a[0] + (b[0] - a[0]) * frac);
+  const g = Math.round(a[1] + (b[1] - a[1]) * frac);
+  const bl = Math.round(a[2] + (b[2] - a[2]) * frac);
+  return `rgb(${r},${g},${bl})`;
+}
+
+function ProjectCard({ project, index, total }: { project: Project; index: number; total: number }) {
   const isComingSoon = project.status === "coming-soon";
+  const cardColor = sampleGradient(index, total);
+  const displayNum = String(index + 1).padStart(2, "0");
 
   const content = (
     <>
       <div style={{
         height: `${IMG_RATIO * 100}%`,
         minHeight: "70px",
-        background: isComingSoon ? "var(--bg-alt)" : (TYPE_COLORS[project.type] ?? "var(--accent)"),
-        overflow: "hidden",
+        background: cardColor,
         flexShrink: 0,
-      }}>
-        {isComingSoon ? (
-          <div style={{
-            width: "100%", height: "100%",
-            display: "flex", flexDirection: "column",
-            alignItems: "center", justifyContent: "center", gap: "8px",
-          }}>
-            <div style={{ position: "relative", width: "28px", height: "28px" }}>
-              <div style={{
-                position: "absolute", top: "50%", left: "0",
-                width: "100%", height: "2px",
-                background: "var(--text-muted)", opacity: 0.4,
-                transform: "translateY(-50%)",
-              }} />
-              <div style={{
-                position: "absolute", left: "50%", top: "0",
-                height: "100%", width: "2px",
-                background: "var(--text-muted)", opacity: 0.4,
-                transform: "translateX(-50%)",
-              }} />
-            </div>
-            <span style={{
-              fontSize: "11px", fontWeight: 500,
-              color: "var(--text-muted)", opacity: 0.7,
-            }}>
-              Coming Soon
-            </span>
-          </div>
-        ) : (
-          <img
-            src={project.image}
-            alt={project.name}
-            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-          />
-        )}
-      </div>
+      }} />
       <div style={{ padding: "16px 20px", flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
         <div>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "10px" }}>
@@ -71,14 +56,14 @@ function ProjectCard({ project }: { project: Project }) {
               <span style={{
                 fontSize: "11px", fontWeight: 600,
                 color: "#fff",
-                background: TYPE_COLORS[project.type] ?? "var(--accent)",
+                background: cardColor,
                 padding: "3px 9px", borderRadius: "20px",
                 letterSpacing: "0.04em", textTransform: "uppercase",
               }}>
                 {project.type}
               </span>
             )}
-            <span style={{ fontSize: "12px", color: "var(--text-muted)", fontWeight: 500 }}>{project.id}</span>
+            <span style={{ fontSize: "12px", color: "var(--text-muted)", fontWeight: 500 }}>{displayNum}</span>
           </div>
           <h3 style={{ fontSize: "16px", marginBottom: "6px" }}>{project.name}</h3>
         </div>
@@ -144,9 +129,9 @@ export default function ProjectsClient({ projects }: { projects: Project[] }) {
             box-shadow: var(--shadow-lift-hv) !important;
           }
         `}</style>
-        {projects.map(p => (
+        {projects.map((p, i) => (
           <div key={p.id} className={p.status !== "coming-soon" ? "project-grid-card" : ""} style={{ height: "280px" }}>
-            <ProjectCard project={p} />
+            <ProjectCard project={p} index={i} total={projects.length} />
           </div>
         ))}
       </div>
