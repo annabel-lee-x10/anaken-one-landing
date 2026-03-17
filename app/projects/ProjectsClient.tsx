@@ -75,7 +75,7 @@ function ProjectCard({ project }: { project: Project }) {
             ) : (
               <span style={{
                 fontSize: "11px", fontWeight: 600,
-                color: project.type === "Guide" ? "#333" : "#fff",
+                color: "#fff",
                 background: TYPE_COLORS[project.type] ?? "var(--accent)",
                 padding: "3px 9px", borderRadius: "20px",
                 letterSpacing: "0.04em", textTransform: "uppercase",

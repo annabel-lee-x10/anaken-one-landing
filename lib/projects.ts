@@ -30,9 +30,9 @@ export const PROJECTS: Project[] = RAW_PROJECTS.map(p => ({ ...p, slug: toSlug(p
 
 export const TYPE_COLORS: Record<string, string> = {
   Tool:  "#3366FF",
-  Game:  "#00CC66",
-  Guide: "#FFCC00",
-  App:   "#FF9500",
+  Game:  "#FF3355",
+  Guide: "#FF3355",
+  App:   "#3366FF",
 };
 
 export const TOOLS: Project[] = PROJECTS.filter(p => p.type === "Tool" || p.type === "App");
