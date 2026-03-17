@@ -22,8 +22,8 @@ export default function NowPage() {
     <section className="section">
       <div className="container-narrow">
         <header style={{ marginBottom: "48px" }} className="fade-up">
-          <p className="label-upper" style={{ marginBottom: "12px", color: "var(--accent-green)" }}>Now</p>
-          <h1 style={{ color: "var(--accent-green)" }}>Current Focus</h1>
+          <p className="label-upper" style={{ marginBottom: "12px", color: "var(--accent-coral)" }}>Now</p>
+          <h1 style={{ color: "var(--accent-coral)" }}>Current Focus</h1>
           <p style={{ fontSize: "15px", color: "var(--text-muted)", marginTop: "12px", lineHeight: 1.6, maxWidth: "480px" }}>
             A snapshot of what I'm working on and thinking about. Inspired by the <a href="https://nownownow.com/about" target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent)", textDecoration: "none" }}>/now page</a> movement.
           </p>

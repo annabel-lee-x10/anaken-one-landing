@@ -24,8 +24,8 @@ export default function LabPage() {
     <section className="section">
       <div className="container-narrow">
         <header style={{ marginBottom: "48px" }} className="fade-up">
-          <p className="label-upper" style={{ marginBottom: "12px", color: "var(--accent-amber)" }}>Lab</p>
-          <h1 style={{ color: "var(--accent-amber)" }}>Experiments</h1>
+          <p className="label-upper" style={{ marginBottom: "12px", color: "var(--accent)" }}>Lab</p>
+          <h1 style={{ color: "var(--accent)" }}>Experiments</h1>
           <p style={{ fontSize: "17px", color: "var(--text-muted)", marginTop: "12px", maxWidth: "480px", lineHeight: 1.65 }}>
             Where ideas get tested. Each experiment starts with a real problem — some graduate to full projects, others surface lessons worth keeping.
           </p>

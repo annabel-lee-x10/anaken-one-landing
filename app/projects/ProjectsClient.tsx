@@ -4,7 +4,7 @@ import { trackEvent } from "@/lib/analytics";
 import type { Project } from "@/lib/projects";
 
 const BORDER_RADIUS = 12;
-const IMG_RATIO = 0.25;
+const IMG_RATIO = 0.12;
 
 /* Gradient stops matching the footer line: blue → purple → coral */
 const GRADIENT_STOPS: [number, number, number][] = [
@@ -35,7 +35,7 @@ function ProjectCard({ project, index, total }: { project: Project; index: numbe
     <>
       <div style={{
         height: `${IMG_RATIO * 100}%`,
-        minHeight: "70px",
+        minHeight: "48px",
         background: cardColor,
         flexShrink: 0,
       }} />
