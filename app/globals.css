@@ -40,9 +40,9 @@
   /* Project badge */
   --badge-active-bg: #EEF4FF;
   --type-bg-tool:    #EEF4FF;
-  --type-bg-game:    #FFF1F0;
-  --type-bg-guide:   #FFF9EB;
-  --type-bg-app:     #FFF5EB;
+  --type-bg-game:    #FFF1F3;
+  --type-bg-guide:   #FFF1F3;
+  --type-bg-app:     #EEF4FF;
 
   /* Font — Inter loaded via next/font/google */
   --font:          var(--font-inter, 'Inter'), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -94,9 +94,9 @@
 
   --badge-active-bg: #1a1a22;
   --type-bg-tool:    #141a28;
-  --type-bg-game:    #281414;
-  --type-bg-guide:   #282010;
-  --type-bg-app:     #28200a;
+  --type-bg-game:    #281418;
+  --type-bg-guide:   #281418;
+  --type-bg-app:     #141a28;
 
   --shadow-card:   inset 0 0 0 1px #2e2e2e;
   --shadow-lift:   0px 3px 16px rgba(0,0,0,0.3);
@@ -116,9 +116,9 @@
   --status-idea-bg:#1a1a1a;
   --badge-active-bg:#0d1520;
   --type-bg-tool:  #0d1a2e;
-  --type-bg-game:  #2e0d0d;
-  --type-bg-guide: #2e2200;
-  --type-bg-app:   #2e1a00;
+  --type-bg-game:  #2e0d12;
+  --type-bg-guide: #2e0d12;
+  --type-bg-app:   #0d1a2e;
   --shadow-card:   inset 0 0 0 1px #1a1a1a;
 }
 
