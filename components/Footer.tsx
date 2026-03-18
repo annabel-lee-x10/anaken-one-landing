@@ -1,26 +1,11 @@
 import Link from "next/link";
 
-const EXPLORE = [
-  { href: "/articles", label: "Articles" },
-  { href: "/news",     label: "News" },
-  { href: "/projects", label: "Projects" },
-  { href: "/games",    label: "Games" },
-  { href: "/lab",      label: "Lab" },
+const LINKS = [
+  { href: "/work",     label: "Work" },
+  { href: "/articles", label: "Writing" },
+  { href: "/now",      label: "About" },
+  { href: "/contact",  label: "Contact" },
 ];
-
-const CONNECT = [
-  { href: "/now",     label: "Now" },
-  { href: "/contact", label: "Contact" },
-];
-
-const columnHeaderStyle: React.CSSProperties = {
-  color: "var(--text-head)",
-  fontWeight: 600,
-  fontSize: "13px",
-  textTransform: "uppercase",
-  letterSpacing: "0.06em",
-  marginBottom: "14px",
-};
 
 export default function Footer() {
   return (
@@ -45,30 +30,14 @@ export default function Footer() {
           <Link href="/" className="gradient-text" style={{ fontSize: "20px", fontWeight: 700, letterSpacing: "-0.04em", textDecoration: "none", display: "block", marginBottom: "10px" }}>
             Anaken
           </Link>
-          <p style={{ fontSize: "14px", color: "var(--text-body)", maxWidth: "240px", lineHeight: 1.65 }}>
-            ideate. innovate. iterate.
-          </p>
-          <p style={{ fontSize: "14px", color: "var(--text-muted)", marginTop: "8px", maxWidth: "240px", lineHeight: 1.6 }}>
-            Tools, workflows, and AI experiments — building at the intersection of automation and craft.
+          <p style={{ fontSize: "14px", color: "var(--text-muted)", maxWidth: "280px", lineHeight: 1.6 }}>
+            Building at the intersection of AI tooling and creative technology.
           </p>
         </div>
-        <nav style={{ display: "flex", gap: "56px", flexWrap: "wrap" }}>
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <p style={columnHeaderStyle}>Explore</p>
-            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-              {EXPLORE.map(({ href, label }) => (
-                <Link key={href} href={href} className="footer-link">{label}</Link>
-              ))}
-            </div>
-          </div>
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <p style={columnHeaderStyle}>Connect</p>
-            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-              {CONNECT.map(({ href, label }) => (
-                <Link key={href} href={href} className="footer-link">{label}</Link>
-              ))}
-            </div>
-          </div>
+        <nav style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+          {LINKS.map(({ href, label }) => (
+            <Link key={href} href={href} className="footer-link">{label}</Link>
+          ))}
         </nav>
       </div>
       <div style={{ borderTop: "1px solid var(--border-mid)" }}>

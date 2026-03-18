@@ -22,8 +22,6 @@ const RAW_PROJECTS: ProjectInput[] = [
   { id: "04", type: "Game", name: "Simple Snake",         tagline: "The classic, reimagined for any screen.",  description: "Snake with touch controls, keyboard support, and a clean minimal design. Built as an AI-assisted coding experiment — simple to play, interesting to build.", url: "https://simple-snake.anaken.one/", image: "/projects/simple-snake.svg" },
   { id: "05", type: "Game", name: "Where's Munki",        tagline: "Find the hidden cat in a bustling city.",  description: "A Where's Wally-style browser game. Hunt for Munki, a sneaky golden kitten hiding in busy illustrated scenes. 10 levels, 3 difficulties, hints, and multiplayer challenges.", url: "https://wheresmunki.anaken.one/", image: "/projects/wheres-munki.svg" },
   { id: "06", type: "Guide", name: "Solo in Seoul",       tagline: "A solo traveller's guide to Seoul.",       description: "A curated single-page guide for solo travellers in Seoul. Browse venues by type or area, with hand-picked recommendations for cafes, restaurants, and experiences.", url: "https://soloinseoul.anaken.one/", image: "/projects/solo-in-seoul.svg" },
-  { id: "07", type: "App", name: "Auraplate",             tagline: "Your 7-day meal planner based on your goals.", image: "/projects/placeholder.svg", status: "coming-soon" },
-  { id: "08", type: "App", name: "Where's My Monies",     tagline: "Lightweight and flexible expense tracker.",    image: "/projects/placeholder.svg", status: "coming-soon" },
 ];
 
 export const PROJECTS: Project[] = RAW_PROJECTS.map(p => ({ ...p, slug: toSlug(p.name) }));
@@ -37,6 +35,8 @@ export const TYPE_COLORS: Record<string, string> = {
 
 export const TOOLS: Project[] = PROJECTS.filter(p => p.type === "Tool" || p.type === "App");
 export const GAMES: Project[] = PROJECTS.filter(p => p.type === "Game" || p.type === "Guide");
+
+export const SHIPPED_PROJECTS: Project[] = PROJECTS.filter(p => p.status !== "coming-soon");
 
 export function getProjectBySlug(slug: string): Project | undefined {
   return PROJECTS.find(p => p.slug === slug);

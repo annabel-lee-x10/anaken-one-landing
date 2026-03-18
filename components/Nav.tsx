@@ -6,12 +6,9 @@ import { trackEvent } from "@/lib/analytics";
 import { useTheme } from "@/components/ThemeProvider";
 
 const LINKS = [
-  { href: "/articles", label: "Articles" },
-  { href: "/news",     label: "News"     },
-  { href: "/projects", label: "Projects" },
-  { href: "/games",    label: "Games"    },
-  { href: "/lab",      label: "Lab"      },
-  { href: "/now",      label: "Now"      },
+  { href: "/work",     label: "Work"    },
+  { href: "/articles", label: "Writing" },
+  { href: "/now",      label: "About"   },
 ];
 
 export default function Nav() {

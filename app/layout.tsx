@@ -15,17 +15,17 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: { default: "Anaken", template: "%s — Anaken" },
-  description: "ideate. innovate. iterate. — Exploring workflows, AI tooling, and systems optimization.",
+  description: "Building at the intersection of AI tooling and creative technology. Tools, games, and deep dives on what works.",
   metadataBase: new URL("https://anaken.one"),
   robots: { index: true, follow: true },
   openGraph: {
     type: "website",
     url: "https://anaken.one",
     title: "Anaken",
-    description: "ideate. innovate. iterate. — Workflows, AI tools, and optimization.",
+    description: "Building at the intersection of AI tooling and creative technology. Tools, games, and deep dives on what works.",
     siteName: "Anaken",
   },
-  twitter: { card: "summary", title: "Anaken", description: "ideate. innovate. iterate. — Workflows, AI tools, and optimization." },
+  twitter: { card: "summary", title: "Anaken", description: "AI tooling and creative technology. Tools, games, and deep dives on what works." },
   alternates: { canonical: "https://anaken.one" },
 };
 
