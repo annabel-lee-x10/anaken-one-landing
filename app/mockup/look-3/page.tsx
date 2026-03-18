@@ -3,8 +3,8 @@
 const PROJECTS = [
   { name: "AI Fact-Check Engine", desc: "Verify AI-generated claims in real time.", tag: "Tool" },
   { name: "promptVault", desc: "Your personal prompt engineering HQ.", tag: "Tool" },
-  { name: "Space Commanders", desc: "Classic arcade shooter for the browser.", tag: "Game" },
-  { name: "Simple Snake", desc: "Snake, rebuilt collaboratively.", tag: "Game" },
+  { name: "Where's Munki", desc: "Find the hidden cat in a bustling city.", tag: "Game" },
+  { name: "Solo in Seoul", desc: "A solo traveller's guide to Seoul.", tag: "Guide" },
 ];
 
 const NEWS = [
