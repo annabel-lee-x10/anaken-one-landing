@@ -25,6 +25,8 @@ At the top end, the picture is extraordinary. People who already think rigorousl
 
 This is genuinely exciting. But it's only half the picture.
 
+![One person climbs a scaffold of knowledge while another slides effortlessly into the gap](/images/articles/floor-dropping-diverging-paths.png)
+
 Because AI doesn't just amplify good thinking. It also makes it entirely optional.
 
 For someone already inclined to skip the hard work of reasoning - to reach for the nearest available answer rather than sit with uncertainty - AI is the most elegant shortcut ever built. Fluent, confident, immediate. It doesn't just answer your question. It sounds like it really knows.
@@ -45,6 +47,8 @@ When AI handles the reasoning consistently, frictionlessly, across years - the m
 
 The floor, in other words, isn't holding steady. It's dropping.
 
+![Cognitive rigor versus disuse atrophy](/images/articles/floor-dropping-cognitive-rigor.png)
+
 ## The Cruelest Part: You Can't Feel It Happening
 
 Here is what I find most worth sitting with.
@@ -56,6 +60,8 @@ One study captured this precisely: 83% of participants who used AI to write an e
 The experience of thinking well and the experience of having AI think for you are becoming indistinguishable from the inside. This is unprecedented. Every previous shortcut had some friction built in. Calculators didn't make you feel like a better mathematician. Google didn't make you feel like you deeply understood what you'd just searched. But AI, precisely because it mimics the texture of real thought so convincingly, creates something new: the feeling of intellectual growth while the underlying capacity quietly contracts.
 
 We've built something that makes it effortless to stop thinking - and effortless is seductive for everyone.
+
+![The floor is cracking beneath us and most people can't feel it](/images/articles/floor-dropping-cracking-floor.png)
 
 ## So What Are We Actually Talking About?
 

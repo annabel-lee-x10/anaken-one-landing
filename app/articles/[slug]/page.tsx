@@ -84,6 +84,12 @@ export default async function ArticlePage({ params }: Props) {
             ul: ({ children }) => <ul style={{ paddingLeft: "24px", marginBottom: "1.4em" }}>{children}</ul>,
             ol: ({ children }) => <ol style={{ paddingLeft: "24px", marginBottom: "1.4em" }}>{children}</ol>,
             li: ({ children }) => <li style={{ marginBottom: "0.5em" }}>{children}</li>,
+            img: ({ src, alt }) => (
+              <figure style={{ margin: "2.4em 0" }}>
+                <img src={src} alt={alt || ""} style={{ width: "100%", height: "auto", borderRadius: "var(--radius-sm)", display: "block" }} />
+                {alt && <figcaption style={{ marginTop: "10px", fontSize: "14px", color: "var(--text-muted)", textAlign: "center", lineHeight: 1.5 }}>{alt}</figcaption>}
+              </figure>
+            ),
           }}>
             {content}
           </ReactMarkdown>
