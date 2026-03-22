@@ -23,6 +23,8 @@ The friction isn't gone. It's just invisible now.
 
 And that invisibility isn't just convenient. It's neurologically significant.
 
+![Judgment goes — a robotic hand holds a magnifying glass over vanishing text while a man reaches for a glowing brain](/images/articles/the-ai-hit-judgment-lost.png)
+
 ## The Hit
 
 Here's something neuroscience has known for a while but that rarely makes it into conversations about AI: dopamine isn't really about pleasure. It's about the *resolution of uncertainty*.
@@ -46,6 +48,8 @@ AI is variable in exactly this way. Sometimes it nails something so precisely it
 You never quite know which version you'll get.
 
 So you keep pulling.
+
+![The dopamine casino — code fragments dissolve into a glowing risk-reward loop](/images/articles/the-ai-hit-dopamine-casino.png)
 
 ## The Aware Trap
 
@@ -80,6 +84,8 @@ The dopamine loop makes you *want* to use AI. The structural pressure makes you 
 Because FOMO is itself a dopamine mechanism. The brain treats social exclusion and falling behind as a threat, and pushes you to close the gap. Opening AI isn't just resolving a question anymore. It's resolving the anxiety of being left behind *at the same time*. Two sources of relief, one action. The reward signal doubles. The habit goes deeper.
 
 The dopamine loop gets you hooked. The game theory trap makes sure you can't quit even if you want to. And FOMO fuses them together into something that doesn't feel like compulsion - it feels like common sense.
+
+![The AI Hit — people sprint on treadmills, wired to a central machine tracking their output](/images/articles/the-ai-hit-treadmill.png)
 
 ## What We Don't Know Yet
 

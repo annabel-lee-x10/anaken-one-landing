@@ -39,6 +39,26 @@
 - Never stage `.env` or secret files — verify with `git diff --cached` first
 - Use feature branches; never commit directly to `main`
 
+## Testing Workflow
+
+### Test-Driven Development (TDD)
+
+- **Every fix or feature MUST start with test cases** — design and write tests before implementation code
+- Ask clarifying questions about expected behavior before writing tests if requirements are ambiguous
+- Tests define the acceptance criteria; implementation is done when tests pass
+
+### Dev Server Requirement
+
+- Integration, e2e, and simulation tests require the dev server (`npm run dev`) to be running
+- Always confirm the dev server is up before running these suites
+- Unit tests (`npm test`) do not require the dev server
+
+### Database Test Cleanup (Supabase)
+
+- When tests create, modify, or read rows in Supabase, **always generate a cleanup script** (SQL or JS) that removes test data
+- Present the cleanup script to the user and instruct them to run it after testing
+- Never leave test data in Supabase without providing a cleanup path
+
 ## Stack: Next.js
 
 - **Framework:** Next.js (App Router) + React
@@ -102,4 +122,4 @@ ease:     cubic-bezier(0.19,1,0.22,1) 220ms  /  fast: 100ms ease
 
 **Out of scope:** auth, CMS, comments, e-commerce.
 
-<!-- sync:mastermind:4456caa39814474f85e7ca6061c8761b3ca416508fdfab596ad415adaa40cfa0 -->
+<!-- sync:mastermind:057ccb28dd7de5bd060031197442587350ad04a49ba5ddc8f8bc1fb94d2246a7 -->
