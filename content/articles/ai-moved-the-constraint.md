@@ -1,6 +1,7 @@
 ---
 title: "AI Didn't Move the Task. It Moved the Constraint."
 date: "2026-03-25"
+publishDate: "2026-03-25T10:00:00+08:00"
 description: "Everyone keeps debating prompting vs. agents vs. skills. That's the wrong conversation. The constraint moved - and most people haven't noticed yet."
 slug: "ai-moved-the-constraint"
 tags: ["AI thinking", "mental models", "productivity", "AI workflow", "thought systems"]
